@@ -1,4 +1,4 @@
-import * as types from './types/api.ts';
+import * as types from './types/oura.ts';
 
 class Oura {
     accessToken: string;
