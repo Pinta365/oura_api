@@ -1,9 +1,9 @@
-export type DataType =
+export type EventType =
     | 'create'
     | 'update'
     | 'delete';
 
-export type EventType =
+export type DataType =
     | 'tag'
     | 'workout'
     | 'session'
