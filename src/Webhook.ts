@@ -50,18 +50,17 @@ class Webhook {
             } else {
                 return await response.json();
             }
-            
         }
 
         throw new Error(`Problem with request. ${response.status} - ${response.statusText}`);
     };
 
     listSubscriptions(): Promise<types.Subscription[]> {
-        return this.#request('GET', 'subscription');
+        return this.#request('GET', 'subscription') as Promise<types.Subscription[]>;
     }
 
     getSubscription(id: string): Promise<types.Subscription> {
-        return this.#request('GET', 'subscription/' + id);
+        return this.#request('GET', 'subscription/' + id) as Promise<types.Subscription>;
     }
 
     createSubscription(
@@ -76,7 +75,7 @@ class Webhook {
             event_type: eventType,
             data_type: dataType,
         };
-        return this.#request('POST', 'subscription', data);
+        return this.#request('POST', 'subscription', data) as Promise<types.Subscription>;
     }
 
     updateSubscription(
@@ -103,14 +102,14 @@ class Webhook {
             delete data.data_type;
         }
 
-        return this.#request('PUT', 'subscription/' + id, data);
+        return this.#request('PUT', 'subscription/' + id, data) as Promise<types.Subscription>;
     }
 
     deleteSubscription(id: string): Promise<types.DeletedSubscription> {
-        return this.#request('DELETE', 'subscription/' + id);
+        return this.#request('DELETE', 'subscription/' + id) as Promise<types.DeletedSubscription>;
     }
     renewSubscription(id: string): Promise<types.Subscription> {
-        return this.#request('PUT', 'subscription/renew/' + id);
+        return this.#request('PUT', 'subscription/renew/' + id) as Promise<types.Subscription>;
     }
 }
 

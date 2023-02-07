@@ -1,4 +1,7 @@
 {
+    "tasks": {
+        "build_npm": "deno run -A scripts/build_npm.ts"
+    },
     "fmt": {
         "options": {
             "useTabs": false,
