@@ -16,9 +16,9 @@ await build({
         // package.json properties
         name: 'oura_api',
         version: Deno.args[0],
-        description: 'Interact with v2 of the Oura Ring API.',
+        description: 'Interact with v2 of the Oura API. Includes support for the Webhook subscriptions.',
         license: 'MIT',
-        author: 'Pinta365@GitHub',
+        author: 'Pinta <https://github.com/Pinta365>',
         repository: {
             type: 'git',
             url: 'git+https://github.com/Pinta365/oura_api.git',
