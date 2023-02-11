@@ -6,7 +6,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import * as types from './types/webhook.ts';
+import * as types from "./types/webhook.ts";
 
 class Webhook {
     #clientId: string;
@@ -20,15 +20,15 @@ class Webhook {
      */
     constructor(clientId: string, clientSecret: string) {
         if (!clientId) {
-            throw 'Missing client id.';
+            throw "Missing client id.";
         }
         if (!clientSecret) {
-            throw 'Missing client secret.';
+            throw "Missing client secret.";
         }
 
         this.#clientId = clientId;
         this.#clientSecret = clientSecret;
-        this.#baseUrlv2 = 'https://api.ouraring.com/v2/webhook/';
+        this.#baseUrlv2 = "https://api.ouraring.com/v2/webhook/";
     }
 
     /**
@@ -41,13 +41,13 @@ class Webhook {
      */
     #request = async (method: string, url: string, body?: Record<string, string | number | symbol | undefined>) => {
         let options = {};
-        if (method === 'POST' || method === 'PUT') {
+        if (method === "POST" || method === "PUT") {
             options = {
                 method,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'x-client-id': this.#clientId,
-                    'x-client-secret': this.#clientSecret,
+                    "Content-Type": "application/json",
+                    "x-client-id": this.#clientId,
+                    "x-client-secret": this.#clientSecret,
                 },
             };
             if (body) {
@@ -57,8 +57,8 @@ class Webhook {
             options = {
                 method,
                 headers: {
-                    'x-client-id': this.#clientId,
-                    'x-client-secret': this.#clientSecret,
+                    "x-client-id": this.#clientId,
+                    "x-client-secret": this.#clientSecret,
                 },
             };
         }
@@ -66,7 +66,7 @@ class Webhook {
         const response = await fetch(this.#baseUrlv2 + encodeURI(url), options);
 
         if (response.ok) {
-            if (method === 'DELETE') {
+            if (method === "DELETE") {
                 return await response.text();
             } else {
                 return await response.json();
@@ -81,7 +81,7 @@ class Webhook {
      * @returns an array of Subscription typed objects.
      */
     listSubscriptions(): Promise<types.Subscription[]> {
-        return this.#request('GET', 'subscription') as Promise<types.Subscription[]>;
+        return this.#request("GET", "subscription") as Promise<types.Subscription[]>;
     }
 
     /**
@@ -90,7 +90,7 @@ class Webhook {
      * @returns A Subscription typed object.
      */
     getSubscription(id: string): Promise<types.Subscription> {
-        return this.#request('GET', 'subscription/' + id) as Promise<types.Subscription>;
+        return this.#request("GET", "subscription/" + id) as Promise<types.Subscription>;
     }
 
     /**
@@ -114,7 +114,7 @@ class Webhook {
             event_type: eventType,
             data_type: dataType,
         };
-        return this.#request('POST', 'subscription', data) as Promise<types.Subscription>;
+        return this.#request("POST", "subscription", data) as Promise<types.Subscription>;
     }
 
     /**
@@ -150,7 +150,7 @@ class Webhook {
             delete data.data_type;
         }
 
-        return this.#request('PUT', 'subscription/' + id, data) as Promise<types.Subscription>;
+        return this.#request("PUT", "subscription/" + id, data) as Promise<types.Subscription>;
     }
 
     /**
@@ -159,7 +159,7 @@ class Webhook {
      * @returns A DeletedSubscription typed object.
      */
     deleteSubscription(id: string): Promise<types.DeletedSubscription> {
-        return this.#request('DELETE', 'subscription/' + id) as Promise<types.DeletedSubscription>;
+        return this.#request("DELETE", "subscription/" + id) as Promise<types.DeletedSubscription>;
     }
 
     /**
@@ -168,7 +168,7 @@ class Webhook {
      * @returns A Subscription typed object of the renewed sub.
      */
     renewSubscription(id: string): Promise<types.Subscription> {
-        return this.#request('PUT', 'subscription/renew/' + id) as Promise<types.Subscription>;
+        return this.#request("PUT", "subscription/renew/" + id) as Promise<types.Subscription>;
     }
 }
 

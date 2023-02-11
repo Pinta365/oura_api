@@ -1,16 +1,16 @@
 export type EventType =
-    | 'create'
-    | 'update'
-    | 'delete';
+    | "create"
+    | "update"
+    | "delete";
 
 export type DataType =
-    | 'tag'
-    | 'workout'
-    | 'session'
-    | 'sleep'
-    | 'daily_sleep'
-    | 'daily_readiness'
-    | 'daily_activity';
+    | "tag"
+    | "workout"
+    | "session"
+    | "sleep"
+    | "daily_sleep"
+    | "daily_readiness"
+    | "daily_activity";
 
 export interface Subscription {
     id: string;

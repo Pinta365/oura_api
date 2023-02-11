@@ -34,7 +34,8 @@ Library and method documentation can be found at the [Deno Land documentation](h
 
 ### Additional info concerning the webhook API
 
-According to the API docs the webhooks enable you to receive near real-time Oura data updates and are the preferred way to receive the latest data from the Oura API.
+According to the API docs the webhooks enable you to receive near real-time Oura data updates and are the preferred way
+to receive the latest data from the Oura API.
 
 I have not been able to fully verify this yet but the subscription workflow has been implemented.
 
@@ -42,7 +43,8 @@ Read the [Webhook docs](https://cloud.ouraring.com/v2/docs#tag/Webhook-Subscript
 
 ## Issues
 
-Issues or questions concerning the library can be raised at the [github repository](https://github.com/Pinta365/oura_api/issues) page.
+Issues or questions concerning the library can be raised at the
+[github repository](https://github.com/Pinta365/oura_api/issues) page.
 
 ### License
 

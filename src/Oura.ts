@@ -6,7 +6,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import * as types from './types/oura.ts';
+import * as types from "./types/oura.ts";
 
 class Oura {
     #accessToken: string;
@@ -18,10 +18,10 @@ class Oura {
      */
     constructor(accessToken: string) {
         if (!accessToken) {
-            throw 'Missing access token';
+            throw "Missing access token";
         }
         this.#accessToken = accessToken;
-        this.#baseUrlv2 = 'https://api.ouraring.com/v2/usercollection/';
+        this.#baseUrlv2 = "https://api.ouraring.com/v2/usercollection/";
     }
 
     /**
@@ -34,10 +34,10 @@ class Oura {
     #get = async (url: string, qs?: Record<string, string>) => {
         const params = new URLSearchParams(qs);
 
-        const response = await fetch(this.#baseUrlv2 + encodeURI(url) + (qs ? '?' + params.toString() : ''), {
-            method: 'GET',
+        const response = await fetch(this.#baseUrlv2 + encodeURI(url) + (qs ? "?" + params.toString() : ""), {
+            method: "GET",
             headers: {
-                'Authorization': 'Bearer ' + this.#accessToken,
+                "Authorization": "Bearer " + this.#accessToken,
             },
         });
 
@@ -56,7 +56,7 @@ class Oura {
      */
     getDailyActivityDocuments(startDate: string, endDate: string): Promise<types.DailyActivityDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('daily_activity', params) as Promise<types.DailyActivityDocuments>;
+        return this.#get("daily_activity", params) as Promise<types.DailyActivityDocuments>;
     }
 
     /**
@@ -65,7 +65,7 @@ class Oura {
      * @returns A DailyActivity typed object.
      */
     getDailyActivity(documentId: string): Promise<types.DailyActivity> {
-        return this.#get('daily_activity/' + documentId) as Promise<types.DailyActivity>;
+        return this.#get("daily_activity/" + documentId) as Promise<types.DailyActivity>;
     }
 
     /**
@@ -76,7 +76,7 @@ class Oura {
      */
     getDailyReadinessDocuments(startDate: string, endDate: string): Promise<types.DailyReadinessDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('daily_readiness', params) as Promise<types.DailyReadinessDocuments>;
+        return this.#get("daily_readiness", params) as Promise<types.DailyReadinessDocuments>;
     }
 
     /**
@@ -85,7 +85,7 @@ class Oura {
      * @returns A DailyReadiness typed object.
      */
     getDailyReadiness(documentId: string): Promise<types.DailyReadiness> {
-        return this.#get('daily_readiness/' + documentId) as Promise<types.DailyReadiness>;
+        return this.#get("daily_readiness/" + documentId) as Promise<types.DailyReadiness>;
     }
 
     /**
@@ -96,7 +96,7 @@ class Oura {
      */
     getDailySleepDocuments(startDate: string, endDate: string): Promise<types.DailySleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('daily_sleep', params) as Promise<types.DailySleepDocuments>;
+        return this.#get("daily_sleep", params) as Promise<types.DailySleepDocuments>;
     }
 
     /**
@@ -105,7 +105,7 @@ class Oura {
      * @returns A DailySleep typed object.
      */
     getDailySleep(documentId: string): Promise<types.DailySleep> {
-        return this.#get('daily_sleep/' + documentId) as Promise<types.DailySleep>;
+        return this.#get("daily_sleep/" + documentId) as Promise<types.DailySleep>;
     }
 
     /**
@@ -117,7 +117,7 @@ class Oura {
      */
     getHeartrate(startDateTime: string, endDateTime: string): Promise<types.Heartrate> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
-        return this.#get('heartrate', params) as Promise<types.Heartrate>;
+        return this.#get("heartrate", params) as Promise<types.Heartrate>;
     }
 
     /**
@@ -125,7 +125,7 @@ class Oura {
      * @returns A PersonalInfo typed object.
      */
     getPersonalInfo(): Promise<types.PersonalInfo> {
-        return this.#get('personal_info') as Promise<types.PersonalInfo>;
+        return this.#get("personal_info") as Promise<types.PersonalInfo>;
     }
 
     /**
@@ -136,7 +136,7 @@ class Oura {
      */
     getDailySessionDocuments(startDate: string, endDate: string): Promise<types.DailySessionDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('session', params) as Promise<types.DailySessionDocuments>;
+        return this.#get("session", params) as Promise<types.DailySessionDocuments>;
     }
 
     /**
@@ -145,7 +145,7 @@ class Oura {
      * @returns A DailySession typed object.
      */
     getDailySession(documentId: string): Promise<types.DailySession> {
-        return this.#get('session/' + documentId) as Promise<types.DailySession>;
+        return this.#get("session/" + documentId) as Promise<types.DailySession>;
     }
 
     /**
@@ -156,7 +156,7 @@ class Oura {
      */
     getSleepDocuments(startDate: string, endDate: string): Promise<types.SleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('sleep', params) as Promise<types.SleepDocuments>;
+        return this.#get("sleep", params) as Promise<types.SleepDocuments>;
     }
 
     /**
@@ -165,7 +165,7 @@ class Oura {
      * @returns A Sleep typed object.
      */
     getSleep(documentId: string): Promise<types.Sleep> {
-        return this.#get('sleep/' + documentId) as Promise<types.Sleep>;
+        return this.#get("sleep/" + documentId) as Promise<types.Sleep>;
     }
 
     /**
@@ -176,7 +176,7 @@ class Oura {
      */
     getTagDocuments(startDate: string, endDate: string): Promise<types.TagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('tag', params) as Promise<types.TagDocuments>;
+        return this.#get("tag", params) as Promise<types.TagDocuments>;
     }
 
     /**
@@ -185,7 +185,7 @@ class Oura {
      * @returns A Tag typed object.
      */
     getTag(documentId: string): Promise<types.Tag> {
-        return this.#get('tag/' + documentId) as Promise<types.Tag>;
+        return this.#get("tag/" + documentId) as Promise<types.Tag>;
     }
 
     /**
@@ -196,7 +196,7 @@ class Oura {
      */
     getWorkoutDocuments(startDate: string, endDate: string): Promise<types.WorkoutDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get('workout', params) as Promise<types.WorkoutDocuments>;
+        return this.#get("workout", params) as Promise<types.WorkoutDocuments>;
     }
 
     /**
@@ -205,7 +205,7 @@ class Oura {
      * @returns A Workout typed object.
      */
     getWorkout(documentId: string): Promise<types.Workout> {
-        return this.#get('workout/' + documentId) as Promise<types.Workout>;
+        return this.#get("workout/" + documentId) as Promise<types.Workout>;
     }
 }
 

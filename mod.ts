@@ -6,7 +6,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import Oura from './src/Oura.ts';
-import Webhook from './src/Webhook.ts';
+import Oura from "./src/Oura.ts";
+import Webhook from "./src/Webhook.ts";
 
 export { Oura, Webhook };
