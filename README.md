@@ -5,7 +5,17 @@
 The library is also available for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api).
 
 ---
+## Installation/Importing
+**Deno**
+```javascript
+import { Oura, Webhook } from "https://deno.land/x/oura_api";
+```
 
+**Node.js**
+```
+npm install oura_api --save
+```
+---
 ## Documentaion
 
 Library and method documentation can be found at the [Deno Land documentation](https://deno.land/x/oura_api?doc) page.
