@@ -54,7 +54,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailyActivityDocuments typed object.
      */
-    getDailyActivityDocuments(startDate: string, endDate: string): Promise<types.DailyActivityDocuments> {
+    getDailyActivityDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailyActivityDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_activity", params) as Promise<types.DailyActivityDocuments>;
     }
@@ -74,7 +74,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailyReadinessDocuments typed object.
      */
-    getDailyReadinessDocuments(startDate: string, endDate: string): Promise<types.DailyReadinessDocuments> {
+    getDailyReadinessDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailyReadinessDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_readiness", params) as Promise<types.DailyReadinessDocuments>;
     }
@@ -94,7 +94,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailySleepDocuments typed object.
      */
-    getDailySleepDocuments(startDate: string, endDate: string): Promise<types.DailySleepDocuments> {
+    getDailySleepDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_sleep", params) as Promise<types.DailySleepDocuments>;
     }
@@ -134,7 +134,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailySessionDocuments typed object.
      */
-    getDailySessionDocuments(startDate: string, endDate: string): Promise<types.DailySessionDocuments> {
+    getDailySessionDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySessionDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("session", params) as Promise<types.DailySessionDocuments>;
     }
@@ -154,7 +154,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A SleepDocuments typed object.
      */
-    getSleepDocuments(startDate: string, endDate: string): Promise<types.SleepDocuments> {
+    getSleepDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.SleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("sleep", params) as Promise<types.SleepDocuments>;
     }
@@ -174,7 +174,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A TagDocuments typed object.
      */
-    getTagDocuments(startDate: string, endDate: string): Promise<types.TagDocuments> {
+    getTagDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.TagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("tag", params) as Promise<types.TagDocuments>;
     }
@@ -194,7 +194,7 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A WorkoutDocuments typed object.
      */
-    getWorkoutDocuments(startDate: string, endDate: string): Promise<types.WorkoutDocuments> {
+    getWorkoutDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.WorkoutDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("workout", params) as Promise<types.WorkoutDocuments>;
     }
