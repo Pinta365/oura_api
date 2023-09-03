@@ -18,7 +18,7 @@ class Oura {
      */
     constructor(accessToken: string) {
         if (!accessToken) {
-            throw "Missing access token";
+            throw new Error("Missing access token");
         }
         this.#accessToken = accessToken;
         this.#baseUrlv2 = "https://api.ouraring.com/v2/usercollection/";
@@ -54,7 +54,10 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailyActivityDocuments typed object.
      */
-    getDailyActivityDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailyActivityDocuments> {
+    getDailyActivityDocuments(
+        startDate: types.DateFormat,
+        endDate: types.DateFormat,
+    ): Promise<types.DailyActivityDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_activity", params) as Promise<types.DailyActivityDocuments>;
     }
@@ -74,7 +77,10 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailyReadinessDocuments typed object.
      */
-    getDailyReadinessDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailyReadinessDocuments> {
+    getDailyReadinessDocuments(
+        startDate: types.DateFormat,
+        endDate: types.DateFormat,
+    ): Promise<types.DailyReadinessDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_readiness", params) as Promise<types.DailyReadinessDocuments>;
     }
@@ -109,6 +115,26 @@ class Oura {
     }
 
     /**
+     * Retrieves daily spO2 (blood oxygenation) average for a startDate - endDate period
+     * @param startDate - Start date of the period in string format.
+     * @param endDate - End date of the period in string format.
+     * @returns A DailySpo2Documents typed object.
+     */
+    getDailySpo2Documents(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySpo2Documents> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("daily_spo2", params) as Promise<types.DailySpo2Documents>;
+    }
+
+    /**
+     * Retrieves a single daily spO2 (blood oxygenation) average document.
+     * @param documentId - The document id in string format.
+     * @returns A DailySpo2 typed object.
+     */
+    getDailySpo2(documentId: string): Promise<types.DailySpo2> {
+        return this.#get("daily_spo2/" + documentId) as Promise<types.DailySpo2>;
+    }
+
+    /**
      * Retrieves heartrate data for a startDateTime - endDateTime period. Includes day time
      * and night time heartrate in 5 minute increments.
      * @param startDateTime - Start date and time of the period in string format.
@@ -129,12 +155,61 @@ class Oura {
     }
 
     /**
+     * Retrieves rest mode periods for a startDate - endDate period
+     * @param startDate - Start date of the period in string format.
+     * @param endDate - End date of the period in string format.
+     * @returns A RestModePeriodDocuments typed object.
+     */
+    getRestModePeriodDocuments(
+        startDate: types.DateFormat,
+        endDate: types.DateFormat,
+    ): Promise<types.RestModePeriodDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("rest_mode_period", params) as Promise<types.RestModePeriodDocuments>;
+    }
+
+    /**
+     * Retrieves a single rest mode period document.
+     * @param documentId - The document id in string format.
+     * @returns A RestModePeriod typed object.
+     */
+    getRestModePeriod(documentId: string): Promise<types.RestModePeriod> {
+        return this.#get("rest_mode_period/" + documentId) as Promise<types.RestModePeriod>;
+    }
+
+    /**
+     * Retrieves ring configuration information for a startDate - endDate period
+     * @param startDate - Start date of the period in string format.
+     * @param endDate - End date of the period in string format.
+     * @returns A RingConfigurationDocuments typed object.
+     */
+    getRingConfigurationDocuments(
+        startDate: types.DateFormat,
+        endDate: types.DateFormat,
+    ): Promise<types.RingConfigurationDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("ring_configuration", params) as Promise<types.RingConfigurationDocuments>;
+    }
+
+    /**
+     * Retrieves a single ring configuration document.
+     * @param documentId - The document id in string format.
+     * @returns A RingConfiguration typed object.
+     */
+    getRingConfiguration(documentId: string): Promise<types.RingConfiguration> {
+        return this.#get("ring_configuration/" + documentId) as Promise<types.RingConfiguration>;
+    }
+
+    /**
      * Retrieves daily session documents for a startDate - endDate period
      * @param startDate - Start date of the period in string format.
      * @param endDate - End date of the period in string format.
      * @returns A DailySessionDocuments typed object.
      */
-    getDailySessionDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySessionDocuments> {
+    getDailySessionDocuments(
+        startDate: types.DateFormat,
+        endDate: types.DateFormat,
+    ): Promise<types.DailySessionDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("session", params) as Promise<types.DailySessionDocuments>;
     }
@@ -166,6 +241,26 @@ class Oura {
      */
     getSleep(documentId: string): Promise<types.Sleep> {
         return this.#get("sleep/" + documentId) as Promise<types.Sleep>;
+    }
+
+    /**
+     * Retrieves recommendated bedtime window for a startDate - endDate period
+     * @param startDate - Start date of the period in string format.
+     * @param endDate - End date of the period in string format.
+     * @returns A SleepTimeDocuments typed object.
+     */
+    getSleepTimeDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.SleepTimeDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("sleep_time", params) as Promise<types.SleepTimeDocuments>;
+    }
+
+    /**
+     * Retrieves a single recommendated bedtime window document.
+     * @param documentId - The document id in string format.
+     * @returns A SleepTime typed object.
+     */
+    getSleepTime(documentId: string): Promise<types.SleepTime> {
+        return this.#get("sleep_time/" + documentId) as Promise<types.SleepTime>;
     }
 
     /**

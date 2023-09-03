@@ -29,13 +29,17 @@ Library and method documentation can be found at the [Deno Land documentation](h
 | Daily Activity                                                            | Implemented                        |
 | Daily Readiness                                                           | Implemented                        |
 | Daily Sleep                                                               | Implemented                        |
+| Daily Spo2                                                                | Implemented                        |
 | Heart Rate                                                                | Implemented                        |
 | Personal Info                                                             | Implemented                        |
+| Rest Mode Period                                                          | Implemented                        |
+| Ring Configuration                                                        | Implemented                        |
 | Session                                                                   | Implemented                        |
 | Sleep                                                                     | Implemented                        |
+| Sleep Time                                                                | Implemented                        |
 | Tag                                                                       | Implemented                        |
 | Workout                                                                   | Implemented                        |
-| Bedtime                                                                   | Not available in v2 of the API yet |
+| Sleep Time                                                                | Implemented                        |
 | **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |                                    |
 | List subscription                                                         | Implemented                        |
 | Create subscription                                                       | Implemented                        |

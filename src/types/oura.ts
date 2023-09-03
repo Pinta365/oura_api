@@ -1,8 +1,8 @@
-type oneToNine = 1|2|3|4|5|6|7|8|9
-type zeroToNine = 0|oneToNine
-type YYYY = `19${zeroToNine}${zeroToNine}` | `20${zeroToNine}${zeroToNine}`
-type MM = `0${oneToNine}` | `1${0|1|2}`
-type DD = `${0}${oneToNine}` | `${1|2}${zeroToNine}` | `3${0|1}`
+type oneToNine = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type zeroToNine = 0 | oneToNine;
+type YYYY = `19${zeroToNine}${zeroToNine}` | `20${zeroToNine}${zeroToNine}`;
+type MM = `0${oneToNine}` | `1${0 | 1 | 2}`;
+type DD = `${0}${oneToNine}` | `${1 | 2}${zeroToNine}` | `3${0 | 1}`;
 
 export type DateFormat = `${YYYY}-${MM}-${DD}`;
 
@@ -105,6 +105,19 @@ export interface DailySleepDocuments {
     next_token: string | null;
 }
 
+export interface DailySpo2 {
+    id: string;
+    day: string;
+    spo2_percentage: {
+        average: number;
+    };
+}
+
+export interface DailySpo2Documents {
+    data: DailySpo2[];
+    next_token: string | null;
+}
+
 interface HeartrateData {
     bpm: number;
     source: string;
@@ -113,6 +126,38 @@ interface HeartrateData {
 
 export interface Heartrate {
     data: HeartrateData[];
+    next_token: string | null;
+}
+
+export interface RestModePeriod {
+    id: string;
+    end_day: string;
+    end_time: string;
+    episodes: [{
+        tags: string[];
+        timestamp: string;
+    }];
+    start_day: string;
+    start_time: string;
+}
+
+export interface RestModePeriodDocuments {
+    data: RestModePeriod[];
+    next_token: string | null;
+}
+
+export interface RingConfiguration {
+    id: string;
+    color: string;
+    design: string;
+    firmware_version: string;
+    hardware_type: string;
+    set_up_at: string;
+    size: number;
+}
+
+export interface RingConfigurationDocuments {
+    data: RingConfiguration[];
     next_token: string | null;
 }
 
@@ -212,6 +257,23 @@ export interface Tag {
 
 export interface TagDocuments {
     data: Tag[];
+    next_token: string | null;
+}
+
+export interface SleepTime {
+    id: string;
+    day: string;
+    optimal_bedtime: {
+        day_tz: number;
+        end_offset: number;
+        start_offset: number;
+    };
+    recommendation: string;
+    status: string;
+}
+
+export interface SleepTimeDocuments {
+    data: SleepTime[];
     next_token: string | null;
 }
 
