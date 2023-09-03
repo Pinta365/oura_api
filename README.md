@@ -8,7 +8,7 @@ The library is also available for Node.js via a [NPM package](https://www.npmjs.
 ## Installation/Importing
 **Deno**
 ```javascript
-import { Oura, Webhook } from "https://deno.land/x/oura_api";
+import { Oura, Webhook } from "https://deno.land/x/oura_api/mod.ts";
 ```
 
 **Node.js**
@@ -39,7 +39,6 @@ Library and method documentation can be found at the [Deno Land documentation](h
 | Sleep Time                                                                | Implemented                        |
 | Tag                                                                       | Implemented                        |
 | Workout                                                                   | Implemented                        |
-| Sleep Time                                                                | Implemented                        |
 | **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |                                    |
 | List subscription                                                         | Implemented                        |
 | Create subscription                                                       | Implemented                        |
