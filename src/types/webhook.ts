@@ -1,3 +1,11 @@
+/**
+ * oura_api
+ *
+ * @file Contains type definitions and interfaces for the Oura Webhook Subscription API.
+ * Defines event types, data types, and subscription related interfaces.
+ * @author Pinta <https://github.com/Pinta365>
+ * @license MIT
+ */
 export type EventType =
     | "create"
     | "update"

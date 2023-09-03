@@ -1,3 +1,10 @@
+/**
+ * oura_api
+ *
+ * @file Contains type definitions and interfaces for the Oura API responses and data structures.
+ * @author Pinta <https://github.com/Pinta365>
+ * @license MIT
+ */
 type oneToNine = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type zeroToNine = 0 | oneToNine;
 type YYYY = `19${zeroToNine}${zeroToNine}` | `20${zeroToNine}${zeroToNine}`;

@@ -1,12 +1,11 @@
 /**
- * oura_api
+ * Class containing all the methods to access the Oura Webhook Subscription API with a client id and client secret.
  *
- * @file Class containing all the methods to access the Oura Webhook Subscription API with a client id and client secret.
- *
+ * @class Webhook
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import * as types from "./types/webhook.ts";
+import { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
 
 class Webhook {
     #clientId: string;
@@ -14,9 +13,12 @@ class Webhook {
     #baseUrlv2: string;
 
     /**
-     * Takes the cliend id and secret as string parameters and stores it for use with the requests made by this class.
-     * @param clientId - A client id generated at the Oura Cloud website.
-     * @param clientSecret - A client secret generated at the Oura Cloud website.
+     * Creates a new Webhook API client.
+     *
+     * @constructor
+     * @param {string} clientId - A client id generated at the Oura Cloud website.
+     * @param {string} clientSecret - A client secret generated at the Oura Cloud website.
+     * @throws {Error} Throws an error if the client id or client secret is missing.
      */
     constructor(clientId: string, clientSecret: string) {
         if (!clientId) {
@@ -32,12 +34,15 @@ class Webhook {
     }
 
     /**
-     * Private class method for doing the fetch requests to the API endpoints. Throws an error
-     * if the response is not ok.
-     * @param method - Fetch method
-     * @param url - API endpoint url.
-     * @param body - optional parameter for supplying a POST/PUT body.
-     * @returns A JSON or Text parsed fetch response.
+     * Private class method for making fetch requests to the API endpoints. Throws an error
+     * if the response is not OK.
+     *
+     * @private
+     * @param {string} method - Fetch method (e.g., GET, POST, PUT, DELETE).
+     * @param {string} url - API endpoint URL.
+     * @param {Object} [body] - Optional parameter for supplying a POST/PUT body.
+     * @returns {Promise<Object>} A JSON or Text parsed fetch response.
+     * @throws {Error} Throws an error if the request encounters a problem (e.g., non-OK response status).
      */
     #request = async (method: string, url: string, body?: Record<string, string | number | symbol | undefined>) => {
         let options = {};
@@ -78,61 +83,65 @@ class Webhook {
 
     /**
      * Retrieves a list of current active webhook subscriptions.
-     * @returns an array of Subscription typed objects.
+     *
+     * @returns {Promise<Subscription[]>} An array of Subscription typed objects.
      */
-    listSubscriptions(): Promise<types.Subscription[]> {
-        return this.#request("GET", "subscription") as Promise<types.Subscription[]>;
+    listSubscriptions(): Promise<Subscription[]> {
+        return this.#request("GET", "subscription") as Promise<Subscription[]>;
     }
 
     /**
      * Retrieves a specific webhook subscription by id.
-     * @param id - Subscription id in string format.
-     * @returns A Subscription typed object.
+     *
+     * @param {string} id - Subscription id in string format.
+     * @returns {Promise<Subscription>} A Subscription typed object.
      */
-    getSubscription(id: string): Promise<types.Subscription> {
-        return this.#request("GET", "subscription/" + id) as Promise<types.Subscription>;
+    getSubscription(id: string): Promise<Subscription> {
+        return this.#request("GET", "subscription/" + id) as Promise<Subscription>;
     }
 
     /**
      * Creates a new webhook subscription. See setup documentation on the Oura Developer website
-     * for detailed description of the creation workflow.
-     * @param callbackUrl - Your callback url used buy Oura to post subscriptions events to.
-     * @param verificationToken - Your verification token, use to verify Ouras calls to your api.
-     * @param eventType - One of the EventTypes.
-     * @param dataType - One of the DataTypes.
-     * @returns A Subscription typed object of the created sub.
+     * for a detailed description of the creation workflow.
+     *
+     * @param {string} callbackUrl - Your callback URL used by Oura to post subscription events to.
+     * @param {string} verificationToken - Your verification token used to verify Oura's calls to your API.
+     * @param {EventType} eventType - One of the EventTypes.
+     * @param {DataType} dataType - One of the DataTypes.
+     * @returns {Promise<Subscription>} A Subscription typed object of the created subscription.
      */
     createSubscription(
         callbackUrl: string,
         verificationToken: string,
-        eventType: types.EventType,
-        dataType: types.DataType,
-    ): Promise<types.Subscription> {
+        eventType: EventType,
+        dataType: DataType,
+    ): Promise<Subscription> {
         const data = {
             callback_url: callbackUrl,
             verification_token: verificationToken,
             event_type: eventType,
             data_type: dataType,
         };
-        return this.#request("POST", "subscription", data) as Promise<types.Subscription>;
+        return this.#request("POST", "subscription", data) as Promise<Subscription>;
     }
 
     /**
      * Updates a webhook subscription.
-     * @param id - Subscription id in string format.
-     * @param verificationToken - Your verification token, use to verify Ouras calls to your api.
-     * @param callbackUrl - Callback url used buy Oura to post subscriptions to.
-     * @param eventType - One of the EventTypes.
-     * @param dataType - One of the DataTypes.
-     * @returns A Subscription typed object of the updated sub.
+     *
+     * @param {string} id - Subscription id in string format.
+     * @param {string} verificationToken - Your verification token used to verify Oura's calls to your API.
+     * @param {string} [callbackUrl] - Callback URL used by Oura to post subscriptions to.
+     * @param {EventType} [eventType] - One of the EventTypes.
+     * @param {DataType} [dataType] - One of the DataTypes.
+     * @returns {Promise<Subscription>} A Subscription typed object of the updated subscription.
      */
     updateSubscription(
         id: string,
         verificationToken: string,
         callbackUrl?: string,
-        eventType?: types.EventType,
-        dataType?: types.DataType,
-    ): Promise<types.Subscription> {
+        eventType?: EventType,
+        dataType?: DataType,
+    ): Promise<Subscription> {
         const data = {
             callback_url: callbackUrl,
             verification_token: verificationToken,
@@ -150,25 +159,27 @@ class Webhook {
             delete data.data_type;
         }
 
-        return this.#request("PUT", "subscription/" + id, data) as Promise<types.Subscription>;
+        return this.#request("PUT", "subscription/" + id, data) as Promise<Subscription>;
     }
 
     /**
      * Deletes a webhook subscription.
-     * @param id - Subscription id in string format.
-     * @returns A DeletedSubscription typed object.
+     *
+     * @param {string} id - Subscription id in string format.
+     * @returns {Promise<DeletedSubscription>} A DeletedSubscription typed object.
      */
-    deleteSubscription(id: string): Promise<types.DeletedSubscription> {
-        return this.#request("DELETE", "subscription/" + id) as Promise<types.DeletedSubscription>;
+    deleteSubscription(id: string): Promise<DeletedSubscription> {
+        return this.#request("DELETE", "subscription/" + id) as Promise<DeletedSubscription>;
     }
 
     /**
-     * Renew the expiration time of a webhook subscription.
-     * @param id -Subscription id in string format.
-     * @returns A Subscription typed object of the renewed sub.
+     * Renews the expiration time of a webhook subscription.
+     *
+     * @param {string} id - Subscription id in string format.
+     * @returns {Promise<Subscription>} A Subscription typed object of the renewed subscription.
      */
-    renewSubscription(id: string): Promise<types.Subscription> {
-        return this.#request("PUT", "subscription/renew/" + id) as Promise<types.Subscription>;
+    renewSubscription(id: string): Promise<Subscription> {
+        return this.#request("PUT", "subscription/renew/" + id) as Promise<Subscription>;
     }
 }
 

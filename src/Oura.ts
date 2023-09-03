@@ -1,8 +1,7 @@
 /**
- * oura_api
+ * Class containing all the methods to access the Oura API with an access token.
  *
- * @file Class containing all the methods to access the Oura API with a access token.
- *
+ * @class Oura
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
@@ -40,8 +39,11 @@ class Oura {
     #baseUrlv2: string;
 
     /**
-     * Takes the accessToken as a string parameter and stores it for use with the requests made by this class.
-     * @param accessToken - A personal access token generated at the Oura Cloud website.
+     * Creates a new Oura API client.
+     *
+     * @constructor
+     * @param {string} accessToken - A personal access token generated at the Oura Cloud website.
+     * @throws {Error} Throws an error if the access token is missing.
      */
     constructor(accessToken: string) {
         if (!accessToken) {
@@ -52,11 +54,13 @@ class Oura {
     }
 
     /**
-     * Private class method for doing the fetch requests to the API endpoints. Throws an error
-     * if the response is not ok.
-     * @param url - API endpoint url.
-     * @param qs - optional parameter for including a querystring parameter to the endpoint.
-     * @returns A JSON parsed fetch response.
+     * Private method to make GET requests to the API endpoints.
+     *
+     * @private
+     * @param {string} url - The API endpoint URL.
+     * @param {Object} [qs] - Optional querystring parameters.
+     * @returns {Promise<Object>} A JSON parsed fetch response.
+     * @throws {Error} Throws an error if the response status is not OK.
      */
     #get = async (url: string, qs?: Record<string, string>) => {
         const params = new URLSearchParams(qs);
@@ -76,10 +80,11 @@ class Oura {
     };
 
     /**
-     * Retrieves daily activity documents for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A DailyActivityDocuments typed object.
+     * Retrieves daily activity documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailyActivityDocuments>} A DailyActivityDocuments typed object.
      */
     getDailyActivityDocuments(
         startDate: DateFormat,
@@ -90,19 +95,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single activity document.
-     * @param documentId - The document id in string format.
-     * @returns A DailyActivity typed object.
+     * Retrieves a single activity document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailyActivity>} A DailyActivity typed object.
      */
     getDailyActivity(documentId: string): Promise<DailyActivity> {
         return this.#get("daily_activity/" + documentId) as Promise<DailyActivity>;
     }
 
     /**
-     * Retrieves daily readiness documents for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A DailyReadinessDocuments typed object.
+     * Retrieves daily readiness documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailyReadinessDocuments>} A DailyReadinessDocuments typed object.
      */
     getDailyReadinessDocuments(
         startDate: DateFormat,
@@ -113,39 +120,43 @@ class Oura {
     }
 
     /**
-     * Retrieves a single readiness document.
-     * @param documentId - The document id in string format.
-     * @returns A DailyReadiness typed object.
+     * Retrieves a single readiness document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailyReadiness>} A DailyReadiness typed object.
      */
     getDailyReadiness(documentId: string): Promise<DailyReadiness> {
         return this.#get("daily_readiness/" + documentId) as Promise<DailyReadiness>;
     }
 
     /**
-     * Retrieves daily sleep documents for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A DailySleepDocuments typed object.
+     * Retrieves daily sleep documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailySleepDocuments>} A DailySleepDocuments typed object.
      */
     getDailySleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<DailySleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_sleep", params) as Promise<DailySleepDocuments>;
     }
-
+    
     /**
-     * Retrieves a single daily sleep document.
-     * @param documentId - The document id in string format.
-     * @returns A DailySleep typed object.
+     * Retrieves a single daily sleep document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailySleep>} A DailySleep typed object.
      */
     getDailySleep(documentId: string): Promise<DailySleep> {
         return this.#get("daily_sleep/" + documentId) as Promise<DailySleep>;
     }
 
     /**
-     * Retrieves daily spO2 (blood oxygenation) average for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A DailySpo2Documents typed object.
+     * Retrieves daily spO2 (blood oxygenation) averages for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailySpo2Documents>} A DailySpo2Documents typed object.
      */
     getDailySpo2Documents(startDate: DateFormat, endDate: DateFormat): Promise<DailySpo2Documents> {
         const params = { start_date: startDate, end_date: endDate };
@@ -153,20 +164,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single daily spO2 (blood oxygenation) average document.
-     * @param documentId - The document id in string format.
-     * @returns A DailySpo2 typed object.
+     * Retrieves a single daily spO2 (blood oxygenation) average document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailySpo2>} A DailySpo2 typed object.
      */
     getDailySpo2(documentId: string): Promise<DailySpo2> {
         return this.#get("daily_spo2/" + documentId) as Promise<DailySpo2>;
     }
 
     /**
-     * Retrieves heartrate data for a startDateTime - endDateTime period. Includes day time
-     * and night time heartrate in 5 minute increments.
-     * @param startDateTime - Start date and time of the period in string format.
-     * @param endDateTime - End date and time of the period in string format.
-     * @returns A Heartrate typed object.
+     * Retrieves heart rate data for a specified date and time period.
+     *
+     * @param {string} startDateTime - Start date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @param {string} endDateTime - End date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @returns {Promise<Heartrate>} A Heartrate typed object.
      */
     getHeartrate(startDateTime: string, endDateTime: string): Promise<Heartrate> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
@@ -174,18 +186,20 @@ class Oura {
     }
 
     /**
-     * Retrieves the personal information about the user.
-     * @returns A PersonalInfo typed object.
+     * Retrieves personal information about the user.
+     *
+     * @returns {Promise<PersonalInfo>} A PersonalInfo typed object.
      */
     getPersonalInfo(): Promise<PersonalInfo> {
         return this.#get("personal_info") as Promise<PersonalInfo>;
     }
 
     /**
-     * Retrieves rest mode periods for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A RestModePeriodDocuments typed object.
+     * Retrieves rest mode periods for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<RestModePeriodDocuments>} A RestModePeriodDocuments typed object.
      */
     getRestModePeriodDocuments(
         startDate: DateFormat,
@@ -196,19 +210,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single rest mode period document.
-     * @param documentId - The document id in string format.
-     * @returns A RestModePeriod typed object.
+     * Retrieves a single rest mode period document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<RestModePeriod>} A RestModePeriod typed object.
      */
     getRestModePeriod(documentId: string): Promise<RestModePeriod> {
         return this.#get("rest_mode_period/" + documentId) as Promise<RestModePeriod>;
     }
 
     /**
-     * Retrieves ring configuration information for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A RingConfigurationDocuments typed object.
+     * Retrieves ring configuration information for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<RingConfigurationDocuments>} A RingConfigurationDocuments typed object.
      */
     getRingConfigurationDocuments(
         startDate: DateFormat,
@@ -219,19 +235,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single ring configuration document.
-     * @param documentId - The document id in string format.
-     * @returns A RingConfiguration typed object.
+     * Retrieves a single ring configuration document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<RingConfiguration>} A RingConfiguration typed object.
      */
     getRingConfiguration(documentId: string): Promise<RingConfiguration> {
         return this.#get("ring_configuration/" + documentId) as Promise<RingConfiguration>;
     }
 
     /**
-     * Retrieves daily session documents for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A DailySessionDocuments typed object.
+     * Retrieves daily session documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailySessionDocuments>} A DailySessionDocuments typed object.
      */
     getDailySessionDocuments(
         startDate: DateFormat,
@@ -242,19 +260,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single daily session document.
-     * @param documentId - The document id in string format.
-     * @returns A DailySession typed object.
+     * Retrieves a single daily session document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailySession>} A DailySession typed object.
      */
     getDailySession(documentId: string): Promise<DailySession> {
         return this.#get("session/" + documentId) as Promise<DailySession>;
     }
 
     /**
-     * Retrieves sleep documents for a startDate - endDate period. Can be multiple sleep periods per day.
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A SleepDocuments typed object.
+     * Retrieves sleep documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<SleepDocuments>} A SleepDocuments typed object.
      */
     getSleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
@@ -262,19 +282,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single sleep session document.
-     * @param documentId - The document id in string format.
-     * @returns A Sleep typed object.
+     * Retrieves a single sleep session document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<Sleep>} A Sleep typed object.
      */
     getSleep(documentId: string): Promise<Sleep> {
         return this.#get("sleep/" + documentId) as Promise<Sleep>;
     }
 
     /**
-     * Retrieves recommendated bedtime window for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A SleepTimeDocuments typed object.
+     * Retrieves recommended bedtime windows for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<SleepTimeDocuments>} A SleepTimeDocuments typed object.
      */
     getSleepTimeDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepTimeDocuments> {
         const params = { start_date: startDate, end_date: endDate };
@@ -282,19 +304,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single recommendated bedtime window document.
-     * @param documentId - The document id in string format.
-     * @returns A SleepTime typed object.
+     * Retrieves a single recommended bedtime window document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<SleepTime>} A SleepTime typed object.
      */
     getSleepTime(documentId: string): Promise<SleepTime> {
         return this.#get("sleep_time/" + documentId) as Promise<SleepTime>;
     }
 
     /**
-     * Retrieves daily tags for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A TagDocuments typed object.
+     * Retrieves daily tags for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<TagDocuments>} A TagDocuments typed object.
      */
     getTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
@@ -302,19 +326,21 @@ class Oura {
     }
 
     /**
-     * Retrieves a single tag document.
-     * @param documentId - The document id in string format.
-     * @returns A Tag typed object.
+     * Retrieves a single tag document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<Tag>} A Tag typed object.
      */
     getTag(documentId: string): Promise<Tag> {
         return this.#get("tag/" + documentId) as Promise<Tag>;
     }
 
     /**
-     * Retrieves workout documents for a startDate - endDate period
-     * @param startDate - Start date of the period in string format.
-     * @param endDate - End date of the period in string format.
-     * @returns A WorkoutDocuments typed object.
+     * Retrieves workout documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<WorkoutDocuments>} A WorkoutDocuments typed object.
      */
     getWorkoutDocuments(startDate: DateFormat, endDate: DateFormat): Promise<WorkoutDocuments> {
         const params = { start_date: startDate, end_date: endDate };
@@ -322,9 +348,10 @@ class Oura {
     }
 
     /**
-     * Retrieves a single workout document.
-     * @param documentId - The document id in string format.
-     * @returns A Workout typed object.
+     * Retrieves a single workout document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<Workout>} A Workout typed object.
      */
     getWorkout(documentId: string): Promise<Workout> {
         return this.#get("workout/" + documentId) as Promise<Workout>;

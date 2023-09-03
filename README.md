@@ -75,6 +75,7 @@ Read the [Webhook docs](https://cloud.ouraring.com/v2/docs#tag/Webhook-Subscript
 Issues or questions concerning the library can be raised at the
 [github repository](https://github.com/Pinta365/oura_api/issues) page.
 
-### License
+## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
