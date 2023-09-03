@@ -6,7 +6,34 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import * as types from "./types/oura.ts";
+import {
+    DailyActivity,
+    DailyActivityDocuments,
+    DailyReadiness,
+    DailyReadinessDocuments,
+    DailySession,
+    DailySessionDocuments,
+    DailySleep,
+    DailySleepDocuments,
+    DailySpo2,
+    DailySpo2Documents,
+    DateFormat,
+    Heartrate,
+    PersonalInfo,
+    RestModePeriod,
+    RestModePeriodDocuments,
+    RingConfiguration,
+    RingConfigurationDocuments,
+    Sleep,
+    SleepDocuments,
+    SleepTime,
+    SleepTimeDocuments,
+    Tag,
+    TagDocuments,
+    Workout,
+    WorkoutDocuments,
+} from "./types/oura.ts";
+export * from "./types/oura.ts";
 
 class Oura {
     #accessToken: string;
@@ -55,11 +82,11 @@ class Oura {
      * @returns A DailyActivityDocuments typed object.
      */
     getDailyActivityDocuments(
-        startDate: types.DateFormat,
-        endDate: types.DateFormat,
-    ): Promise<types.DailyActivityDocuments> {
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<DailyActivityDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_activity", params) as Promise<types.DailyActivityDocuments>;
+        return this.#get("daily_activity", params) as Promise<DailyActivityDocuments>;
     }
 
     /**
@@ -67,8 +94,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A DailyActivity typed object.
      */
-    getDailyActivity(documentId: string): Promise<types.DailyActivity> {
-        return this.#get("daily_activity/" + documentId) as Promise<types.DailyActivity>;
+    getDailyActivity(documentId: string): Promise<DailyActivity> {
+        return this.#get("daily_activity/" + documentId) as Promise<DailyActivity>;
     }
 
     /**
@@ -78,11 +105,11 @@ class Oura {
      * @returns A DailyReadinessDocuments typed object.
      */
     getDailyReadinessDocuments(
-        startDate: types.DateFormat,
-        endDate: types.DateFormat,
-    ): Promise<types.DailyReadinessDocuments> {
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<DailyReadinessDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_readiness", params) as Promise<types.DailyReadinessDocuments>;
+        return this.#get("daily_readiness", params) as Promise<DailyReadinessDocuments>;
     }
 
     /**
@@ -90,8 +117,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A DailyReadiness typed object.
      */
-    getDailyReadiness(documentId: string): Promise<types.DailyReadiness> {
-        return this.#get("daily_readiness/" + documentId) as Promise<types.DailyReadiness>;
+    getDailyReadiness(documentId: string): Promise<DailyReadiness> {
+        return this.#get("daily_readiness/" + documentId) as Promise<DailyReadiness>;
     }
 
     /**
@@ -100,9 +127,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailySleepDocuments typed object.
      */
-    getDailySleepDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySleepDocuments> {
+    getDailySleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<DailySleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_sleep", params) as Promise<types.DailySleepDocuments>;
+        return this.#get("daily_sleep", params) as Promise<DailySleepDocuments>;
     }
 
     /**
@@ -110,8 +137,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A DailySleep typed object.
      */
-    getDailySleep(documentId: string): Promise<types.DailySleep> {
-        return this.#get("daily_sleep/" + documentId) as Promise<types.DailySleep>;
+    getDailySleep(documentId: string): Promise<DailySleep> {
+        return this.#get("daily_sleep/" + documentId) as Promise<DailySleep>;
     }
 
     /**
@@ -120,9 +147,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A DailySpo2Documents typed object.
      */
-    getDailySpo2Documents(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.DailySpo2Documents> {
+    getDailySpo2Documents(startDate: DateFormat, endDate: DateFormat): Promise<DailySpo2Documents> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_spo2", params) as Promise<types.DailySpo2Documents>;
+        return this.#get("daily_spo2", params) as Promise<DailySpo2Documents>;
     }
 
     /**
@@ -130,8 +157,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A DailySpo2 typed object.
      */
-    getDailySpo2(documentId: string): Promise<types.DailySpo2> {
-        return this.#get("daily_spo2/" + documentId) as Promise<types.DailySpo2>;
+    getDailySpo2(documentId: string): Promise<DailySpo2> {
+        return this.#get("daily_spo2/" + documentId) as Promise<DailySpo2>;
     }
 
     /**
@@ -141,17 +168,17 @@ class Oura {
      * @param endDateTime - End date and time of the period in string format.
      * @returns A Heartrate typed object.
      */
-    getHeartrate(startDateTime: string, endDateTime: string): Promise<types.Heartrate> {
+    getHeartrate(startDateTime: string, endDateTime: string): Promise<Heartrate> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
-        return this.#get("heartrate", params) as Promise<types.Heartrate>;
+        return this.#get("heartrate", params) as Promise<Heartrate>;
     }
 
     /**
      * Retrieves the personal information about the user.
      * @returns A PersonalInfo typed object.
      */
-    getPersonalInfo(): Promise<types.PersonalInfo> {
-        return this.#get("personal_info") as Promise<types.PersonalInfo>;
+    getPersonalInfo(): Promise<PersonalInfo> {
+        return this.#get("personal_info") as Promise<PersonalInfo>;
     }
 
     /**
@@ -161,11 +188,11 @@ class Oura {
      * @returns A RestModePeriodDocuments typed object.
      */
     getRestModePeriodDocuments(
-        startDate: types.DateFormat,
-        endDate: types.DateFormat,
-    ): Promise<types.RestModePeriodDocuments> {
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<RestModePeriodDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("rest_mode_period", params) as Promise<types.RestModePeriodDocuments>;
+        return this.#get("rest_mode_period", params) as Promise<RestModePeriodDocuments>;
     }
 
     /**
@@ -173,8 +200,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A RestModePeriod typed object.
      */
-    getRestModePeriod(documentId: string): Promise<types.RestModePeriod> {
-        return this.#get("rest_mode_period/" + documentId) as Promise<types.RestModePeriod>;
+    getRestModePeriod(documentId: string): Promise<RestModePeriod> {
+        return this.#get("rest_mode_period/" + documentId) as Promise<RestModePeriod>;
     }
 
     /**
@@ -184,11 +211,11 @@ class Oura {
      * @returns A RingConfigurationDocuments typed object.
      */
     getRingConfigurationDocuments(
-        startDate: types.DateFormat,
-        endDate: types.DateFormat,
-    ): Promise<types.RingConfigurationDocuments> {
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<RingConfigurationDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("ring_configuration", params) as Promise<types.RingConfigurationDocuments>;
+        return this.#get("ring_configuration", params) as Promise<RingConfigurationDocuments>;
     }
 
     /**
@@ -196,8 +223,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A RingConfiguration typed object.
      */
-    getRingConfiguration(documentId: string): Promise<types.RingConfiguration> {
-        return this.#get("ring_configuration/" + documentId) as Promise<types.RingConfiguration>;
+    getRingConfiguration(documentId: string): Promise<RingConfiguration> {
+        return this.#get("ring_configuration/" + documentId) as Promise<RingConfiguration>;
     }
 
     /**
@@ -207,11 +234,11 @@ class Oura {
      * @returns A DailySessionDocuments typed object.
      */
     getDailySessionDocuments(
-        startDate: types.DateFormat,
-        endDate: types.DateFormat,
-    ): Promise<types.DailySessionDocuments> {
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<DailySessionDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("session", params) as Promise<types.DailySessionDocuments>;
+        return this.#get("session", params) as Promise<DailySessionDocuments>;
     }
 
     /**
@@ -219,8 +246,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A DailySession typed object.
      */
-    getDailySession(documentId: string): Promise<types.DailySession> {
-        return this.#get("session/" + documentId) as Promise<types.DailySession>;
+    getDailySession(documentId: string): Promise<DailySession> {
+        return this.#get("session/" + documentId) as Promise<DailySession>;
     }
 
     /**
@@ -229,9 +256,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A SleepDocuments typed object.
      */
-    getSleepDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.SleepDocuments> {
+    getSleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("sleep", params) as Promise<types.SleepDocuments>;
+        return this.#get("sleep", params) as Promise<SleepDocuments>;
     }
 
     /**
@@ -239,8 +266,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A Sleep typed object.
      */
-    getSleep(documentId: string): Promise<types.Sleep> {
-        return this.#get("sleep/" + documentId) as Promise<types.Sleep>;
+    getSleep(documentId: string): Promise<Sleep> {
+        return this.#get("sleep/" + documentId) as Promise<Sleep>;
     }
 
     /**
@@ -249,9 +276,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A SleepTimeDocuments typed object.
      */
-    getSleepTimeDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.SleepTimeDocuments> {
+    getSleepTimeDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepTimeDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("sleep_time", params) as Promise<types.SleepTimeDocuments>;
+        return this.#get("sleep_time", params) as Promise<SleepTimeDocuments>;
     }
 
     /**
@@ -259,8 +286,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A SleepTime typed object.
      */
-    getSleepTime(documentId: string): Promise<types.SleepTime> {
-        return this.#get("sleep_time/" + documentId) as Promise<types.SleepTime>;
+    getSleepTime(documentId: string): Promise<SleepTime> {
+        return this.#get("sleep_time/" + documentId) as Promise<SleepTime>;
     }
 
     /**
@@ -269,9 +296,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A TagDocuments typed object.
      */
-    getTagDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.TagDocuments> {
+    getTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("tag", params) as Promise<types.TagDocuments>;
+        return this.#get("tag", params) as Promise<TagDocuments>;
     }
 
     /**
@@ -279,8 +306,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A Tag typed object.
      */
-    getTag(documentId: string): Promise<types.Tag> {
-        return this.#get("tag/" + documentId) as Promise<types.Tag>;
+    getTag(documentId: string): Promise<Tag> {
+        return this.#get("tag/" + documentId) as Promise<Tag>;
     }
 
     /**
@@ -289,9 +316,9 @@ class Oura {
      * @param endDate - End date of the period in string format.
      * @returns A WorkoutDocuments typed object.
      */
-    getWorkoutDocuments(startDate: types.DateFormat, endDate: types.DateFormat): Promise<types.WorkoutDocuments> {
+    getWorkoutDocuments(startDate: DateFormat, endDate: DateFormat): Promise<WorkoutDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("workout", params) as Promise<types.WorkoutDocuments>;
+        return this.#get("workout", params) as Promise<WorkoutDocuments>;
     }
 
     /**
@@ -299,8 +326,8 @@ class Oura {
      * @param documentId - The document id in string format.
      * @returns A Workout typed object.
      */
-    getWorkout(documentId: string): Promise<types.Workout> {
-        return this.#get("workout/" + documentId) as Promise<types.Workout>;
+    getWorkout(documentId: string): Promise<Workout> {
+        return this.#get("workout/" + documentId) as Promise<Workout>;
     }
 }
 

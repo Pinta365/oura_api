@@ -5,23 +5,38 @@
 The library is also available for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api).
 
 ---
-## Installation/Importing
-**Deno**
-```javascript
-import { Oura, Webhook } from "https://deno.land/x/oura_api/mod.ts";
-```
+## Example usage
 
-**Node.js**
+### Deno
+```javascript
+import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.3.0/mod.ts";
+
+// Replace 'YOUR_ACCESS_TOKEN' with your actual access token
+const accessToken = "YOUR_ACCESS_TOKEN";
+const ouraClient = new Oura(accessToken);
+
+const startDate: DateFormat = "2023-01-01";
+const endDate: DateFormat = "2023-01-10";
+
+try {
+  const dailyActivityData = await ouraClient.getDailyActivityDocuments(startDate, endDate);
+
+  console.log(`Daily Activity Data: ${JSON.stringify(dailyActivityData, null, 4)}`);
+} catch (error) {
+  console.error(`Error fetching daily activity data: ${error}`);
+}
+```
+### Node.js
+Install package. Example in progress.
 ```
 npm install oura_api --save
 ```
 
----
 ## Documentaion
 
 Library and method documentation can be found at the [Deno Land documentation](https://deno.land/x/oura_api?doc) page.
 
-### Included data scopes:
+### Included data scopes for v2 of the API.
 
 | Endpoint/Scope                                                            | Status                             |
 | :------------------------------------------------------------------------ | :--------------------------------- |
