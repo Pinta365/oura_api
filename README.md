@@ -9,7 +9,7 @@ The library is also available for Node.js via a [NPM package](https://www.npmjs.
 
 ### Deno
 ```javascript
-import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.3.0/mod.ts";
+import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.3.1/mod.ts";
 
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
