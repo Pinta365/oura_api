@@ -33,6 +33,7 @@ import {
     WorkoutDocuments,
 } from "./types/oura.ts";
 export * from "./types/oura.ts";
+import { APIError, isValidDate, MissingTokenError, ValidationError } from "./utils.ts";
 
 class Oura {
     #accessToken: string;
@@ -43,11 +44,11 @@ class Oura {
      *
      * @constructor
      * @param {string} accessToken - A personal access token generated at the Oura Cloud website.
-     * @throws {Error} Throws an error if the access token is missing.
+     * @throws {Error} Throws an MissingTokenError-error if the access token is missing.
      */
     constructor(accessToken: string) {
         if (!accessToken) {
-            throw new Error("Missing access token");
+            throw new MissingTokenError();
         }
         this.#accessToken = accessToken;
         this.#baseUrlv2 = "https://api.ouraring.com/v2/usercollection/";
@@ -58,11 +59,20 @@ class Oura {
      *
      * @private
      * @param {string} url - The API endpoint URL.
-     * @param {Object} [qs] - Optional querystring parameters.
-     * @returns {Promise<Object>} A JSON parsed fetch response.
-     * @throws {Error} Throws an error if the response status is not OK.
+     * @param {Record<string, string>} [qs] - Optional querystring parameters.
+     * @returns {Promise<object>} A JSON parsed fetch response.
+     * @throws {Error} Throws an APIError-error if the response status is not OK or a ValidationError-error if querystring validation fails.
      */
     #get = async (url: string, qs?: Record<string, string>) => {
+        //Validate certain with a simple date parser.
+        for (const [key, value] of Object.entries(qs || {})) {
+            if (["start_date", "end_date", "start_datetime", "end_datetime"].includes(key)) {
+                if (!isValidDate(value)) {
+                    throw new ValidationError(`Invalid date format for ${key}: ${value}`);
+                }
+            }
+        }
+
         const params = new URLSearchParams(qs);
 
         const response = await fetch(this.#baseUrlv2 + encodeURI(url) + (qs ? "?" + params.toString() : ""), {
@@ -76,7 +86,7 @@ class Oura {
             return await response.json();
         }
 
-        throw new Error(`Problem fetching data. ${response.status} - ${response.statusText}`);
+        throw new APIError("Problem fetching data.", response.status, response.statusText);
     };
 
     /**
@@ -140,7 +150,7 @@ class Oura {
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("daily_sleep", params) as Promise<DailySleepDocuments>;
     }
-    
+
     /**
      * Retrieves a single daily sleep document by its ID.
      *

@@ -6,6 +6,7 @@
  * @license MIT
  */
 import { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
+import { APIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
 
 class Webhook {
     #clientId: string;
@@ -22,10 +23,10 @@ class Webhook {
      */
     constructor(clientId: string, clientSecret: string) {
         if (!clientId) {
-            throw "Missing client id.";
+            throw new MissingClientIdError();
         }
         if (!clientSecret) {
-            throw "Missing client secret.";
+            throw new MissingClientSecretError();
         }
 
         this.#clientId = clientId;
@@ -78,7 +79,7 @@ class Webhook {
             }
         }
 
-        throw new Error(`Problem with request. ${response.status} - ${response.statusText}`);
+        throw new APIError("Problem with request.", response.status, response.statusText);
     };
 
     /**
