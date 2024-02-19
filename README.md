@@ -11,7 +11,7 @@ The library is also available for Node.js via a [NPM package](https://www.npmjs.
 ### Deno
 
 ```javascript
-import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.3.1/mod.ts";
+import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.4.0/mod.ts";
 
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
@@ -50,6 +50,7 @@ Library and method documentation can be found at the [Deno Land documentation](h
 | Daily Readiness                                                           | Implemented |
 | Daily Sleep                                                               | Implemented |
 | Daily Spo2                                                                | Implemented |
+| Enhanced Tag                                                              | Implemented |
 | Heart Rate                                                                | Implemented |
 | Personal Info                                                             | Implemented |
 | Rest Mode Period                                                          | Implemented |
@@ -57,7 +58,7 @@ Library and method documentation can be found at the [Deno Land documentation](h
 | Session                                                                   | Implemented |
 | Sleep                                                                     | Implemented |
 | Sleep Time                                                                | Implemented |
-| Tag                                                                       | Implemented |
+| Tag                                                                       | DEPRICATED  |
 | Workout                                                                   | Implemented |
 | **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |             |
 | List subscription                                                         | Implemented |
