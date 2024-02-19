@@ -9,6 +9,6 @@
 import Oura from "./src/Oura.ts";
 import Webhook from "./src/Webhook.ts";
 
-export * from './src/types/oura.ts';
-export * from './src/types/webhook.ts';
+export * from "./src/types/oura.ts";
+export * from "./src/types/webhook.ts";
 export { Oura, Webhook };

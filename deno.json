@@ -8,12 +8,7 @@
         }
     },
     "fmt": {
-        "files": {
-            "include": ["src"]
-        },
-        "options": {
-            "lineWidth": 120,
-            "indentWidth": 4
-        }
+        "lineWidth": 120,
+        "indentWidth": 4
     }
 }

@@ -5,9 +5,11 @@
 The library is also available for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api).
 
 ---
+
 ## Example usage
 
 ### Deno
+
 ```javascript
 import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.3.1/mod.ts";
 
@@ -26,8 +28,11 @@ try {
   console.error(`Error fetching daily activity data: ${error}`);
 }
 ```
+
 ### Node.js
+
 Install package. Example in progress.
+
 ```
 npm install oura_api --save
 ```
@@ -38,28 +43,28 @@ Library and method documentation can be found at the [Deno Land documentation](h
 
 ### Included data scopes for v2 of the API.
 
-| Endpoint/Scope                                                            | Status                             |
-| :------------------------------------------------------------------------ | :--------------------------------- |
-| **[Oura Base](https://deno.land/x/oura_api/mod.ts?s=Oura)**               |                                    |
-| Daily Activity                                                            | Implemented                        |
-| Daily Readiness                                                           | Implemented                        |
-| Daily Sleep                                                               | Implemented                        |
-| Daily Spo2                                                                | Implemented                        |
-| Heart Rate                                                                | Implemented                        |
-| Personal Info                                                             | Implemented                        |
-| Rest Mode Period                                                          | Implemented                        |
-| Ring Configuration                                                        | Implemented                        |
-| Session                                                                   | Implemented                        |
-| Sleep                                                                     | Implemented                        |
-| Sleep Time                                                                | Implemented                        |
-| Tag                                                                       | Implemented                        |
-| Workout                                                                   | Implemented                        |
-| **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |                                    |
-| List subscription                                                         | Implemented                        |
-| Create subscription                                                       | Implemented                        |
-| Update subscription                                                       | Implemented                        |
-| Delete subscription                                                       | Implemented                        |
-| Renew subscription                                                        | Implemented                        |
+| Endpoint/Scope                                                            | Status      |
+| :------------------------------------------------------------------------ | :---------- |
+| **[Oura Base](https://deno.land/x/oura_api/mod.ts?s=Oura)**               |             |
+| Daily Activity                                                            | Implemented |
+| Daily Readiness                                                           | Implemented |
+| Daily Sleep                                                               | Implemented |
+| Daily Spo2                                                                | Implemented |
+| Heart Rate                                                                | Implemented |
+| Personal Info                                                             | Implemented |
+| Rest Mode Period                                                          | Implemented |
+| Ring Configuration                                                        | Implemented |
+| Session                                                                   | Implemented |
+| Sleep                                                                     | Implemented |
+| Sleep Time                                                                | Implemented |
+| Tag                                                                       | Implemented |
+| Workout                                                                   | Implemented |
+| **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |             |
+| List subscription                                                         | Implemented |
+| Create subscription                                                       | Implemented |
+| Update subscription                                                       | Implemented |
+| Delete subscription                                                       | Implemented |
+| Renew subscription                                                        | Implemented |
 
 ### Additional info concerning the webhook API
 
@@ -78,4 +83,3 @@ Issues or questions concerning the library can be raised at the
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-

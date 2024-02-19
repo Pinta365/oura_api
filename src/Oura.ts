@@ -382,9 +382,9 @@ class Oura {
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @returns {Promise<TagDocuments>} A TagDocuments typed object.
      */
-    getEnhancedTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
+    getEnhancedTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<EnhancedTagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("enhanced_tag", params) as Promise<TagDocuments>;
+        return this.#get("enhanced_tag", params) as Promise<EnhancedTagDocuments>;
     }
 
     /**
@@ -393,8 +393,8 @@ class Oura {
      * @param {string} documentId - The document ID in string format.
      * @returns {Promise<Tag>} A Tag typed object.
      */
-    getEnhancedTag(documentId: string): Promise<Tag> {
-        return this.#get("enhanced_tag/" + documentId) as Promise<Tag>;
+    getEnhancedTag(documentId: string): Promise<EnhancedTag> {
+        return this.#get("enhanced_tag/" + documentId) as Promise<EnhancedTag>;
     }
 }
 
