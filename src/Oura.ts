@@ -17,6 +17,8 @@ import {
     DailySpo2,
     DailySpo2Documents,
     DateFormat,
+    EnhancedTag,
+    EnhancedTagDocuments,
     Heartrate,
     PersonalInfo,
     RestModePeriod,
@@ -326,11 +328,14 @@ class Oura {
     /**
      * Retrieves daily tags for a specified date range.
      *
+     * Note: Tag is deprecated. We recommend transitioning to Enhanced Tag.
+     *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @returns {Promise<TagDocuments>} A TagDocuments typed object.
      */
     getTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
+        console.log("Tag is deprecated. We recommend transitioning to Enhanced Tag.");
         const params = { start_date: startDate, end_date: endDate };
         return this.#get("tag", params) as Promise<TagDocuments>;
     }
@@ -338,10 +343,13 @@ class Oura {
     /**
      * Retrieves a single tag document by its ID.
      *
+     * Note: Tag is deprecated. We recommend transitioning to Enhanced Tag.
+     *
      * @param {string} documentId - The document ID in string format.
      * @returns {Promise<Tag>} A Tag typed object.
      */
     getTag(documentId: string): Promise<Tag> {
+        console.log("Tag is deprecated. We recommend transitioning to Enhanced Tag.");
         return this.#get("tag/" + documentId) as Promise<Tag>;
     }
 
@@ -365,6 +373,28 @@ class Oura {
      */
     getWorkout(documentId: string): Promise<Workout> {
         return this.#get("workout/" + documentId) as Promise<Workout>;
+    }
+
+    /**
+     * Retrieves enhanced tags for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<TagDocuments>} A TagDocuments typed object.
+     */
+    getEnhancedTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("enhanced_tag", params) as Promise<TagDocuments>;
+    }
+
+    /**
+     * Retrieves a single enhanced tags document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<Tag>} A Tag typed object.
+     */
+    getEnhancedTag(documentId: string): Promise<Tag> {
+        return this.#get("enhanced_tag/" + documentId) as Promise<Tag>;
     }
 }
 

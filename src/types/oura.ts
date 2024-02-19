@@ -296,3 +296,18 @@ export interface WorkoutDocuments {
     data: Workout[];
     next_token: string | null;
 }
+
+export interface EnhancedTag {
+    id: string;
+    tag_type_code: string;
+    start_time: string;
+    end_time: string;
+    start_day: string;
+    end_day: string;
+    comment: string;
+}
+
+export interface EnhancedTagDocuments {
+    data: Tag[];
+    next_token: string | null;
+}
