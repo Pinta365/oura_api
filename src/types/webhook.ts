@@ -13,12 +13,19 @@ export type EventType =
 
 export type DataType =
     | "tag"
+    | "enhanced_tag"
     | "workout"
     | "session"
     | "sleep"
     | "daily_sleep"
     | "daily_readiness"
-    | "daily_activity";
+    | "daily_activity"
+    | "daily_spo2"
+    | "sleep_time"
+    | "rest_mode_period"
+    | "ring_configuration"
+    | "daily_stress"
+    | "daily_cycle_phases";
 
 export interface Subscription {
     id: string;

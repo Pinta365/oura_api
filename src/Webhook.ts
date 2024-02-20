@@ -77,9 +77,16 @@ class Webhook {
             } else {
                 return await response.json();
             }
+        } else {
+            let detail = "";
+            try {
+                const errorData = await response.json();
+                detail = errorData.detail || "";
+            } catch (_err) {
+                detail = "No details";
+            }
+            throw new APIError("Problem with request.", response.status, response.statusText, detail);
         }
-
-        throw new APIError("Problem with request.", response.status, response.statusText);
     };
 
     /**

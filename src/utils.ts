@@ -19,12 +19,14 @@ export function isValidDate(dateString: string): boolean {
 export class APIError extends Error {
     statusCode: number;
     responseBody: string;
+    detail: string;
 
-    constructor(message: string, statusCode: number, responseBody: string) {
+    constructor(message: string, statusCode: number, responseBody: string, detail: string) {
         super(message);
         this.name = "APIError";
         this.statusCode = statusCode;
         this.responseBody = responseBody;
+        this.detail = detail;
     }
 }
 
