@@ -6,11 +6,18 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
+
+/**
+ * Represents the possible event types that can trigger an Oura webhook notification.
+ */
 export type EventType =
     | "create"
     | "update"
     | "delete";
 
+/**
+ * Represents the various types of data objects that can be monitored by Oura webhook subscriptions.
+ */
 export type DataType =
     | "tag"
     | "enhanced_tag"
@@ -27,19 +34,38 @@ export type DataType =
     | "daily_stress"
     | "daily_cycle_phases";
 
+/**
+ * Represents a single Oura webhook subscription.
+ */
 export interface Subscription {
+    /** Unique identifier for the subscription */
     id: string;
+    /** URL where Oura will send webhook notifications */
     callback_url: string;
+    /** The EventType that triggers the webhook (e.g., "create", "update", "delete") */
     event_type: string;
+    /** The DataType the subscription monitors */
     data_type: string;
+    /** The subscription's expiration time */
     expiration_time: string;
 }
 
-interface DeletedSubscriptionDetail {
+/**
+ * Provides details about a deleted webhook subscription.
+ */
+export interface DeletedSubscriptionDetail {
+    /** Array of locations relevant to the deletion */
     loc: string[];
+    /** message */
     msg: string;
+    /** message type */
     type: string;
 }
+
+/**
+ * Provides details about a deleted webhook subscription.
+ */
 export interface DeletedSubscription {
+    /** Array of deletion details */
     detail: DeletedSubscriptionDetail[];
 }

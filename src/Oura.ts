@@ -37,6 +37,9 @@ import {
 export * from "./types/oura.ts";
 import { APIError, isValidDate, MissingTokenError, ValidationError } from "./utils.ts";
 
+/**
+ * Base class for the Oura API.
+ */
 class Oura {
     #accessToken: string;
     #baseUrlv2: string;
@@ -86,9 +89,24 @@ class Oura {
 
         if (response.ok) {
             return await response.json();
+        } else {
+            let detail = "";
+            try {
+                const errorData = await response.json();
+                console.log(errorData);
+                detail = errorData.detail || "";
+            } catch (_err) {
+                detail = "No details";
+            }
+            throw new APIError(
+                "Problem fetching data.",
+                response.status,
+                response.statusText,
+                detail,
+                this.#baseUrlv2 + encodeURI(url),
+                "GET",
+            );
         }
-
-        throw new APIError("Problem fetching data.", response.status, response.statusText);
     };
 
     /**
@@ -165,6 +183,7 @@ class Oura {
 
     /**
      * Retrieves daily spO2 (blood oxygenation) averages for a specified date range.
+     * Data will only be available for users with a Gen 3 Oura Ring
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
@@ -177,6 +196,7 @@ class Oura {
 
     /**
      * Retrieves a single daily spO2 (blood oxygenation) average document by its ID.
+     * Data will only be available for users with a Gen 3 Oura Ring
      *
      * @param {string} documentId - The document ID in string format.
      * @returns {Promise<DailySpo2>} A DailySpo2 typed object.
@@ -377,6 +397,10 @@ class Oura {
 
     /**
      * Retrieves enhanced tags for a specified date range.
+     * The Enhanced Tags data scope includes tags that Oura users enter within the Oura mobile app.
+     * Enhanced Tags can be added for any lifestyle choice, habit, mood change, or environmental
+     * factor an Oura user wants to monitor the effects of. Enhanced Tags also contain context on
+     * a tag's start and end time, whether a tag repeats daily, and comments.
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').

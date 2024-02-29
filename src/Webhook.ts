@@ -8,6 +8,9 @@
 import { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
 import { APIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
 
+/**
+ * Base class for the Oura Webhook Subscription API
+ */
 class Webhook {
     #clientId: string;
     #clientSecret: string;
@@ -85,7 +88,14 @@ class Webhook {
             } catch (_err) {
                 detail = "No details";
             }
-            throw new APIError("Problem with request.", response.status, response.statusText, detail);
+            throw new APIError(
+                "Problem with request.",
+                response.status,
+                response.statusText,
+                detail,
+                this.#baseUrlv2 + encodeURI(url),
+                method,
+            );
         }
     };
 
