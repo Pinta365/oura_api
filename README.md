@@ -9,9 +9,9 @@ The library is also available for Node.js via a [NPM package](https://www.npmjs.
 ## Example usage
 
 ### Deno
-
+Change the import URL to include the latest version number. Example: ```https://deno.land/x/oura_api@0.4.0/mod.ts```
 ```javascript
-import { Oura, DateFormat } from "https://deno.land/x/oura_api@0.4.0/mod.ts";
+import { Oura, DateFormat } from "https://deno.land/x/oura_api/mod.ts";
 
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
