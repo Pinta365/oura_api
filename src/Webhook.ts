@@ -10,6 +10,7 @@ import { APIError, MissingClientIdError, MissingClientSecretError } from "./util
 
 /**
  * Base class for the Oura Webhook Subscription API
+ * Class containing all the methods to access the Oura Webhook Subscription API with a client id and client secret.
  */
 class Webhook {
     #clientId: string;

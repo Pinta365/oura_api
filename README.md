@@ -43,29 +43,14 @@ Library and method documentation can be found at the [Deno Land documentation](h
 
 ### Included data scopes for v2 of the API.
 
-| Endpoint/Scope                                                            | Status      |
-| :------------------------------------------------------------------------ | :---------- |
-| **[Oura Base](https://deno.land/x/oura_api/mod.ts?s=Oura)**               |             |
-| Daily Activity                                                            | Implemented |
-| Daily Readiness                                                           | Implemented |
-| Daily Sleep                                                               | Implemented |
-| Daily Spo2                                                                | Implemented |
-| Enhanced Tag                                                              | Implemented |
-| Heart Rate                                                                | Implemented |
-| Personal Info                                                             | Implemented |
-| Rest Mode Period                                                          | Implemented |
-| Ring Configuration                                                        | Implemented |
-| Session                                                                   | Implemented |
-| Sleep                                                                     | Implemented |
-| Sleep Time                                                                | Implemented |
-| Tag                                                                       | DEPRICATED  |
-| Workout                                                                   | Implemented |
-| **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** |             |
-| List subscription                                                         | Implemented |
-| Create subscription                                                       | Implemented |
-| Update subscription                                                       | Implemented |
-| Delete subscription                                                       | Implemented |
-| Renew subscription                                                        | Implemented |
+| Endpoint/Scope | Status | | :------------------------------------------------------------------------ | :---------- |"
+| **[Oura Base](https://deno.land/x/oura_api/mod.ts?s=Oura)** | | | Daily Activity | Implemented | | Daily Readiness |
+Implemented | | Daily Sleep | Implemented | | Daily Spo2 | Implemented | | Daily Stress | Implemented | | Enhanced Tag |
+Implemented | | Heart Rate | Implemented | | Personal Info | Implemented | | Rest Mode Period | Implemented | | Ring
+Configuration | Implemented | | Session | Implemented | | Sleep | Implemented | | Sleep Time | Implemented | | Tag |
+DEPRICATED | | Workout | Implemented | | **[Webhook Subscription](https://deno.land/x/oura_api/mod.ts?s=Webhook)** | | |
+List subscription | Implemented | | Create subscription | Implemented | | Update subscription | Implemented | | Delete
+subscription | Implemented | | Renew subscription | Implemented |
 
 ### Additional info concerning the webhook API
 

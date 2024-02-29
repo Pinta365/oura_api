@@ -615,3 +615,29 @@ export interface EnhancedTagDocuments {
     /** Next Token */
     next_token: string | null;
 }
+
+/**
+ * Represents daily strees summary
+ */
+export interface DailyStress {
+    /** Unique identifier */
+    id: string;
+    /** Day that the daily stress belongs to */
+    day: string;
+    /** Time spent in a high stress zone (top quartile of data) */
+    stress_high: number;
+    /** Time spend in a high recovery zone (bottom quartile data) */
+    recovery_high: number;
+    /** Stress summary of full day */
+    day_summary: string;
+}
+
+/**
+ * Represents a response object containing multiple daily strees summaries.
+ */
+export interface DailyStressDocuments {
+    /** Array of Workout documents */
+    data: Workout[];
+    /** Next Token */
+    next_token: string | null;
+}

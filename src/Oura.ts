@@ -16,6 +16,8 @@ import {
     DailySleepDocuments,
     DailySpo2,
     DailySpo2Documents,
+    DailyStress,
+    DailyStressDocuments,
     DateFormat,
     EnhancedTag,
     EnhancedTagDocuments,
@@ -39,6 +41,7 @@ import { APIError, isValidDate, MissingTokenError, ValidationError } from "./uti
 
 /**
  * Base class for the Oura API.
+ * Class containing all the methods to access the Oura API with an access token.
  */
 class Oura {
     #accessToken: string;
@@ -203,6 +206,28 @@ class Oura {
      */
     getDailySpo2(documentId: string): Promise<DailySpo2> {
         return this.#get("daily_spo2/" + documentId) as Promise<DailySpo2>;
+    }
+
+    /**
+     * Retrieves daily stress summary for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailyStressDocuments>} A DailyStressDocuments typed object.
+     */
+    getDailyStressDocuments(startDate: DateFormat, endDate: DateFormat): Promise<DailyStressDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("daily_stress", params) as Promise<DailyStressDocuments>;
+    }
+
+    /**
+     * Retrieves a single daily stress summary document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailyStress>} A DailyStress typed object.
+     */
+    getDailyStress(documentId: string): Promise<DailyStress> {
+        return this.#get("daily_stress/" + documentId) as Promise<DailyStress>;
     }
 
     /**
