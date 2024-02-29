@@ -83,8 +83,11 @@ class Webhook {
             }
         } else {
             let detail = "";
+            interface errorData {
+                detail?: string;
+            }
             try {
-                const errorData = await response.json();
+                const errorData: errorData = await response.json() as errorData;
                 detail = errorData.detail || "";
             } catch (_err) {
                 detail = "No details";

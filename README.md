@@ -9,7 +9,9 @@ The library is also available for Node.js via a [NPM package](https://www.npmjs.
 ## Example usage
 
 ### Deno
-Change the import URL to include the latest version number. Example: ```https://deno.land/x/oura_api@0.4.0/mod.ts```
+
+Change the import URL to include the latest version number. Example: `https://deno.land/x/oura_api@0.4.0/mod.ts`
+
 ```javascript
 import { Oura, DateFormat } from "https://deno.land/x/oura_api/mod.ts";
 
@@ -31,10 +33,33 @@ try {
 
 ### Node.js
 
-Install package. Example in progress.
-
+Install package.
 ```
 npm install oura_api --save
+```
+Code example.
+```javascript
+
+const Api = require('oura_api');
+// Replace 'YOUR_ACCESS_TOKEN' with your actual access token
+const accessToken = "YOUR_ACCESS_TOKEN";
+const ouraClient = new Api.Oura(accessToken);
+
+const startDate = "2023-01-01";
+const endDate = "2023-01-10";
+
+
+const example = async () => {
+    try {
+        const dailyActivityData = await ouraClient.getDailyActivityDocuments(startDate, endDate);
+      
+        console.log(`Daily Activity Data: ${JSON.stringify(dailyActivityData, null, 4)}`);
+      } catch (error) {
+        console.error(`Error fetching daily activity data: ${error}`);
+      }
+  };
+  
+  example();
 ```
 
 ## Documentaion

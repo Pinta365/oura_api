@@ -94,8 +94,11 @@ class Oura {
             return await response.json();
         } else {
             let detail = "";
+            interface errorData {
+                detail?: string;
+            }
             try {
-                const errorData = await response.json();
+                const errorData: errorData = await response.json() as errorData;
                 console.log(errorData);
                 detail = errorData.detail || "";
             } catch (_err) {
