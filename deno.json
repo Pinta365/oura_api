@@ -1,12 +1,7 @@
 {
-    "name": "@pinta365/oura-api",
-    "version": "0.5.3",
-    "exports": "./mod.ts",
-    "exclude": [
-        "npm"
-    ],
     "tasks": {
-        "build_npm": "deno run -A scripts/build_npm.ts"
+        "build_npm": "deno run -A scripts/build_npm.ts",
+        "publish_jsr": "deno publish --config jsr.json"
     },
     "lint": {
         "include": ["src"]

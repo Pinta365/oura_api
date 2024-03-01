@@ -9,7 +9,6 @@ await build({
     //scriptModule: false,
     test: false,
     shims: {
-        undici: true,
         deno: "dev",
     },
     package: {

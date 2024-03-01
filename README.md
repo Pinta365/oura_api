@@ -1,19 +1,48 @@
 # OURA_API
 
-[Deno](https://deno.land/x/oura_api) library to interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs).
+Library to interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs).
 
-The library is also available for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api).
+Available for **Deno** and **Bun** through [JSR Package](https://jsr.io/@pinta365/oura-api) and for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api).
+Deno users can also use the [deno.land/x package](https://deno.land/x/oura_api).
 
 ---
 
 ## Example usage
 
-### Deno
+### Deno and Bun
 
-Change the import URL to include the latest version number. Example: `https://deno.land/x/oura_api@0.4.0/mod.ts`
+**Deno install notes**
+
+Through JSR and imports map
+```
+deno add @pinta365/oura-api
+
+import { Oura } from "@pinta365/oura-api";
+```
+Or directly from deno.land/x
+```
+import { Oura } from "https://deno.land/x/oura_api/mod.ts";
+```
+
+> [!NOTE]
+>If you're importing the package from deno.land/x the example code will use the latest version but you should always change import URL
+>to include a specific version number. Example: https://deno.land/x/oura_api@0.4.0/mod.ts
+
+---
+
+**Bun Install notes**
+```
+bunx jsr add @pinta365/oura-api
+
+import { Oura } from "@pinta365/oura-api";
+```
 
 ```javascript
+//from deno.land/x (Deno)
 import { Oura, DateFormat } from "https://deno.land/x/oura_api/mod.ts";
+//or from JSR (Deno and Bun)
+//import { Oura, DateFormat } from "@pinta365/oura-api";
+
 
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
@@ -36,6 +65,8 @@ try {
 Install package.
 ```
 npm install oura_api --save
+
+const Api = require('oura_api');
 ```
 Code example.
 ```javascript
