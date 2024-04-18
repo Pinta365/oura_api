@@ -1,18 +1,13 @@
-# .github/workflows/publish-jsr.yml
-
-name: Publish to JSR
-
+# .github/workflows/publish.yml
+name: Publish to jsr.io
 on:
-  create:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [released]
+  workflow_dispatch:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write 
-    steps:
-      - uses: actions/checkout@v4
-      - run: npx jsr publish --config jsr.json
+      id-token: write
+    uses: cross-org/workflows/.github/workflows/jsr-publish.yml@main
