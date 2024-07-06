@@ -5,7 +5,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import {
+import type {
     DailyActivity,
     DailyActivityDocuments,
     DailyReadiness,
@@ -99,7 +99,6 @@ class Oura {
             }
             try {
                 const errorData: errorData = await response.json() as errorData;
-                console.log(errorData);
                 detail = errorData.detail || "";
             } catch (_err) {
                 detail = "No details";
@@ -432,7 +431,7 @@ class Oura {
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
-     * @returns {Promise<TagDocuments>} A TagDocuments typed object.
+     * @returns {Promise<EnhancedTagDocuments>} A EnhancedTagDocuments typed object.
      */
     getEnhancedTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<EnhancedTagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
@@ -443,7 +442,7 @@ class Oura {
      * Retrieves a single enhanced tags document by its ID.
      *
      * @param {string} documentId - The document ID in string format.
-     * @returns {Promise<Tag>} A Tag typed object.
+     * @returns {Promise<EnhancedTag>} A EnhancedTag typed object.
      */
     getEnhancedTag(documentId: string): Promise<EnhancedTag> {
         return this.#get("enhanced_tag/" + documentId) as Promise<EnhancedTag>;

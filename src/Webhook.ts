@@ -5,7 +5,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
+import type { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
 import { APIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
 
 /**
