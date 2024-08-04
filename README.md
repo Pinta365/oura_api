@@ -101,7 +101,7 @@ Library documentation can be found at the [JSR documentation](https://jsr.io/@pi
 | Session                                                                     | Implemented |
 | Sleep                                                                       | Implemented |
 | Sleep Time                                                                  | Implemented |
-| Tag                                                                         | DEPRICATED  |
+| Tag                                                                         | DEPRECATED  |
 | Workout                                                                     | Implemented |
 | **[Webhook Subscription](https://jsr.io/@pinta365/oura-api/doc/~/Webhook)** |             |
 | List subscription                                                           | Implemented |
