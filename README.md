@@ -28,9 +28,18 @@ npx jsr add @pinta365/oura-api
 ```javascript
 import { Oura, DateFormat } from "@pinta365/oura-api";
 
+// Option 1 - Instantiate with a token in string format.
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
 const ouraClient = new Oura(accessToken);
+
+// Option 2 - Instantiate with a options object.
+// If useSandbox is set to true the accessToken will not be used. This is also the only way to opt into the sandbox environment. See more details about the sandbox further down.
+const options = {
+  accessToken: "YOUR_ACCESS_TOKEN",
+  useSandbox: false,  // Set to true for the sandbox environment
+};
+const ouraClient = new Oura(options);
 
 const startDate: DateFormat = "2023-01-01";
 const endDate: DateFormat = "2023-01-10";
@@ -58,9 +67,19 @@ Code example.
 
 ```javascript
 const Api = require("oura_api");
+
+// Option 1 - Instantiate with a token in string format.
 // Replace 'YOUR_ACCESS_TOKEN' with your actual access token
 const accessToken = "YOUR_ACCESS_TOKEN";
 const ouraClient = new Api.Oura(accessToken);
+
+// Option 2 - Instantiate with a options object.
+// If useSandbox is set to true the accessToken will not be used. This is also the only way to opt into the sandbox environment. See more details about the sandbox further down.
+const options = {
+    accessToken: "YOUR_ACCESS_TOKEN",
+    useSandbox: false, // Set to true for the sandbox environment
+};
+const ouraClient = new Api.Oura(options);
 
 const startDate = "2023-01-01";
 const endDate = "2023-01-10";
@@ -110,7 +129,25 @@ Library documentation can be found at the [JSR documentation](https://jsr.io/@pi
 | Delete subscription                                                         | Implemented |
 | Renew subscription                                                          | Implemented |
 
-### Additional info concerning the webhook API
+## Using the Sandbox Environment (For Testing)
+
+The Oura API provides a sandbox environment ([Sandbox docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) for
+testing your application with fake user data that you can access without an Oura account. To use the sandbox, follow
+these steps:
+
+1. **Create a Sandbox Client:** Opt in for the sandbox endpoints by using the optional useSandbox option when you
+   instantiate the Oura class.
+   ```javascript
+   const ouraSandboxClient = new Oura({ useSandbox: true });
+   ```
+2. **Make API Calls:** Use the `ouraSandboxClient` object to make API calls, just like you would with the regular
+   client.\
+   The API will automatically route your requests to the sandbox environment.
+   ```javascript
+   const dailyActivityData = await ouraSandboxClient.getDailyActivityDocuments(startDate, endDate);
+   ```
+
+## Additional info concerning the webhook API
 
 According to the API docs the webhooks enable you to receive near real-time Oura data updates and are the preferred way
 to receive the latest data from the Oura API.

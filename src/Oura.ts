@@ -42,6 +42,19 @@ export * from "./types/oura.ts";
 import { APIError, isValidDate, MissingTokenError, ValidationError } from "./utils.ts";
 
 /**
+ * Options for configuring the Oura API client.
+ */
+interface ApiOptions {
+    /** A personal access token generated at the Oura Cloud website. */
+    accessToken?: string;
+    /**
+     * Set to `true` to use the Oura sandbox environment. accessToken will be ignored.
+     * The sandbox provides a simulated environment for testing your API integration.
+     */
+    useSandbox?: boolean;
+}
+
+/**
  * Base class for the Oura API.
  * Class containing all the methods to access the Oura API with an access token.
  */
@@ -53,15 +66,29 @@ class Oura {
      * Creates a new Oura API client.
      *
      * @constructor
-     * @param {string} accessToken - A personal access token generated at the Oura Cloud website.
-     * @throws {Error} Throws an MissingTokenError-error if the access token is missing.
+     * @param {string | ApiOptions} accessTokenOrOptions - Either a personal access token (string) generated at the Oura Cloud website, or an options object containing the configuration settings.
+     * @throws {Error} Throws a MissingTokenError error if the access token is missing.
      */
-    constructor(accessToken: string) {
-        if (!accessToken) {
+    constructor(accessTokenOrOptions: string | ApiOptions) {
+        let options: ApiOptions = {};
+
+        if (typeof accessTokenOrOptions === "string") {
+            options = { accessToken: accessTokenOrOptions };
+        } else {
+            options = accessTokenOrOptions;
+        }
+
+        if (!options.accessToken && !options.useSandbox) {
             throw new MissingTokenError();
         }
-        this.#accessToken = accessToken;
-        this.#baseUrlv2 = "https://api.ouraring.com/v2/usercollection/";
+
+        if (options.useSandbox) {
+            this.#accessToken = "";
+            this.#baseUrlv2 = "https://api.ouraring.com/v2/sandbox/usercollection/";
+        } else {
+            this.#accessToken = options.accessToken!;
+            this.#baseUrlv2 = "https://api.ouraring.com/v2/usercollection/";
+        }
     }
 
     /**
@@ -84,7 +111,7 @@ class Oura {
         }
 
         const params = new URLSearchParams(qs);
-
+        
         const response = await fetch(this.#baseUrlv2 + encodeURI(url) + (qs ? "?" + params.toString() : ""), {
             method: "GET",
             headers: {
