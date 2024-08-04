@@ -10,6 +10,8 @@ import type {
     DailyActivityDocuments,
     DailyReadiness,
     DailyReadinessDocuments,
+    DailyResilience,
+    DailyResilienceDocuments,
     DailySession,
     DailySessionDocuments,
     DailySleep,
@@ -162,6 +164,31 @@ class Oura {
      */
     getDailyReadiness(documentId: string): Promise<DailyReadiness> {
         return this.#get("daily_readiness/" + documentId) as Promise<DailyReadiness>;
+    }
+
+    /**
+     * Retrieves daily resilience documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @returns {Promise<DailyResilienceDocuments>} A DailyResilienceDocuments typed object.
+     */
+    getDailyResilienceDocuments(
+        startDate: DateFormat,
+        endDate: DateFormat,
+    ): Promise<DailyResilienceDocuments> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.#get("daily_resilience", params) as Promise<DailyResilienceDocuments>;
+    }
+
+    /**
+     * Retrieves a single resilience document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @returns {Promise<DailyResilience>} A DailyResilience typed object.
+     */
+    getDailyResilience(documentId: string): Promise<DailyResilience> {
+        return this.#get("daily_resilience/" + documentId) as Promise<DailyResilience>;
     }
 
     /**

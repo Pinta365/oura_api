@@ -178,6 +178,34 @@ export interface DailyReadinessDocuments {
 }
 
 /**
+ * Represents daily resilience metrics provided by the Oura ring.
+ */
+export interface DailyResilience {
+    /** Unique identifier */
+    id: string;
+    /** Day that the daily resilience belongs to */
+    day: string;
+    /** Object defining resilience score contributors */
+    contributors: {
+        sleep_recovery: number;
+        daytime_recovery: number;
+        stress: number;
+    };
+    /** level of resilience */
+    level: string;
+}
+
+/**
+ * Represents a response object containing multiple DailyResilience records.
+ */
+export interface DailyResilienceDocuments {
+    /** Array of DailyResilience documents */
+    data: DailyResilience[];
+    /** Next Token */
+    next_token: string | null;
+}
+
+/**
  * Holds detailed sleep metrics tracked by the Oura ring.
  */
 export interface DailySleep {

@@ -89,6 +89,7 @@ Library documentation can be found at the [JSR documentation](https://jsr.io/@pi
 | **[Oura Base](https://jsr.io/@pinta365/oura-api/doc/~/Oura)**               |             |
 | Daily Activity                                                              | Implemented |
 | Daily Readiness                                                             | Implemented |
+| Daily Resilience                                                            | Implemented |
 | Daily Sleep                                                                 | Implemented |
 | Daily Spo2                                                                  | Implemented |
 | Daily Stress                                                                | Implemented |
