@@ -271,7 +271,7 @@ export interface DailySpo2Documents {
     next_token: string | null;
 }
 
-/** Enumeration of Heart Rate sources */
+/** Union of Heart Rate sources */
 export type HeartRateSource =
     | "awake"
     | "rest"
@@ -335,13 +335,24 @@ export interface RestModePeriodDocuments {
     next_token: string | null;
 }
 
-/** Enumeration of ring colour */
-export type RingColor = "glossy_black" | "stealth_black" | "rose" | "silver" | "glossy_gold" | "titanium" | "gucci";
+/** Union of possible ring colour */
+export type RingColor =
+    | "brushed_silver"
+    | "glossy_black"
+    | "glossy_gold"
+    | "glossy_white"
+    | "gucci"
+    | "matt_gold"
+    | "rose"
+    | "silver"
+    | "stealth_black"
+    | "titanium"
+    | "titanium_and_gold";
 
-/** Enumeration of ring design */
+/** Union of possible of ring designs */
 export type RingDesign = "heritage" | "horizon" | "balance" | "balance_diamond";
 
-/** Enumeration of ring hardware generation */
+/** Union of possible of ring hardware generations */
 export type RingHardwareType = "gen1" | "gen2" | "gen2m" | "gen3";
 
 /**
