@@ -96,7 +96,24 @@ const example = async () => {
 
 example();
 ```
+## Using the Sandbox Environment (For Testing)
 
+The Oura API provides a sandbox environment ([Sandbox docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) for
+testing your application with fake user data that you can access without an Oura account. To use the sandbox, follow
+these steps:
+
+1. **Create a Sandbox Client:** Opt in for the sandbox endpoints by using the optional useSandbox option when you
+   instantiate the Oura class.
+   ```javascript
+   const ouraSandboxClient = new Oura({ useSandbox: true });
+   ```
+2. **Make API Calls:** Use the `ouraSandboxClient` object to make API calls, just like you would with the regular
+   client.\
+   The API will automatically route your requests to the sandbox environment.
+   ```javascript
+   const dailyActivityData = await ouraSandboxClient.getDailyActivityDocuments(startDate, endDate);
+   ```
+   
 ## Documentaion
 
 Library documentation can be found at the [JSR documentation](https://jsr.io/@pinta365/oura-api/doc) page.
@@ -128,24 +145,6 @@ Library documentation can be found at the [JSR documentation](https://jsr.io/@pi
 | Update subscription                                                         | Implemented |
 | Delete subscription                                                         | Implemented |
 | Renew subscription                                                          | Implemented |
-
-## Using the Sandbox Environment (For Testing)
-
-The Oura API provides a sandbox environment ([Sandbox docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) for
-testing your application with fake user data that you can access without an Oura account. To use the sandbox, follow
-these steps:
-
-1. **Create a Sandbox Client:** Opt in for the sandbox endpoints by using the optional useSandbox option when you
-   instantiate the Oura class.
-   ```javascript
-   const ouraSandboxClient = new Oura({ useSandbox: true });
-   ```
-2. **Make API Calls:** Use the `ouraSandboxClient` object to make API calls, just like you would with the regular
-   client.\
-   The API will automatically route your requests to the sandbox environment.
-   ```javascript
-   const dailyActivityData = await ouraSandboxClient.getDailyActivityDocuments(startDate, endDate);
-   ```
 
 ## Additional info concerning the webhook API
 
