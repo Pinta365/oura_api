@@ -111,7 +111,7 @@ class Oura {
         }
 
         const params = new URLSearchParams(qs);
-        
+
         const response = await fetch(this.#baseUrlv2 + encodeURI(url) + (qs ? "?" + params.toString() : ""), {
             method: "GET",
             headers: {
@@ -144,6 +144,29 @@ class Oura {
     };
 
     /**
+     * Private generic method to fetch data from Oura API with pagination support.
+     *
+     * @private
+     * @param {string} endpoint - The API endpoint URL.
+     * @param {Record<string, string>} [initialParams] - Initial query parameters.
+     * @returns {Promise<unknown[]>} A promise that resolves with an array containing all fetched data.
+     */
+    async #getAll(endpoint: string, initialParams?: Record<string, string>): Promise<unknown[]> {
+        let allData: unknown[] = [];
+        let nextToken: string | null = null;
+        let params: Record<string, string> | undefined = initialParams;
+
+        do {
+            const response = await this.#get(endpoint, params);
+            allData = allData.concat(response.data);
+            nextToken = response.next_token;
+            params = nextToken ? { next_token: nextToken } : undefined;
+        } while (nextToken);
+
+        return allData;
+    }
+
+    /**
      * Retrieves daily activity documents for a specified date range.
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
@@ -155,7 +178,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<DailyActivityDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_activity", params) as Promise<DailyActivityDocuments>;
+        return this.#getAll("daily_activity", params) as unknown as Promise<DailyActivityDocuments>;
     }
 
     /**
@@ -165,7 +188,7 @@ class Oura {
      * @returns {Promise<DailyActivity>} A DailyActivity typed object.
      */
     getDailyActivity(documentId: string): Promise<DailyActivity> {
-        return this.#get("daily_activity/" + documentId) as Promise<DailyActivity>;
+        return this.#getAll("daily_activity/" + documentId) as unknown as Promise<DailyActivity>;
     }
 
     /**
@@ -180,7 +203,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<DailyReadinessDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_readiness", params) as Promise<DailyReadinessDocuments>;
+        return this.#getAll("daily_readiness", params) as unknown as Promise<DailyReadinessDocuments>;
     }
 
     /**
@@ -190,7 +213,7 @@ class Oura {
      * @returns {Promise<DailyReadiness>} A DailyReadiness typed object.
      */
     getDailyReadiness(documentId: string): Promise<DailyReadiness> {
-        return this.#get("daily_readiness/" + documentId) as Promise<DailyReadiness>;
+        return this.#getAll("daily_readiness/" + documentId) as unknown as Promise<DailyReadiness>;
     }
 
     /**
@@ -205,7 +228,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<DailyResilienceDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_resilience", params) as Promise<DailyResilienceDocuments>;
+        return this.#getAll("daily_resilience", params) as unknown as Promise<DailyResilienceDocuments>;
     }
 
     /**
@@ -215,7 +238,7 @@ class Oura {
      * @returns {Promise<DailyResilience>} A DailyResilience typed object.
      */
     getDailyResilience(documentId: string): Promise<DailyResilience> {
-        return this.#get("daily_resilience/" + documentId) as Promise<DailyResilience>;
+        return this.#getAll("daily_resilience/" + documentId) as unknown as Promise<DailyResilience>;
     }
 
     /**
@@ -227,7 +250,7 @@ class Oura {
      */
     getDailySleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<DailySleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_sleep", params) as Promise<DailySleepDocuments>;
+        return this.#getAll("daily_sleep", params) as unknown as Promise<DailySleepDocuments>;
     }
 
     /**
@@ -237,7 +260,7 @@ class Oura {
      * @returns {Promise<DailySleep>} A DailySleep typed object.
      */
     getDailySleep(documentId: string): Promise<DailySleep> {
-        return this.#get("daily_sleep/" + documentId) as Promise<DailySleep>;
+        return this.#getAll("daily_sleep/" + documentId) as unknown as Promise<DailySleep>;
     }
 
     /**
@@ -250,7 +273,7 @@ class Oura {
      */
     getDailySpo2Documents(startDate: DateFormat, endDate: DateFormat): Promise<DailySpo2Documents> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_spo2", params) as Promise<DailySpo2Documents>;
+        return this.#getAll("daily_spo2", params) as unknown as Promise<DailySpo2Documents>;
     }
 
     /**
@@ -261,7 +284,7 @@ class Oura {
      * @returns {Promise<DailySpo2>} A DailySpo2 typed object.
      */
     getDailySpo2(documentId: string): Promise<DailySpo2> {
-        return this.#get("daily_spo2/" + documentId) as Promise<DailySpo2>;
+        return this.#getAll("daily_spo2/" + documentId) as unknown as Promise<DailySpo2>;
     }
 
     /**
@@ -273,7 +296,7 @@ class Oura {
      */
     getDailyStressDocuments(startDate: DateFormat, endDate: DateFormat): Promise<DailyStressDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("daily_stress", params) as Promise<DailyStressDocuments>;
+        return this.#getAll("daily_stress", params) as unknown as Promise<DailyStressDocuments>;
     }
 
     /**
@@ -283,7 +306,7 @@ class Oura {
      * @returns {Promise<DailyStress>} A DailyStress typed object.
      */
     getDailyStress(documentId: string): Promise<DailyStress> {
-        return this.#get("daily_stress/" + documentId) as Promise<DailyStress>;
+        return this.#getAll("daily_stress/" + documentId) as unknown as Promise<DailyStress>;
     }
 
     /**
@@ -295,7 +318,7 @@ class Oura {
      */
     getHeartrate(startDateTime: string, endDateTime: string): Promise<Heartrate> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
-        return this.#get("heartrate", params) as Promise<Heartrate>;
+        return this.#getAll("heartrate", params) as unknown as Promise<Heartrate>;
     }
 
     /**
@@ -304,7 +327,7 @@ class Oura {
      * @returns {Promise<PersonalInfo>} A PersonalInfo typed object.
      */
     getPersonalInfo(): Promise<PersonalInfo> {
-        return this.#get("personal_info") as Promise<PersonalInfo>;
+        return this.#getAll("personal_info") as unknown as Promise<PersonalInfo>;
     }
 
     /**
@@ -319,7 +342,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<RestModePeriodDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("rest_mode_period", params) as Promise<RestModePeriodDocuments>;
+        return this.#getAll("rest_mode_period", params) as unknown as Promise<RestModePeriodDocuments>;
     }
 
     /**
@@ -329,7 +352,7 @@ class Oura {
      * @returns {Promise<RestModePeriod>} A RestModePeriod typed object.
      */
     getRestModePeriod(documentId: string): Promise<RestModePeriod> {
-        return this.#get("rest_mode_period/" + documentId) as Promise<RestModePeriod>;
+        return this.#getAll("rest_mode_period/" + documentId) as unknown as Promise<RestModePeriod>;
     }
 
     /**
@@ -344,7 +367,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<RingConfigurationDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("ring_configuration", params) as Promise<RingConfigurationDocuments>;
+        return this.#getAll("ring_configuration", params) as unknown as Promise<RingConfigurationDocuments>;
     }
 
     /**
@@ -354,7 +377,7 @@ class Oura {
      * @returns {Promise<RingConfiguration>} A RingConfiguration typed object.
      */
     getRingConfiguration(documentId: string): Promise<RingConfiguration> {
-        return this.#get("ring_configuration/" + documentId) as Promise<RingConfiguration>;
+        return this.#getAll("ring_configuration/" + documentId) as unknown as Promise<RingConfiguration>;
     }
 
     /**
@@ -369,7 +392,7 @@ class Oura {
         endDate: DateFormat,
     ): Promise<DailySessionDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("session", params) as Promise<DailySessionDocuments>;
+        return this.#getAll("session", params) as unknown as Promise<DailySessionDocuments>;
     }
 
     /**
@@ -379,7 +402,7 @@ class Oura {
      * @returns {Promise<DailySession>} A DailySession typed object.
      */
     getDailySession(documentId: string): Promise<DailySession> {
-        return this.#get("session/" + documentId) as Promise<DailySession>;
+        return this.#getAll("session/" + documentId) as unknown as Promise<DailySession>;
     }
 
     /**
@@ -391,7 +414,7 @@ class Oura {
      */
     getSleepDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("sleep", params) as Promise<SleepDocuments>;
+        return this.#getAll("sleep", params) as unknown as Promise<SleepDocuments>;
     }
 
     /**
@@ -401,7 +424,7 @@ class Oura {
      * @returns {Promise<Sleep>} A Sleep typed object.
      */
     getSleep(documentId: string): Promise<Sleep> {
-        return this.#get("sleep/" + documentId) as Promise<Sleep>;
+        return this.#getAll("sleep/" + documentId) as unknown as Promise<Sleep>;
     }
 
     /**
@@ -413,7 +436,7 @@ class Oura {
      */
     getSleepTimeDocuments(startDate: DateFormat, endDate: DateFormat): Promise<SleepTimeDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("sleep_time", params) as Promise<SleepTimeDocuments>;
+        return this.#getAll("sleep_time", params) as unknown as Promise<SleepTimeDocuments>;
     }
 
     /**
@@ -423,7 +446,7 @@ class Oura {
      * @returns {Promise<SleepTime>} A SleepTime typed object.
      */
     getSleepTime(documentId: string): Promise<SleepTime> {
-        return this.#get("sleep_time/" + documentId) as Promise<SleepTime>;
+        return this.#getAll("sleep_time/" + documentId) as unknown as Promise<SleepTime>;
     }
 
     /**
@@ -438,7 +461,7 @@ class Oura {
     getTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<TagDocuments> {
         console.log("Tag is deprecated. We recommend transitioning to Enhanced Tag.");
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("tag", params) as Promise<TagDocuments>;
+        return this.#getAll("tag", params) as unknown as Promise<TagDocuments>;
     }
 
     /**
@@ -451,7 +474,7 @@ class Oura {
      */
     getTag(documentId: string): Promise<Tag> {
         console.log("Tag is deprecated. We recommend transitioning to Enhanced Tag.");
-        return this.#get("tag/" + documentId) as Promise<Tag>;
+        return this.#getAll("tag/" + documentId) as unknown as Promise<Tag>;
     }
 
     /**
@@ -463,7 +486,7 @@ class Oura {
      */
     getWorkoutDocuments(startDate: DateFormat, endDate: DateFormat): Promise<WorkoutDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("workout", params) as Promise<WorkoutDocuments>;
+        return this.#getAll("workout", params) as unknown as Promise<WorkoutDocuments>;
     }
 
     /**
@@ -473,7 +496,7 @@ class Oura {
      * @returns {Promise<Workout>} A Workout typed object.
      */
     getWorkout(documentId: string): Promise<Workout> {
-        return this.#get("workout/" + documentId) as Promise<Workout>;
+        return this.#getAll("workout/" + documentId) as unknown as Promise<Workout>;
     }
 
     /**
@@ -489,7 +512,7 @@ class Oura {
      */
     getEnhancedTagDocuments(startDate: DateFormat, endDate: DateFormat): Promise<EnhancedTagDocuments> {
         const params = { start_date: startDate, end_date: endDate };
-        return this.#get("enhanced_tag", params) as Promise<EnhancedTagDocuments>;
+        return this.#getAll("enhanced_tag", params) as unknown as Promise<EnhancedTagDocuments>;
     }
 
     /**
@@ -499,7 +522,7 @@ class Oura {
      * @returns {Promise<EnhancedTag>} A EnhancedTag typed object.
      */
     getEnhancedTag(documentId: string): Promise<EnhancedTag> {
-        return this.#get("enhanced_tag/" + documentId) as Promise<EnhancedTag>;
+        return this.#getAll("enhanced_tag/" + documentId) as unknown as Promise<EnhancedTag>;
     }
 }
 
