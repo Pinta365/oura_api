@@ -15,7 +15,8 @@ await build({
         // package.json properties
         name: "oura_api",
         version: Deno.args[0],
-        description: "ŌURA Cloud API. Interact with v2 of the Oura API. Includes support for the Webhook subscriptions.",
+        description:
+            "ŌURA Cloud API. Interact with v2 of the Oura API. Includes support for the Webhook subscriptions.",
         license: "MIT",
         author: "Pinta <https://github.com/Pinta365>",
         keywords: ["oura", "health data", "sleep", "activity", "readiness", "resilience", "api"],

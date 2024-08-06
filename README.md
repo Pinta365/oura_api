@@ -96,6 +96,7 @@ const example = async () => {
 
 example();
 ```
+
 ## Using the Sandbox Environment (For Testing)
 
 The Oura API provides a sandbox environment ([Sandbox docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) for
@@ -113,7 +114,7 @@ these steps:
    ```javascript
    const dailyActivityData = await ouraSandboxClient.getDailyActivityDocuments(startDate, endDate);
    ```
-   
+
 ## Documentaion
 
 Library documentation can be found at the [JSR documentation](https://jsr.io/@pinta365/oura-api/doc) page.
