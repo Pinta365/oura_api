@@ -23,6 +23,7 @@ import type {
     Sleep,
     SleepTime,
     Tag,
+    VO2Max,
     Workout,
 } from "./types/oura.ts";
 export * from "./types/oura.ts";
@@ -581,6 +582,34 @@ class OuraBase {
             "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
         );
         return this.fetchData("tag/" + documentId, undefined, accessToken) as unknown as Promise<Tag>;
+    }
+
+    /**
+     * Retrieves VO2Max documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<VO2Max[]>} A array of VO2Max objects.
+     */
+    getVO2MaxDocuments(
+        startDate: DateFormat,
+        endDate: DateFormat,
+        accessToken?: string,
+    ): Promise<VO2Max[]> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.fetchData("vO2_max", params, accessToken) as unknown as Promise<VO2Max[]>;
+    }
+
+    /**
+     * Retrieves a single VO2Max document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<VO2Max>} A VO2Max typed object.
+     */
+    getVO2Max(documentId: string, accessToken?: string): Promise<VO2Max> {
+        return this.fetchData("vO2_max/" + documentId, undefined, accessToken) as unknown as Promise<VO2Max>;
     }
 
     /**

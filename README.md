@@ -111,6 +111,7 @@ app.get("/callback", async (c) => {
 | :------------------------------------------------------------------------------- | :---------- |
 | **[Oura Base docs](https://jsr.io/@pinta365/oura-api/doc/~/Oura)**               |             |
 | Daily Activity                                                                   | Implemented |
+| Daily Cardiovascular Age                                                         | Implemented |
 | Daily Readiness                                                                  | Implemented |
 | Daily Resilience                                                                 | Implemented |
 | Daily Sleep                                                                      | Implemented |
@@ -125,6 +126,7 @@ app.get("/callback", async (c) => {
 | Sleep                                                                            | Implemented |
 | Sleep Time                                                                       | Implemented |
 | Tag                                                                              | DEPRECATED  |
+| Vo2 Max                                                                          | Implemented |
 | Workout                                                                          | Implemented |
 | **[Webhook Subscription docs](https://jsr.io/@pinta365/oura-api/doc/~/Webhook)** |             |
 | List subscription                                                                | Implemented |

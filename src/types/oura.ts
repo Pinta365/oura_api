@@ -540,3 +540,18 @@ export interface DailyCardiovascularAge {
     /** Predicted vascular age in range [18, 100]. */
     vascular_age: number | null;
 }
+
+/**
+ * Represents a VO2 Max measurement
+ * VO2 Max is a measure of the maximum volume of oxygen that an individual can use during intense exercise.
+ */
+export interface VO2Max {
+    /** Unique identifier */
+    id: string;
+    /** Day that the VO2 Max belongs to */
+    day: string;
+    /** Timestamp that the note belongs to. */
+    timestamp: string;
+    /** VO2 Max  */
+    vo2_max: number | null;
+}
