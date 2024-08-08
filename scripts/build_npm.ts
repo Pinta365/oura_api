@@ -16,10 +16,10 @@ await build({
         name: "oura_api",
         version: Deno.args[0],
         description:
-            "ŌURA Cloud API. Interact with v2 of the Oura API. Includes support for the Webhook subscriptions.",
+            "ŌURA Cloud API. Interact with v2 of the Oura API using Personal Access Tokens, OAuth2, or the Sandbox environment. Includes support for the Webhook subscriptions.",
         license: "MIT",
         author: "Pinta <https://github.com/Pinta365>",
-        keywords: ["oura", "health data", "sleep", "activity", "readiness", "resilience", "api"],
+        keywords: ["oura", "health data", "sleep", "activity", "readiness", "resilience", "api", "oauth", "oauth2"],
         repository: {
             type: "git",
             url: "git+https://github.com/Pinta365/oura_api.git",
