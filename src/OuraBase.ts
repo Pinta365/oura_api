@@ -39,7 +39,10 @@ export interface ApiOptionsBase {
      */
     useSandbox?: boolean;
 }
-
+interface OuraPaginatedResponse {
+    data: unknown[];
+    next_token: string | null;
+}
 /**
  * Base class for the Oura API.
  * Class containing all the methods to access the Oura API with an access token.
@@ -136,7 +139,7 @@ class OuraBase {
         let params: Record<string, string> | undefined = initialParams;
 
         do {
-            const response = await this.#get(accessToken, endpoint, params);
+            const response = await this.#get(accessToken, endpoint, params) as OuraPaginatedResponse;
             if (response.data) {
                 allData.push(...response.data);
                 nextToken = response.next_token;

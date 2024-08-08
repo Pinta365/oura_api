@@ -90,7 +90,7 @@ export async function getTokens(
         );
     }
 
-    return response.json();
+    return response.json() as unknown as OAuth2TokenResponse;
 }
 
 /**
@@ -132,7 +132,7 @@ export async function refreshToken(
         );
     }
 
-    return response.json();
+    return response.json() as unknown as OAuth2TokenResponse;
 }
 
 /**
