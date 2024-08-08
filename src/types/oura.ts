@@ -529,3 +529,14 @@ export interface DailyStress {
     /** Stress summary of full day */
     day_summary: string;
 }
+
+/**
+ * Represents a daily cardiovasculare age.
+ * Cardiovascular Age is an estimate of the health of your cardiovascular system in relation to your actual age.
+ */
+export interface DailyCardiovascularAge {
+    /** Day that the daily vascular age belongs to */
+    day: string;
+    /** Predicted vascular age in range [18, 100]. */
+    vascular_age: number | null;
+}

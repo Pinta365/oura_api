@@ -7,6 +7,7 @@
  */
 import type {
     DailyActivity,
+    DailyCardiovascularAge,
     DailyReadiness,
     DailyResilience,
     DailySession,
@@ -194,6 +195,38 @@ class OuraBase {
     getDailyActivity(documentId: string, accessToken?: string): Promise<DailyActivity> {
         return this.fetchData("daily_activity/" + documentId, undefined, accessToken) as unknown as Promise<
             DailyActivity
+        >;
+    }
+
+    /**
+     * Retrieves cardiovascular age documents for a specified date range.
+     *
+     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<DailyCardiovascularAge[]>} A array of DailyCardiovascularAge objects.
+     */
+    getDailyCardiovascularAgeDocuments(
+        startDate: DateFormat,
+        endDate: DateFormat,
+        accessToken?: string,
+    ): Promise<DailyCardiovascularAge[]> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.fetchData("daily_cardiovascular_age", params, accessToken) as unknown as Promise<
+            DailyCardiovascularAge[]
+        >;
+    }
+
+    /**
+     * Retrieves a cardiovascular age document by its ID.
+     *
+     * @param {string} documentId - The document ID in string format.
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<DailyCardiovascularAge>} A DailyCardiovascularAge typed object.
+     */
+    getDailyCardiovascularAge(documentId: string, accessToken?: string): Promise<DailyCardiovascularAge> {
+        return this.fetchData("daily_cardiovascular_age/" + documentId, undefined, accessToken) as unknown as Promise<
+            DailyCardiovascularAge
         >;
     }
 
