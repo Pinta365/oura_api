@@ -39,7 +39,7 @@ export interface PersonalInfo {
     /** Biological sex  */
     biological_sex: string;
     /** Email  */
-    email: string;
+    email: string | null;
 }
 
 /**
@@ -121,16 +121,6 @@ export interface DailyActivity {
 }
 
 /**
- * Represents a response object containing multiple DailyActivity records.
- */
-export interface DailyActivityDocuments {
-    /** Array of DailyActivity documents */
-    data: DailyActivity[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents daily readiness metrics provided by the Oura ring.
  */
 export interface DailyReadiness {
@@ -168,16 +158,6 @@ export interface DailyReadiness {
 }
 
 /**
- * Represents a response object containing multiple DailyReadiness records.
- */
-export interface DailyReadinessDocuments {
-    /** Array of DailyReadiness documents */
-    data: DailyReadiness[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents daily resilience metrics provided by the Oura ring.
  */
 export interface DailyResilience {
@@ -193,16 +173,6 @@ export interface DailyResilience {
     };
     /** level of resilience */
     level: string;
-}
-
-/**
- * Represents a response object containing multiple DailyResilience records.
- */
-export interface DailyResilienceDocuments {
-    /** Array of DailyResilience documents */
-    data: DailyResilience[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /**
@@ -237,16 +207,6 @@ export interface DailySleep {
 }
 
 /**
- * Represents a response object containing multiple DailySleep records.
- */
-export interface DailySleepDocuments {
-    /** Array of DailySleep documents */
-    data: DailySleep[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents daily blood oxygen saturation (SpO2) data.
  */
 export interface DailySpo2 {
@@ -261,16 +221,6 @@ export interface DailySpo2 {
     };
 }
 
-/**
- * Represents a response object containing multiple DailySpo2 records.
- */
-export interface DailySpo2Documents {
-    /** Array of DailySpo2 documents */
-    data: DailySpo2[];
-    /** Next Token */
-    next_token: string | null;
-}
-
 /** Union of Heart Rate sources */
 export type HeartRateSource =
     | "awake"
@@ -283,23 +233,13 @@ export type HeartRateSource =
 /**
  * Represents a single heart rate measurement.
  */
-export interface HeartrateData {
+export interface Heartrate {
     /** Beats per minute */
     bpm: number;
     /** Enumeration HeartRateSource */
     source: HeartRateSource;
     /** Date and time of the measurement */
     timestamp: string;
-}
-
-/**
- * Contains multiple heart rate measurements.
- */
-export interface Heartrate {
-    /** Array of HeartrateData documents */
-    data: HeartrateData[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /**
@@ -323,16 +263,6 @@ export interface RestModePeriod {
     start_day: string;
     /** Timestamp when rest mode started */
     start_time: string;
-}
-
-/**
- * Represents a response object containing multiple RestModePeriod records.
- */
-export interface RestModePeriodDocuments {
-    /** Array of RestModePeriod documents */
-    data: RestModePeriod[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /** Union of possible ring colour */
@@ -376,16 +306,6 @@ export interface RingConfiguration {
 }
 
 /**
- * Represents a response object containing multiple RingConfiguration records.
- */
-export interface RingConfigurationDocuments {
-    /** Array of RingConfiguration documents */
-    data: RingConfiguration[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents a recorded activity session tracked by the Oura ring.
  */
 export interface DailySession {
@@ -407,16 +327,6 @@ export interface DailySession {
     mood: string;
     /** Motion samples */
     motion_count: SampleData;
-}
-
-/**
- * Represents a response object containing multiple DailySession records.
- */
-export interface DailySessionDocuments {
-    /** Array of DailySession documents */
-    data: DailySession[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /**
@@ -519,16 +429,6 @@ export interface Sleep {
 }
 
 /**
- * Represents a response object containing multiple Sleep records.
- */
-export interface SleepDocuments {
-    /** Array of Sleep documents */
-    data: Sleep[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents a simple note or annotation ("tag") associated with a day.
  * Note: Tag is deprecated. We recommend transitioning to Enhanced Tag.
  */
@@ -543,17 +443,6 @@ export interface Tag {
     timestamp: string;
     /** Selected tags for the tag */
     tags: string[];
-}
-
-/**
- * Represents a response object containing multiple Tag records.
- * Note: Tag is deprecated. We recommend transitioning to Enhanced Tag.
- */
-export interface TagDocuments {
-    /** Array of Tag documents */
-    data: Tag[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /**
@@ -577,16 +466,6 @@ export interface SleepTime {
     recommendation: string;
     /** Sleep time status; used to inform sleep time recommendation */
     status: string;
-}
-
-/**
- * Represents a response object containing multiple SleepTime records.
- */
-export interface SleepTimeDocuments {
-    /** Array of SleepTime documents */
-    data: SleepTime[];
-    /** Next Token */
-    next_token: string | null;
 }
 
 /**
@@ -616,16 +495,6 @@ export interface Workout {
 }
 
 /**
- * Represents a response object containing multiple Workout records.
- */
-export interface WorkoutDocuments {
-    /** Array of Workout documents */
-    data: Workout[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents an extended, multi-day tag with optional comments.
  */
 export interface EnhancedTag {
@@ -646,16 +515,6 @@ export interface EnhancedTag {
 }
 
 /**
- * Represents a response object containing multiple EnhancedTag records.
- */
-export interface EnhancedTagDocuments {
-    /** Array of EnhancedTag documents */
-    data: EnhancedTag[];
-    /** Next Token */
-    next_token: string | null;
-}
-
-/**
  * Represents daily strees summary
  */
 export interface DailyStress {
@@ -669,14 +528,4 @@ export interface DailyStress {
     recovery_high: number;
     /** Stress summary of full day */
     day_summary: string;
-}
-
-/**
- * Represents a response object containing multiple daily strees summaries.
- */
-export interface DailyStressDocuments {
-    /** Array of Workout documents */
-    data: Workout[];
-    /** Next Token */
-    next_token: string | null;
 }

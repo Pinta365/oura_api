@@ -1,166 +1,150 @@
 # OURA_API
 
-Library to interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs).
+Interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs) using Personal Access Tokens, OAuth2, or the
+Sandbox environment.
 
-Available as ESM module for **Deno**, **Bun** and **Node.js** through [JSR Package](https://jsr.io/@pinta365/oura-api)
-and as CommonJS module for Node.js via a [NPM package](https://www.npmjs.com/package/oura_api). Deno users can also use
-the [deno.land/x package](https://deno.land/x/oura_api).
+Available as:
+
+- ESM module: [JSR](https://jsr.io/@pinta365/oura-api)
+- CommonJS module: [NPM](https://www.npmjs.com/package/oura_api)
 
 ---
 
-## Example usage ESM
+## ⚡️ Quickstart
 
-### Installation
+**Installation**
 
 ```bash
-# For Deno
+# Deno
 deno add @pinta365/oura-api
 
-# For Bun
+# Bun
 bunx jsr add @pinta365/oura-api
 
-# For Node.js
+# Node.js
 npx jsr add @pinta365/oura-api
-```
 
-### Usage
-
-```javascript
-import { Oura, DateFormat } from "@pinta365/oura-api";
-
-// Option 1 - Instantiate with a token in string format.
-// Replace 'YOUR_ACCESS_TOKEN' with your actual access token
-const accessToken = "YOUR_ACCESS_TOKEN";
-const ouraClient = new Oura(accessToken);
-
-// Option 2 - Instantiate with a options object.
-// If useSandbox is set to true the accessToken will not be used. This is also the only way to opt into the sandbox environment. See more details about the sandbox further down.
-const options = {
-  accessToken: "YOUR_ACCESS_TOKEN",
-  useSandbox: false,  // Set to true for the sandbox environment
-};
-const ouraClient = new Oura(options);
-
-const startDate: DateFormat = "2023-01-01";
-const endDate: DateFormat = "2023-01-10";
-
-try {
-  const dailyActivityData = await ouraClient.getDailyActivityDocuments(startDate, endDate);
-
-  console.log(`Daily Activity Data: ${JSON.stringify(dailyActivityData, null, 4)}`);
-} catch (error) {
-  console.error(`Error fetching daily activity data: ${error}`);
-}
-```
-
-## Example usage for CommonJS
-
-### Node.js
-
-Install package.
-
-```
+# NPM (CommonJS)
 npm install oura_api --save
 ```
 
-Code example.
+**Basic Usage (ESM)**
 
 ```javascript
-const Api = require("oura_api");
+import { Oura } from "@pinta365/oura-api";
 
-// Option 1 - Instantiate with a token in string format.
-// Replace 'YOUR_ACCESS_TOKEN' with your actual access token
-const accessToken = "YOUR_ACCESS_TOKEN";
-const ouraClient = new Api.Oura(accessToken);
+const accessToken = "YOUR_PERSONAL_ACCESS_TOKEN";
+const oura = new Oura(accessToken);
 
-// Option 2 - Instantiate with a options object.
-// If useSandbox is set to true the accessToken will not be used. This is also the only way to opt into the sandbox environment. See more details about the sandbox further down.
-const options = {
-    accessToken: "YOUR_ACCESS_TOKEN",
-    useSandbox: false, // Set to true for the sandbox environment
-};
-const ouraClient = new Api.Oura(options);
-
-const startDate = "2023-01-01";
-const endDate = "2023-01-10";
-
-const example = async () => {
-    try {
-        const dailyActivityData = await ouraClient.getDailyActivityDocuments(startDate, endDate);
-
-        console.log(`Daily Activity Data: ${JSON.stringify(dailyActivityData, null, 4)}`);
-    } catch (error) {
-        console.error(`Error fetching daily activity data: ${error}`);
-    }
-};
-
-example();
+const personalInfo = await oura.getPersonalInfo();
+console.log(personalInfo);
 ```
 
-## Using the Sandbox Environment (For Testing)
+**Basic Usage (CommonJS)**
 
-The Oura API provides a sandbox environment ([Sandbox docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) for
-testing your application with fake user data that you can access without an Oura account. To use the sandbox, follow
-these steps:
+```javascript
+const { Oura } = require("oura_api");
+// ... (same as above)
+```
 
-1. **Create a Sandbox Client:** Opt in for the sandbox endpoints by using the optional useSandbox option when you
-   instantiate the Oura class.
-   ```javascript
-   const ouraSandboxClient = new Oura({ useSandbox: true });
-   ```
-2. **Make API Calls:** Use the `ouraSandboxClient` object to make API calls, just like you would with the regular
-   client.\
-   The API will automatically route your requests to the sandbox environment.
-   ```javascript
-   const dailyActivityData = await ouraSandboxClient.getDailyActivityDocuments(startDate, endDate);
-   ```
+**See the `examples` folder for more detailed implementations.**
 
-## Documentaion
+## 🧪 Sandbox Environment (Testing)
 
-Library documentation can be found at the [JSR documentation](https://jsr.io/@pinta365/oura-api/doc) page.
+The Oura API's sandbox environment ([Docs](https://cloud.ouraring.com/v2/docs#tag/Sandbox-Routes)) is perfect for
+development. It provides sample data so you don't need a real Oura account to test your application.
+
+```javascript
+const ouraSandboxClient = new Oura({ useSandbox: true });
+// ...Make API calls with `ouraSandboxClient`
+```
+
+## 🔑 OAuth2 Support
+
+Our library simplifies OAuth2 authentication with these functions:
+
+- `generateAuthUrl(scopes: string[], state?: string): string`
+  - Generates the authorization URL for the user.
+
+- `async exchangeCodeForToken(code: string): Promise<OAuth2TokenResponse>`
+  - Exchanges the received authorization code for access and refresh tokens.
+
+- `async refreshAccessToken(suppliedRefreshToken: string): Promise<OAuth2TokenResponse>`
+  - Refreshes an expired access token.
+
+- `async revokeAccessToken(accessToken: string): Promise<boolean>`
+  - Revokes the specified access token.
+
+**Example Usage (Simplified)** See the `examples` folder for a basic implementation using Hono.
+
+```javascript
+import { OuraOAuth } from "@pinta365/oura-api";
+
+const oura = new OuraOAuth({
+    clientId: "YOUR_CLIENT_ID",
+    clientSecret: "YOUR_CLIENT_SECRET",
+    redirectUri: "http://localhost:8000/callback",
+});
+
+// 1. Generate the authorization URL
+const authUrl = oura.generateAuthUrl(["personal"]);
+
+// 2. Redirect the user to `authUrl`
+// ... (Implementation in your web application)
+
+// 3. In your callback route, exchange the code for tokens
+app.get("/callback", async (c) => {
+    const code = c.req.query("code");
+    const tokens = await oura.exchangeCodeForToken(code);
+
+    // ... Store tokens securely and use the access_token for API calls
+});
+```
+
+## 📑 Documentation
+
+- Full API reference: [JSR Documentation](https://jsr.io/@pinta365/oura-api/doc)
 
 ### Included data scopes for v2 of the API.
 
-| Endpoint/Scope                                                              | Status      |
-| :-------------------------------------------------------------------------- | :---------- |
-| **[Oura Base](https://jsr.io/@pinta365/oura-api/doc/~/Oura)**               |             |
-| Daily Activity                                                              | Implemented |
-| Daily Readiness                                                             | Implemented |
-| Daily Resilience                                                            | Implemented |
-| Daily Sleep                                                                 | Implemented |
-| Daily Spo2                                                                  | Implemented |
-| Daily Stress                                                                | Implemented |
-| Enhanced Tag                                                                | Implemented |
-| Heart Rate                                                                  | Implemented |
-| Personal Info                                                               | Implemented |
-| Rest Mode Period                                                            | Implemented |
-| Ring Configuration                                                          | Implemented |
-| Session                                                                     | Implemented |
-| Sleep                                                                       | Implemented |
-| Sleep Time                                                                  | Implemented |
-| Tag                                                                         | DEPRECATED  |
-| Workout                                                                     | Implemented |
-| **[Webhook Subscription](https://jsr.io/@pinta365/oura-api/doc/~/Webhook)** |             |
-| List subscription                                                           | Implemented |
-| Create subscription                                                         | Implemented |
-| Update subscription                                                         | Implemented |
-| Delete subscription                                                         | Implemented |
-| Renew subscription                                                          | Implemented |
+| Endpoint/Scope                                                                   | Status      |
+| :------------------------------------------------------------------------------- | :---------- |
+| **[Oura Base docs](https://jsr.io/@pinta365/oura-api/doc/~/Oura)**               |             |
+| Daily Activity                                                                   | Implemented |
+| Daily Readiness                                                                  | Implemented |
+| Daily Resilience                                                                 | Implemented |
+| Daily Sleep                                                                      | Implemented |
+| Daily Spo2                                                                       | Implemented |
+| Daily Stress                                                                     | Implemented |
+| Enhanced Tag                                                                     | Implemented |
+| Heart Rate                                                                       | Implemented |
+| Personal Info                                                                    | Implemented |
+| Rest Mode Period                                                                 | Implemented |
+| Ring Configuration                                                               | Implemented |
+| Session                                                                          | Implemented |
+| Sleep                                                                            | Implemented |
+| Sleep Time                                                                       | Implemented |
+| Tag                                                                              | DEPRECATED  |
+| Workout                                                                          | Implemented |
+| **[Webhook Subscription docs](https://jsr.io/@pinta365/oura-api/doc/~/Webhook)** |             |
+| List subscription                                                                | Implemented |
+| Create subscription                                                              | Implemented |
+| Update subscription                                                              | Implemented |
+| Delete subscription                                                              | Implemented |
+| Renew subscription                                                               | Implemented |
 
-## Additional info concerning the webhook API
+**Additional info concerning the webhook API**
 
-According to the API docs the webhooks enable you to receive near real-time Oura data updates and are the preferred way
-to receive the latest data from the Oura API.
+Webhooks enable near real-time Oura data updates and are recommended for getting the latest information. The
+subscription workflow is implemented in this library – see the
+[Webhook docs](https://cloud.ouraring.com/v2/docs#tag/Webhook-Subscription-Routes) for details.
 
-I have not been able to fully verify this yet but the subscription workflow has been implemented.
+⚠️ I have not been able to fully verify this yet but the subscription workflow has been implemented.
 
-Read the [Webhook docs](https://cloud.ouraring.com/v2/docs#tag/Webhook-Subscription-Routes) before atempting to use it.
+## 🐞 Issues
 
-## Issues
+Please report any issues or questions on the [GitHub repository](https://github.com/Pinta365/oura_api/issues).
 
-Issues or questions concerning the library can be raised at the
-[github repository](https://github.com/Pinta365/oura_api/issues) page.
+## 📄 License
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see the [LICENSE](LICENSE) file.

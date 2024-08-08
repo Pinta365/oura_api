@@ -49,7 +49,11 @@ class Webhook {
      * @returns {Promise<Object>} A JSON or Text parsed fetch response.
      * @throws {Error} Throws an error if the request encounters a problem (e.g., non-OK response status).
      */
-    #request = async (method: string, url: string, body?: Record<string, string | number | symbol | undefined>) => {
+    #request = async (
+        method: string,
+        url: string,
+        body?: Record<string, string | number | symbol | undefined>,
+    ) => {
         let options = {};
         if (method === "POST" || method === "PUT") {
             options = {
@@ -181,7 +185,9 @@ class Webhook {
             delete data.data_type;
         }
 
-        return this.#request("PUT", "subscription/" + id, data) as Promise<Subscription>;
+        return this.#request("PUT", "subscription/" + id, data) as Promise<
+            Subscription
+        >;
     }
 
     /**
@@ -191,7 +197,9 @@ class Webhook {
      * @returns {Promise<DeletedSubscription>} A DeletedSubscription typed object.
      */
     deleteSubscription(id: string): Promise<DeletedSubscription> {
-        return this.#request("DELETE", "subscription/" + id) as Promise<DeletedSubscription>;
+        return this.#request("DELETE", "subscription/" + id) as Promise<
+            DeletedSubscription
+        >;
     }
 
     /**
@@ -201,7 +209,9 @@ class Webhook {
      * @returns {Promise<Subscription>} A Subscription typed object of the renewed subscription.
      */
     renewSubscription(id: string): Promise<Subscription> {
-        return this.#request("PUT", "subscription/renew/" + id) as Promise<Subscription>;
+        return this.#request("PUT", "subscription/renew/" + id) as Promise<
+            Subscription
+        >;
     }
 }
 
