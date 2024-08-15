@@ -1,6 +1,6 @@
 {
     "name": "@pinta365/oura-api",
-    "version": "0.7.0",
+    "version": "1.0.0",
     "exports": "./mod.ts",
     "publish": {
         "exclude": ["scripts", "examples"]
