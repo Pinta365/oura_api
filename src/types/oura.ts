@@ -56,9 +56,9 @@ export interface DailyActivity {
      * 4    medium activity
      * 5    high activity
      */
-    class_5_min: string;
+    class_5_min: string | null;
     /** Activity score in range [1, 100] */
-    score: number;
+    score: number | null;
     /** Active calories expended (in kilocalories) */
     active_calories: number;
     /** Average metabolic equivalent (MET) in minutes */
@@ -66,17 +66,17 @@ export interface DailyActivity {
     /** Object defining activity score contributors */
     contributors: {
         /** Contribution of meeting previous 7-day daily activity targets in range [1, 100] */
-        meet_daily_targets: number;
+        meet_daily_targets: number | null;
         /** Contribution of previous 24-hour inactivity alerts in range [1, 100] */
-        move_every_hour: number;
+        move_every_hour: number | null;
         /** Contribution of previous 7-day recovery time in range [1, 100] */
-        recovery_time: number;
+        recovery_time: number | null;
         /** Contribution of previous 24-hour activity in range [1, 100] */
-        stay_active: number;
+        stay_active: number | null;
         /**  Contribution of previous 7-day exercise frequency in range [1, 100] */
-        training_frequency: number;
+        training_frequency: number | null;
         /** Contribution of previous 7-day exercise volume in range [1, 100] */
-        training_volume: number;
+        training_volume: number | null;
     };
     /** Equivalent walking distance (in meters) of energy expenditure */
     equivalent_walking_distance: number;
@@ -129,33 +129,36 @@ export interface DailyReadiness {
     /** Object defining readiness score contributors */
     contributors: {
         /** Contribution of cumulative activity balance in range [1, 100] */
-        activity_balance: number;
+        activity_balance: number | null;
         /** Contribution of body temperature in range [1, 100] */
-        body_temperature: number;
+        body_temperature: number | null;
         /** Contribution of heart rate variability balance in range [1, 100] */
-        hrv_balance: number;
+        hrv_balance: number | null;
         /** Contribution of previous day's activity in range [1, 100] */
-        previous_day_activity: number;
+        previous_day_activity: number | null;
         /** Contribution of previous night's sleep in range [1, 100] */
-        previous_night: number;
+        previous_night: number | null;
         /** Contribution of recovery index in range [1, 100] */
-        recovery_index: number;
+        recovery_index: number | null;
         /** Contribution of resting heart rate in range [1, 100] */
-        resting_heart_rate: number;
+        resting_heart_rate: number | null;
         /** Contribution of sleep balance in range [1, 100] */
-        sleep_balance: number;
+        sleep_balance: number | null;
     };
     /** Day that the daily readiness belongs to */
     day: string;
     /** Daily readiness score */
-    score: number;
+    score: number | null;
     /** Temperature deviation in degrees Celsius */
-    temperature_deviation: number;
+    temperature_deviation: number | null;
     /** Temperature trend deviation in degrees Celsius */
-    temperature_trend_deviation: number;
+    temperature_trend_deviation: number | null;
     /** Timestamp of the daily readiness */
     timestamp: string;
 }
+
+/** Union of possible of daily stress summaries */
+export type LongTermResilienceLevel = "limited" | "adequate" | "solid" | "strong" | "exceptional";
 
 /**
  * Represents daily resilience metrics provided by the Oura ring.
@@ -172,7 +175,7 @@ export interface DailyResilience {
         stress: number;
     };
     /** level of resilience */
-    level: string;
+    level: LongTermResilienceLevel;
 }
 
 /**
@@ -184,24 +187,24 @@ export interface DailySleep {
     /** Object defining sleep score contributors */
     contributors: {
         /** Contribution of deep sleep in range [1, 100] */
-        deep_sleep: number;
+        deep_sleep: number | null;
         /** Contribution of sleep efficiency in range [1, 100] */
-        efficiency: number;
+        efficiency: number | null;
         /** Contribution of sleep latency in range [1, 100] */
-        latency: number;
+        latency: number | null;
         /** Contribution of REM sleep in range [1, 100] */
-        rem_sleep: number;
+        rem_sleep: number | null;
         /** Contribution of sleep restfulness in range [1, 100] */
-        restfulness: number;
+        restfulness: number | null;
         /** Contribution of sleep timing in range [1, 100] */
-        timing: number;
+        timing: number | null;
         /** Contribution of total sleep in range [1, 100] */
-        total_sleep: number;
+        total_sleep: number | null;
     };
     /** Day that the daily sleep belongs to. */
     day: string;
     /** Daily sleep score */
-    score: number;
+    score: number | null;
     /** Timestamp of the daily sleep */
     timestamp: number;
 }
@@ -218,7 +221,7 @@ export interface DailySpo2 {
     spo2_percentage: {
         /** Average oxygen saturation (SpO2) throughout the night */
         average: number;
-    };
+    } | null;
 }
 
 /** Union of Heart Rate sources */
@@ -305,6 +308,11 @@ export interface RingConfiguration {
     size: number;
 }
 
+/** Union of possible of ring hardware generations */
+export type MomentType = "breathing" | "meditation" | "nap" | "relaxation" | "rest" | "body_status";
+
+/** Union of possible of ring hardware generations */
+export type MomentMood = "bad" | "worse" | "same" | "good" | "great";
 /**
  * Represents a recorded activity session tracked by the Oura ring.
  */
@@ -318,13 +326,13 @@ export interface DailySession {
     /** Timestamp indicating when the Moment ended */
     end_datetime: string;
     /** Moment type */
-    type: string;
+    type: MomentType;
     /** HR samples */
     heart_rate: SampleData;
     /** HRV samples */
     heart_rate_variability: SampleData;
     /** Moment mood */
-    mood: string;
+    mood: MomentMood;
     /** Motion samples */
     motion_count: SampleData;
 }
@@ -380,21 +388,21 @@ export interface Sleep {
         /** Object defining readiness score contributors */
         contributors: {
             /** Contribution of cumulative activity balance in range [1, 100] */
-            activity_balance: number;
+            activity_balance: number | null;
             /** Contribution of body temperature in range [1, 100] */
-            body_temperature: number;
+            body_temperature: number | null;
             /** Contribution of heart rate variability balance in range [1, 100] */
-            hrv_balance: number;
+            hrv_balance: number | null;
             /** Contribution of previous day's activity in range [1, 100] */
-            previous_day_activity: number;
+            previous_day_activity: number | null;
             /** Contribution of previous night's sleep in range [1, 100] */
-            previous_night: number;
+            previous_night: number | null;
             /** Contribution of recovery index in range [1, 100] */
-            recovery_index: number;
+            recovery_index: number | null;
             /** Contribution of resting heart rate in range [1, 100] */
-            resting_heart_rate: number;
+            resting_heart_rate: number | null;
             /** Contribution of sleep balance in range [1, 100] */
-            sleep_balance: number;
+            sleep_balance: number | null;
         };
         /** Score */
         score: number;
@@ -501,18 +509,23 @@ export interface EnhancedTag {
     /** Unique identifier */
     id: string;
     /** The unique code of the selected tag type, "NULL" for text-only tags, or "custom" for custom tag types */
-    tag_type_code: string;
+    tag_type_code: string | null;
     /** Timestamp of the tag (if no duration) or the start time of the tag (with duration) */
     start_time: string;
     /** Timestamp of the tag's end for events with duration or "NULL" if there is no duration */
-    end_time: string;
+    end_time: string | null;
     /** Day of the tag (if no duration) or the start day of the tag (with duration) */
     start_day: string;
     /** Day of the tag's end for events with duration or "NULL" if there is no duration */
-    end_day: string;
+    end_day: string | null;
     /** Additional freeform text on the tag */
-    comment: string;
+    comment: string | null;
+    /** The name of the tag if the tag_type_code is "custom". */
+    custom_name: string | null;
 }
+
+/** Union of possible of daily stress summaries */
+export type DailyStressSummary = "restored" | "normal" | "stressful";
 
 /**
  * Represents daily strees summary
@@ -523,11 +536,11 @@ export interface DailyStress {
     /** Day that the daily stress belongs to */
     day: string;
     /** Time spent in a high stress zone (top quartile of data) */
-    stress_high: number;
+    stress_high: number | null;
     /** Time spend in a high recovery zone (bottom quartile data) */
-    recovery_high: number;
+    recovery_high: number | null;
     /** Stress summary of full day */
-    day_summary: string;
+    day_summary: DailyStressSummary | null;
 }
 
 /**

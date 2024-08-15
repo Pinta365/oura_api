@@ -43,9 +43,9 @@ export interface Subscription {
     /** URL where Oura will send webhook notifications */
     callback_url: string;
     /** The EventType that triggers the webhook (e.g., "create", "update", "delete") */
-    event_type: string;
+    event_type: EventType;
     /** The DataType the subscription monitors */
-    data_type: string;
+    data_type: DataType;
     /** The subscription's expiration time */
     expiration_time: string;
 }
