@@ -68,7 +68,7 @@ class OuraOAuth extends OuraBase {
      * @returns {Promise<unknown>} A promise that resolves with the fetched data (either an array or a single object).
      * @throws {MissingTokenError} If the `accessToken` is missing.
      */
-    protected fetchData(
+    protected override fetchData(
         endpoint: string,
         params?: Record<string, string>,
         accessToken?: string,

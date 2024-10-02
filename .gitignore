@@ -1,5 +1,6 @@
 .env
 .vscode
+devtest.ts
 test.ts
 npm/
 deno.lock

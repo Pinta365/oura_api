@@ -55,7 +55,7 @@ class Oura extends OuraBase {
      * @param {Record<string, string>} [params] - Optional query parameters.
      * @returns {Promise<unknown>} A promise that resolves with the fetched data (either an array or a single object).
      */
-    protected fetchData(endpoint: string, params?: Record<string, string>): Promise<unknown> {
+    protected override fetchData(endpoint: string, params?: Record<string, string>): Promise<unknown> {
         return this.getAll(this.#personalAccesstoken, endpoint, params);
     }
 }
