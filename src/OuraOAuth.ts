@@ -8,8 +8,11 @@
 
 import OuraBase from "./OuraBase.ts";
 import type { ApiOptionsBase } from "./OuraBase.ts";
-import { generateAuthUrl, getTokens, type OAuth2TokenResponse, refreshToken, revokeToken } from "./utilsOAuth.ts";
+import { generateAuthUrl, getTokens, refreshToken, revokeToken } from "./utilsOAuth.ts";
+import type { OAuth2TokenResponse } from "./utilsOAuth.ts";
+import type { OAuthScope } from "./types/oura.ts";
 import { MissingClientIdError, MissingClientSecretError, MissingRedirectUriError, MissingTokenError } from "./utils.ts";
+
 /**
  * Options for configuring the Oura OAuth API client.
  */
@@ -82,11 +85,11 @@ class OuraOAuth extends OuraBase {
     /**
      * Generates the authorization URL for the Oura OAuth2 flow.
      *
-     * @param {string[]} scopes - An array of scopes to request access to (e.g., ['email', 'daily']).
+     * @param {OAuthScope[]} scopes - An array of scopes to request access to (e.g., ['email', 'daily']).
      * @param {string} [state] - An optional state parameter for security and session management.
      * @returns {string} The authorization URL.
      */
-    generateAuthUrl(scopes: string[], state?: string): string {
+    generateAuthUrl(scopes: OAuthScope[], state?: string): string {
         return generateAuthUrl(this.#clientId!, scopes, this.#redirectUri, state);
     }
 

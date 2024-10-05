@@ -43,6 +43,28 @@ export interface PersonalInfo {
 }
 
 /**
+ * Union of possible OAuthScopes
+ *
+ * **email** - Email address of the user
+ * **personal** - Personal information (gender, age, height, weight)
+ * **daily** - Daily summaries of sleep, activity and readiness
+ * **heartrate** - Time series heart rate for Gen 3 users
+ * **workout** - Summaries for auto-detected and user entered workouts
+ * **tag User** - entered tags
+ * **session** - Guided and unguided sessions in the Oura app
+ * **spo2Daily** - SpO2 Average recorded during sleep
+ */
+export type OAuthScope =
+    | "email"
+    | "personal"
+    | "daily"
+    | "heartrate"
+    | "workout"
+    | "tag User"
+    | "session"
+    | "spo2Daily";
+
+/**
  * Holds details about daily activity metrics tracked by the Oura ring.
  */
 export interface DailyActivity {

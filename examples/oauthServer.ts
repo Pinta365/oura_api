@@ -5,7 +5,7 @@
  */
 
 import { Hono } from "jsr:@hono/hono";
-import { OuraOAuth } from "jsr:@pinta365/oura-api";
+import { type OAuthScope, OuraOAuth } from "jsr:@pinta365/oura-api";
 
 const app = new Hono();
 const clientId = "REPLACE_WITH_YOUR_CLIENT_ID"; // Replace this with your client id
@@ -65,7 +65,7 @@ app.get("/", (c) => {
     } else {
         // Define the required Oura API data scopes (permissions)
         // See: https://cloud.ouraring.com/docs/authentication#oauth2-scopes
-        const scopes = ["personal"];
+        const scopes: OAuthScope[] = ["personal"];
 
         // **Important Security Note:** In a production environment, you should
         // generate unique and random state values and securely store the value
