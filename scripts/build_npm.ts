@@ -1,5 +1,5 @@
 // ex. scripts/build_npm.ts
-import { build, emptyDir } from "https://deno.land/x/dnt/mod.ts";
+import { build, emptyDir } from "jsr:@deno/dnt";
 
 await emptyDir("./npm");
 
@@ -28,8 +28,9 @@ await build({
             url: "https://github.com/Pinta365/oura_api/issues",
         },
     },
+    postBuild() {
+        // steps to run after building and before running the tests
+        Deno.copyFileSync("LICENSE", "npm/LICENSE");
+        Deno.copyFileSync("README.md", "npm/README.md");
+    },
 });
-
-// post build steps
-Deno.copyFileSync("LICENSE", "npm/LICENSE");
-Deno.copyFileSync("README.md", "npm/README.md");
