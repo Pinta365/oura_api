@@ -244,6 +244,8 @@ export interface DailySpo2 {
         /** Average oxygen saturation (SpO2) throughout the night */
         average: number;
     } | null;
+    /** Breathing Disturbance Index (BDI) calculated using detected SpO2 drops from timeseries. Values should be in range [0, 100] */
+    breathing_disturbance_index: number;
 }
 
 /** Union of Heart Rate sources */
@@ -308,7 +310,7 @@ export type RingColor =
 export type RingDesign = "heritage" | "horizon" | "balance" | "balance_diamond";
 
 /** Union of possible of ring hardware generations */
-export type RingHardwareType = "gen1" | "gen2" | "gen2m" | "gen3";
+export type RingHardwareType = "gen1" | "gen2" | "gen2m" | "gen3" | "gen4";
 
 /**
  * Stores information about an Oura ring's configuration.
