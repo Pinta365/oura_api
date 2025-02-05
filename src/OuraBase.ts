@@ -27,7 +27,7 @@ import type {
     Workout,
 } from "./types/oura.ts";
 export * from "./types/oura.ts";
-import { API_URLS, APIError, isValidDate, ValidationError } from "./utils.ts";
+import { API_URLS, APIError, RateLimitExceeded, ValidationError } from "./utils.ts";
 
 /**
  * Options for configuring the Oura API client.
@@ -69,23 +69,11 @@ class OuraBase {
      * @param {string} url - The API endpoint URL.
      * @param {Record<string, string>} [qs] - Optional querystring parameters.
      * @returns {Promise<object>} A JSON parsed fetch response.
-     * @throws {APIError} Throws if the response status is not OK.
      * @throws {ValidationError} Throws if querystring validation fails.
+     * @throws {RateLimitExceeded} Throws if the request rate limit is exceeded.
+     * @throws {APIError} Throws if the response status is not OK for other reasons.
      */
     #get = async (accessToken: string | undefined, url: string, qs?: Record<string, string>) => {
-        //Validate certain with a simple date parser.
-        for (const [key, value] of Object.entries(qs || {})) {
-            if (
-                ["start_date", "end_date", "start_datetime", "end_datetime"].includes(
-                    key,
-                )
-            ) {
-                if (!isValidDate(value)) {
-                    throw new ValidationError(`Invalid date format for ${key}: ${value}`);
-                }
-            }
-        }
-
         const params = new URLSearchParams(qs);
         const baseUrl = this.#useSandbox ? API_URLS.basev2Sandbox : API_URLS.baseV2;
         const response = await fetch(
@@ -98,15 +86,48 @@ class OuraBase {
             },
         );
 
-        if (response.ok) {
+        interface ErrorData {
+            detail?: string;
+        }
+
+        if (response.status === 400) {
+            let detail = "";
+            try {
+                const errorData: ErrorData = await response.json() as ErrorData;
+                detail = errorData.detail || "";
+            } catch (_err) {
+                detail = "No details";
+            }
+            throw new ValidationError(
+                "Query Parameter Validation Error",
+                response.status,
+                response.statusText,
+                detail,
+                baseUrl + encodeURI(url),
+                "GET",
+            );
+        } else if (response.status === 429) {
+            let detail = "";
+            try {
+                const errorData: ErrorData = await response.json() as ErrorData;
+                detail = errorData.detail || "";
+            } catch (_err) {
+                detail = "No details";
+            }
+            throw new RateLimitExceeded(
+                "Request Rate Limit Exceeded",
+                response.status,
+                response.statusText,
+                detail,
+                baseUrl + encodeURI(url),
+                "GET",
+            );
+        } else if (response.ok) {
             return await response.json();
         } else {
             let detail = "";
-            interface errorData {
-                detail?: string;
-            }
             try {
-                const errorData: errorData = await response.json() as errorData;
+                const errorData: ErrorData = await response.json() as ErrorData;
                 detail = errorData.detail || "";
             } catch (_err) {
                 detail = "No details";

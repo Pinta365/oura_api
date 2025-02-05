@@ -15,19 +15,6 @@ export const API_URLS = {
 };
 
 /**
- * Checks if a given string represents a valid date.
- * @param {string} dateString - The date string to validate.
- * @returns {boolean} Returns true if the date string is a valid date; otherwise, false.
- */
-export function isValidDate(dateString: string): boolean {
-    // Attempt to create a Date object from the input string
-    const date = new Date(dateString);
-
-    // Check if the date is valid and the input string is in a valid format
-    return !isNaN(date.getTime()) && !isNaN(date.getDate());
-}
-
-/**
  * Custom error class representing an API error.
  * @class
  * @extends {Error}
@@ -58,13 +45,48 @@ export class APIError extends Error {
 }
 
 /**
+ * Custom error class representing a rate limit exceeded error.
+ * @class
+ * @extends {APIError}
+ */
+export class RateLimitExceeded extends APIError {
+    constructor(
+        message: string,
+        statusCode: number,
+        responseBody: string,
+        detail: string,
+        url: string,
+        method: string,
+    ) {
+        super(message, statusCode, responseBody, detail, url, method);
+        this.name = "RateLimitExceeded";
+    }
+}
+
+/**
  * Custom error class representing a validation error.
  * @class
- * @extends {Error}
+ * @extends {APIError}
  */
-export class ValidationError extends Error {
-    constructor(message: string) {
-        super(message);
+export class ValidationError extends APIError {
+    /**
+     * Creates a new ValidationError instance.
+     * @param {string} message - The error message.
+     * @param {number} statusCode - The HTTP status code.
+     * @param {string} statusText - The HTTP status text.
+     * @param {string} detail - Detailed error message.
+     * @param {string} url - The API endpoint URL.
+     * @param {string} method - The HTTP method.
+     */
+    constructor(
+        message: string,
+        statusCode: number,
+        statusText: string,
+        detail: string,
+        url: string,
+        method: string,
+    ) {
+        super(message, statusCode, statusText, detail, url, method);
         this.name = "ValidationError";
     }
 }
