@@ -16,7 +16,7 @@ Available as:
 
 ```bash
 # Deno
-deno add @pinta365/oura-api
+deno add jsr:@pinta365/oura-api
 
 # Bun
 bunx jsr add @pinta365/oura-api
