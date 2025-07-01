@@ -194,6 +194,30 @@ class OuraBase {
     }
 
     /**
+     * Generic helper to fetch a list of documents for a given endpoint and date range.
+     */
+    private getDocuments<T>(
+        endpoint: string,
+        startDate: DateFormat,
+        endDate: DateFormat,
+        accessToken?: string,
+    ): Promise<T[]> {
+        const params = { start_date: startDate, end_date: endDate };
+        return this.fetchData(endpoint, params, accessToken) as unknown as Promise<T[]>;
+    }
+
+    /**
+     * Generic helper to fetch a single document by ID for a given endpoint.
+     */
+    private getDocumentById<T>(
+        endpoint: string,
+        documentId: string,
+        accessToken?: string,
+    ): Promise<T> {
+        return this.fetchData(`${endpoint}/${documentId}`, undefined, accessToken) as unknown as Promise<T>;
+    }
+
+    /**
      * Retrieves daily activity documents for a specified date range.
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
@@ -206,8 +230,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailyActivity[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_activity", params, accessToken) as unknown as Promise<DailyActivity[]>;
+        return this.getDocuments<DailyActivity>("daily_activity", startDate, endDate, accessToken);
     }
 
     /**
@@ -218,9 +241,7 @@ class OuraBase {
      * @returns {Promise<DailyActivity>} A DailyActivity typed object.
      */
     getDailyActivity(documentId: string, accessToken?: string): Promise<DailyActivity> {
-        return this.fetchData("daily_activity/" + documentId, undefined, accessToken) as unknown as Promise<
-            DailyActivity
-        >;
+        return this.getDocumentById<DailyActivity>("daily_activity", documentId, accessToken);
     }
 
     /**
@@ -236,10 +257,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailyCardiovascularAge[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_cardiovascular_age", params, accessToken) as unknown as Promise<
-            DailyCardiovascularAge[]
-        >;
+        return this.getDocuments<DailyCardiovascularAge>("daily_cardiovascular_age", startDate, endDate, accessToken);
     }
 
     /**
@@ -250,9 +268,7 @@ class OuraBase {
      * @returns {Promise<DailyCardiovascularAge>} A DailyCardiovascularAge typed object.
      */
     getDailyCardiovascularAge(documentId: string, accessToken?: string): Promise<DailyCardiovascularAge> {
-        return this.fetchData("daily_cardiovascular_age/" + documentId, undefined, accessToken) as unknown as Promise<
-            DailyCardiovascularAge
-        >;
+        return this.getDocumentById<DailyCardiovascularAge>("daily_cardiovascular_age", documentId, accessToken);
     }
 
     /**
@@ -268,8 +284,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailyReadiness[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_readiness", params, accessToken) as unknown as Promise<DailyReadiness[]>;
+        return this.getDocuments<DailyReadiness>("daily_readiness", startDate, endDate, accessToken);
     }
 
     /**
@@ -280,9 +295,7 @@ class OuraBase {
      * @returns {Promise<DailyReadiness>} A DailyReadiness typed object.
      */
     getDailyReadiness(documentId: string, accessToken?: string): Promise<DailyReadiness> {
-        return this.fetchData("daily_readiness/" + documentId, undefined, accessToken) as unknown as Promise<
-            DailyReadiness
-        >;
+        return this.getDocumentById<DailyReadiness>("daily_readiness", documentId, accessToken);
     }
 
     /**
@@ -298,8 +311,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailyResilience[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_resilience", params, accessToken) as unknown as Promise<DailyResilience[]>;
+        return this.getDocuments<DailyResilience>("daily_resilience", startDate, endDate, accessToken);
     }
 
     /**
@@ -310,9 +322,7 @@ class OuraBase {
      * @returns {Promise<DailyResilience>} A DailyResilience typed object.
      */
     getDailyResilience(documentId: string, accessToken?: string): Promise<DailyResilience> {
-        return this.fetchData("daily_resilience/" + documentId, undefined, accessToken) as unknown as Promise<
-            DailyResilience
-        >;
+        return this.getDocumentById<DailyResilience>("daily_resilience", documentId, accessToken);
     }
 
     /**
@@ -328,8 +338,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailySleep[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_sleep", params, accessToken) as unknown as Promise<DailySleep[]>;
+        return this.getDocuments<DailySleep>("daily_sleep", startDate, endDate, accessToken);
     }
 
     /**
@@ -340,7 +349,7 @@ class OuraBase {
      * @returns {Promise<DailySleep>} A DailySleep typed object.
      */
     getDailySleep(documentId: string, accessToken?: string): Promise<DailySleep> {
-        return this.fetchData("daily_sleep/" + documentId, undefined, accessToken) as unknown as Promise<DailySleep>;
+        return this.getDocumentById<DailySleep>("daily_sleep", documentId, accessToken);
     }
 
     /**
@@ -357,8 +366,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailySpo2[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_spo2", params, accessToken) as unknown as Promise<DailySpo2[]>;
+        return this.getDocuments<DailySpo2>("daily_spo2", startDate, endDate, accessToken);
     }
 
     /**
@@ -370,7 +378,7 @@ class OuraBase {
      * @returns {Promise<DailySpo2>} A DailySpo2 typed object.
      */
     getDailySpo2(documentId: string, accessToken?: string): Promise<DailySpo2> {
-        return this.fetchData("daily_spo2/" + documentId, undefined, accessToken) as unknown as Promise<DailySpo2>;
+        return this.getDocumentById<DailySpo2>("daily_spo2", documentId, accessToken);
     }
 
     /**
@@ -386,8 +394,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailyStress[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("daily_stress", params, accessToken) as unknown as Promise<DailyStress[]>;
+        return this.getDocuments<DailyStress>("daily_stress", startDate, endDate, accessToken);
     }
 
     /**
@@ -398,7 +405,7 @@ class OuraBase {
      * @returns {Promise<DailyStress>} A DailyStress typed object.
      */
     getDailyStress(documentId: string, accessToken?: string): Promise<DailyStress> {
-        return this.fetchData("daily_stress/" + documentId, undefined, accessToken) as unknown as Promise<DailyStress>;
+        return this.getDocumentById<DailyStress>("daily_stress", documentId, accessToken);
     }
 
     /**
@@ -441,8 +448,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<RestModePeriod[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("rest_mode_period", params, accessToken) as unknown as Promise<RestModePeriod[]>;
+        return this.getDocuments<RestModePeriod>("rest_mode_period", startDate, endDate, accessToken);
     }
 
     /**
@@ -453,9 +459,7 @@ class OuraBase {
      * @returns {Promise<RestModePeriod>} A RestModePeriod typed object.
      */
     getRestModePeriod(documentId: string, accessToken?: string): Promise<RestModePeriod> {
-        return this.fetchData("rest_mode_period/" + documentId, undefined, accessToken) as unknown as Promise<
-            RestModePeriod
-        >;
+        return this.getDocumentById<RestModePeriod>("rest_mode_period", documentId, accessToken);
     }
 
     /**
@@ -471,8 +475,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<RingConfiguration[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("ring_configuration", params, accessToken) as unknown as Promise<RingConfiguration[]>;
+        return this.getDocuments<RingConfiguration>("ring_configuration", startDate, endDate, accessToken);
     }
 
     /**
@@ -483,11 +486,7 @@ class OuraBase {
      * @returns {Promise<RingConfiguration>} A RingConfiguration typed object.
      */
     getRingConfiguration(documentId: string, accessToken?: string): Promise<RingConfiguration> {
-        return this.fetchData(
-            "ring_configuration/" + documentId,
-            undefined,
-            accessToken,
-        ) as unknown as Promise<RingConfiguration>;
+        return this.getDocumentById<RingConfiguration>("ring_configuration", documentId, accessToken);
     }
 
     /**
@@ -503,8 +502,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<DailySession[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("session", params, accessToken) as unknown as Promise<DailySession[]>;
+        return this.getDocuments<DailySession>("session", startDate, endDate, accessToken);
     }
 
     /**
@@ -515,7 +513,7 @@ class OuraBase {
      * @returns {Promise<DailySession>} A DailySession typed object.
      */
     getDailySession(documentId: string, accessToken?: string): Promise<DailySession> {
-        return this.fetchData("session/" + documentId, undefined, accessToken) as unknown as Promise<DailySession>;
+        return this.getDocumentById<DailySession>("session", documentId, accessToken);
     }
 
     /**
@@ -531,8 +529,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<Sleep[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("sleep", params, accessToken) as unknown as Promise<Sleep[]>;
+        return this.getDocuments<Sleep>("sleep", startDate, endDate, accessToken);
     }
 
     /**
@@ -543,7 +540,7 @@ class OuraBase {
      * @returns {Promise<Sleep>} A Sleep typed object.
      */
     getSleep(documentId: string, accessToken?: string): Promise<Sleep> {
-        return this.fetchData("sleep/" + documentId, undefined, accessToken) as unknown as Promise<Sleep>;
+        return this.getDocumentById<Sleep>("sleep", documentId, accessToken);
     }
 
     /**
@@ -559,8 +556,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<SleepTime[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("sleep_time", params, accessToken) as unknown as Promise<SleepTime[]>;
+        return this.getDocuments<SleepTime>("sleep_time", startDate, endDate, accessToken);
     }
 
     /**
@@ -571,7 +567,7 @@ class OuraBase {
      * @returns {Promise<SleepTime>} A SleepTime typed object.
      */
     getSleepTime(documentId: string, accessToken?: string): Promise<SleepTime> {
-        return this.fetchData("sleep_time/" + documentId, undefined, accessToken) as unknown as Promise<SleepTime>;
+        return this.getDocumentById<SleepTime>("sleep_time", documentId, accessToken);
     }
 
     /**
@@ -588,8 +584,7 @@ class OuraBase {
         console.log(
             "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
         );
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("tag", params, accessToken) as unknown as Promise<Tag[]>;
+        return this.getDocuments<Tag>("tag", startDate, endDate, accessToken);
     }
 
     /**
@@ -605,7 +600,7 @@ class OuraBase {
         console.log(
             "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
         );
-        return this.fetchData("tag/" + documentId, undefined, accessToken) as unknown as Promise<Tag>;
+        return this.getDocumentById<Tag>("tag", documentId, accessToken);
     }
 
     /**
@@ -621,8 +616,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<VO2Max[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("vO2_max", params, accessToken) as unknown as Promise<VO2Max[]>;
+        return this.getDocuments<VO2Max>("vO2_max", startDate, endDate, accessToken);
     }
 
     /**
@@ -633,7 +627,7 @@ class OuraBase {
      * @returns {Promise<VO2Max>} A VO2Max typed object.
      */
     getVO2Max(documentId: string, accessToken?: string): Promise<VO2Max> {
-        return this.fetchData("vO2_max/" + documentId, undefined, accessToken) as unknown as Promise<VO2Max>;
+        return this.getDocumentById<VO2Max>("vO2_max", documentId, accessToken);
     }
 
     /**
@@ -649,8 +643,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<Workout[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("workout", params, accessToken) as unknown as Promise<Workout[]>;
+        return this.getDocuments<Workout>("workout", startDate, endDate, accessToken);
     }
 
     /**
@@ -661,7 +654,7 @@ class OuraBase {
      * @returns {Promise<Workout>} A Workout typed object.
      */
     getWorkout(documentId: string, accessToken?: string): Promise<Workout> {
-        return this.fetchData("workout/" + documentId, undefined, accessToken) as unknown as Promise<Workout>;
+        return this.getDocumentById<Workout>("workout", documentId, accessToken);
     }
 
     /**
@@ -681,8 +674,7 @@ class OuraBase {
         endDate: DateFormat,
         accessToken?: string,
     ): Promise<EnhancedTag[]> {
-        const params = { start_date: startDate, end_date: endDate };
-        return this.fetchData("enhanced_tag", params, accessToken) as unknown as Promise<EnhancedTag[]>;
+        return this.getDocuments<EnhancedTag>("enhanced_tag", startDate, endDate, accessToken);
     }
 
     /**
@@ -693,7 +685,7 @@ class OuraBase {
      * @returns {Promise<EnhancedTag>} A EnhancedTag typed object.
      */
     getEnhancedTag(documentId: string, accessToken?: string): Promise<EnhancedTag> {
-        return this.fetchData("enhanced_tag/" + documentId, undefined, accessToken) as unknown as Promise<EnhancedTag>;
+        return this.getDocumentById<EnhancedTag>("enhanced_tag", documentId, accessToken);
     }
 }
 
