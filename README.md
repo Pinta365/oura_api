@@ -10,6 +10,23 @@ Available as:
 
 ---
 
+## ⚠️ Oura API platform Deprecation Warning - Personal Access Tokens
+
+**The Oura API platform will deprecate Personal Access Tokens by the end of 2025.** This is part of an upcoming API
+platform update and claims to have no impact on production applications. The Oura API will remain fully available for
+integration.
+
+**For more information about this deprecation, see the [Oura API documentation](https://cloud.ouraring.com/v2/docs).**
+
+**For development and testing, we recommend:**
+
+- **Development server:** Run `deno run --allow-net examples/client-oauth.ts` for easy OAuth2 access token generation
+- **Sandbox mode:** Use the sandbox environment for testing without real data (see Sandbox Environment section below)
+
+**For production applications, please use OAuth2 as outlined in our authentication instructions below.**
+
+---
+
 ## ⚡️ Quickstart
 
 **Installation**
@@ -75,7 +92,8 @@ Our library simplifies OAuth2 authentication with these functions:
 - `async revokeAccessToken(accessToken: string): Promise<boolean>`
   - Revokes the specified access token.
 
-**Example Usage (Simplified)** See the `examples` folder for a basic implementation using Hono.
+**Example Usage (Simplified)** See the `examples` folder and `full-oauth-server.ts` for a basic implementation using
+Hono.
 
 ```javascript
 import { OuraOAuth } from "@pinta365/oura-api";
@@ -86,7 +104,7 @@ const oura = new OuraOAuth({
     redirectUri: "http://localhost:8000/callback",
 });
 
-// 1. Generate the authorization URL
+// 1. Generate the authorization URL with the personal scope
 const authUrl = oura.generateAuthUrl(["personal"]);
 
 // 2. Redirect the user to `authUrl`
@@ -100,6 +118,23 @@ app.get("/callback", async (c) => {
     // ... Store tokens securely and use the access_token for API calls
 });
 ```
+
+## 🚀 Client-Side Only OAuth Flow (Development)
+
+For easy development and testing, we provide sample code for the client-side only OAuth flow (implicit grant). This flow
+is perfect for getting Access Tokens quickly during development.
+
+**Development Server:**
+
+Run the included example development server for testing:
+
+```bash
+deno run --allow-net examples/client-oauth.ts
+```
+
+Then open `http://localhost:3000` in your browser and click "Start OAuth Flow" to get your access token.
+
+**Note:** This flow doesn't support refresh tokens - tokens expire after 30 days and require re-authentication.
 
 ## 📑 Documentation
 
