@@ -16,7 +16,7 @@ await build({
         deno: false,
     },
     package: {
-        name: pkg.name,
+        name: "oura_api",
         version: pkg.version,
         description:
             "ŌURA Cloud API. Interact with v2 of the Oura API using access tokens, OAuth2 or the Sandbox environment. Includes support for the Webhook subscriptions.",
