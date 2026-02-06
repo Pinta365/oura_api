@@ -10,8 +10,18 @@ import OuraBase from "./OuraBase.ts";
 import type { ApiOptionsBase } from "./OuraBase.ts";
 import { generateAuthUrl, getTokens, refreshToken, revokeToken } from "./utilsOAuth.ts";
 import type { OAuth2TokenResponse } from "./utilsOAuth.ts";
-import type { OAuthScope } from "./types/oura.ts";
 import { MissingClientIdError, MissingClientSecretError, MissingRedirectUriError, MissingTokenError } from "./utils.ts";
+
+/** OAuth2 scope values for the Oura API. */
+export type OAuthScope =
+    | "email"
+    | "personal"
+    | "daily"
+    | "heartrate"
+    | "workout"
+    | "tag User"
+    | "session"
+    | "spo2Daily";
 
 /**
  * Options for configuring the Oura OAuth API client.

@@ -11,7 +11,7 @@
  * ```
  */
 
-import type { OAuthScope } from "../src/types/oura.ts";
+import type { OAuthScope } from "../src/OuraOAuth.ts";
 
 // Configuration
 const CLIENT_ID = ""; // Replace with your actual client ID or supply it in the development server webpage

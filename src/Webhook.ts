@@ -5,7 +5,7 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
-import type { DataType, DeletedSubscription, EventType, Subscription } from "./types/webhook.ts";
+import type { ExtApiV2DataType, WebhookOperation, WebhookSubscriptionModel } from "./types/generated.ts";
 import { APIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
 
 /**
@@ -110,20 +110,20 @@ class Webhook {
     /**
      * Retrieves a list of current active webhook subscriptions.
      *
-     * @returns {Promise<Subscription[]>} An array of Subscription typed objects.
+     * @returns {Promise<WebhookSubscriptionModel[]>} An array of WebhookSubscriptionModel typed objects.
      */
-    listSubscriptions(): Promise<Subscription[]> {
-        return this.#request("GET", "subscription") as Promise<Subscription[]>;
+    listSubscriptions(): Promise<WebhookSubscriptionModel[]> {
+        return this.#request("GET", "subscription") as Promise<WebhookSubscriptionModel[]>;
     }
 
     /**
      * Retrieves a specific webhook subscription by id.
      *
-     * @param {string} id - Subscription id in string format.
-     * @returns {Promise<Subscription>} A Subscription typed object.
+     * @param {string} id - subscription id in string format.
+     * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object.
      */
-    getSubscription(id: string): Promise<Subscription> {
-        return this.#request("GET", "subscription/" + id) as Promise<Subscription>;
+    getSubscription(id: string): Promise<WebhookSubscriptionModel> {
+        return this.#request("GET", "subscription/" + id) as Promise<WebhookSubscriptionModel>;
     }
 
     /**
@@ -132,42 +132,42 @@ class Webhook {
      *
      * @param {string} callbackUrl - Your callback URL used by Oura to post subscription events to.
      * @param {string} verificationToken - Your verification token used to verify Oura's calls to your API.
-     * @param {EventType} eventType - One of the EventTypes.
-     * @param {DataType} dataType - One of the DataTypes.
-     * @returns {Promise<Subscription>} A Subscription typed object of the created subscription.
+     * @param {WebhookOperation} eventType - One of the WebhookOperations.
+     * @param {ExtApiV2DataType} dataType - One of the ExtApiV2DataTypes.
+     * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object of the created subscription.
      */
     createSubscription(
         callbackUrl: string,
         verificationToken: string,
-        eventType: EventType,
-        dataType: DataType,
-    ): Promise<Subscription> {
+        eventType: WebhookOperation,
+        dataType: ExtApiV2DataType,
+    ): Promise<WebhookSubscriptionModel> {
         const data = {
             callback_url: callbackUrl,
             verification_token: verificationToken,
             event_type: eventType,
             data_type: dataType,
         };
-        return this.#request("POST", "subscription", data) as Promise<Subscription>;
+        return this.#request("POST", "subscription", data) as Promise<WebhookSubscriptionModel>;
     }
 
     /**
      * Updates a webhook subscription.
      *
-     * @param {string} id - Subscription id in string format.
+     * @param {string} id - subscription id in string format.
      * @param {string} verificationToken - Your verification token used to verify Oura's calls to your API.
      * @param {string} [callbackUrl] - Callback URL used by Oura to post subscriptions to.
-     * @param {EventType} [eventType] - One of the EventTypes.
-     * @param {DataType} [dataType] - One of the DataTypes.
-     * @returns {Promise<Subscription>} A Subscription typed object of the updated subscription.
+     * @param {WebhookOperation} [eventType] - One of the WebhookOperations.
+     * @param {ExtApiV2DataType} [dataType] - One of the ExtApiV2DataTypes.
+     * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object of the updated subscription.
      */
     updateSubscription(
         id: string,
         verificationToken: string,
         callbackUrl?: string,
-        eventType?: EventType,
-        dataType?: DataType,
-    ): Promise<Subscription> {
+        eventType?: WebhookOperation,
+        dataType?: ExtApiV2DataType,
+    ): Promise<WebhookSubscriptionModel> {
         const data = {
             callback_url: callbackUrl,
             verification_token: verificationToken,
@@ -186,31 +186,29 @@ class Webhook {
         }
 
         return this.#request("PUT", "subscription/" + id, data) as Promise<
-            Subscription
+            WebhookSubscriptionModel
         >;
     }
 
     /**
      * Deletes a webhook subscription.
      *
-     * @param {string} id - Subscription id in string format.
-     * @returns {Promise<DeletedSubscription>} A DeletedSubscription typed object.
+     * @param {string} id - subscription id in string format.
+     * @returns {Promise<string>} The response body (empty string on success).
      */
-    deleteSubscription(id: string): Promise<DeletedSubscription> {
-        return this.#request("DELETE", "subscription/" + id) as Promise<
-            DeletedSubscription
-        >;
+    deleteSubscription(id: string): Promise<string> {
+        return this.#request("DELETE", "subscription/" + id) as Promise<string>;
     }
 
     /**
      * Renews the expiration time of a webhook subscription.
      *
-     * @param {string} id - Subscription id in string format.
-     * @returns {Promise<Subscription>} A Subscription typed object of the renewed subscription.
+     * @param {string} id - subscription id in string format.
+     * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object of the renewed subscription.
      */
-    renewSubscription(id: string): Promise<Subscription> {
+    renewSubscription(id: string): Promise<WebhookSubscriptionModel> {
         return this.#request("PUT", "subscription/renew/" + id) as Promise<
-            Subscription
+            WebhookSubscriptionModel
         >;
     }
 }

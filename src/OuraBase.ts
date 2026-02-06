@@ -5,28 +5,53 @@
  * @author Pinta <https://github.com/Pinta365>
  * @license MIT
  */
+
+/** Date string format for API date params (e.g. YYYY-MM-DD). */
+export type DateFormat = string;
+
 import type {
-    DailyActivity,
-    DailyCardiovascularAge,
-    DailyReadiness,
-    DailyResilience,
-    DailySession,
-    DailySleep,
-    DailySpo2,
-    DailyStress,
-    DateFormat,
-    EnhancedTag,
-    Heartrate,
-    PersonalInfo,
-    RestModePeriod,
-    RingConfiguration,
-    Sleep,
-    SleepTime,
-    Tag,
-    VO2Max,
-    Workout,
-} from "./types/oura.ts";
-export * from "./types/oura.ts";
+    DailyActivityModel,
+    DailyCardiovascularAgeModel,
+    DailyReadinessModel,
+    DailyResilienceModel,
+    DailySleepModel,
+    DailySpO2Model,
+    DailyStressModel,
+    EnhancedTagModel,
+    HeartRateModel,
+    PersonalInfoResponse,
+    PublicWorkout,
+    RestModePeriodModel,
+    RingConfigurationModel,
+    SessionModel,
+    SleepModel,
+    SleepTimeModel,
+    TagModel,
+    VO2MaxModel,
+} from "./types/generated.ts";
+export type {
+    DailyActivityModel,
+    DailyCardiovascularAgeModel,
+    DailyReadinessModel,
+    DailyResilienceModel,
+    DailySleepModel,
+    DailySpO2Model,
+    DailyStressModel,
+    EnhancedTagModel,
+    ExtApiV2DataType,
+    HeartRateModel,
+    PersonalInfoResponse,
+    PublicWorkout,
+    RestModePeriodModel,
+    RingConfigurationModel,
+    SessionModel,
+    SleepModel,
+    SleepTimeModel,
+    TagModel,
+    VO2MaxModel,
+    WebhookOperation,
+    WebhookSubscriptionModel,
+} from "./types/generated.ts";
 import { API_URLS, APIError, RateLimitExceeded, ValidationError } from "./utils.ts";
 
 /**
@@ -223,14 +248,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyActivity[]>} A array of DailyActivity objects.
+     * @returns {Promise<DailyActivityModel[]>} A array of DailyActivityModel objects.
      */
     getDailyActivityDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailyActivity[]> {
-        return this.getDocuments<DailyActivity>("daily_activity", startDate, endDate, accessToken);
+    ): Promise<DailyActivityModel[]> {
+        return this.getDocuments<DailyActivityModel>("daily_activity", startDate, endDate, accessToken);
     }
 
     /**
@@ -238,10 +263,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyActivity>} A DailyActivity typed object.
+     * @returns {Promise<DailyActivityModel>} A DailyActivityModel typed object.
      */
-    getDailyActivity(documentId: string, accessToken?: string): Promise<DailyActivity> {
-        return this.getDocumentById<DailyActivity>("daily_activity", documentId, accessToken);
+    getDailyActivity(documentId: string, accessToken?: string): Promise<DailyActivityModel> {
+        return this.getDocumentById<DailyActivityModel>("daily_activity", documentId, accessToken);
     }
 
     /**
@@ -250,14 +275,19 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyCardiovascularAge[]>} A array of DailyCardiovascularAge objects.
+     * @returns {Promise<DailyCardiovascularAgeModel[]>} A array of DailyCardiovascularAgeModel objects.
      */
     getDailyCardiovascularAgeDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailyCardiovascularAge[]> {
-        return this.getDocuments<DailyCardiovascularAge>("daily_cardiovascular_age", startDate, endDate, accessToken);
+    ): Promise<DailyCardiovascularAgeModel[]> {
+        return this.getDocuments<DailyCardiovascularAgeModel>(
+            "daily_cardiovascular_age",
+            startDate,
+            endDate,
+            accessToken,
+        );
     }
 
     /**
@@ -265,10 +295,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyCardiovascularAge>} A DailyCardiovascularAge typed object.
+     * @returns {Promise<DailyCardiovascularAgeModel>} A DailyCardiovascularAgeModel typed object.
      */
-    getDailyCardiovascularAge(documentId: string, accessToken?: string): Promise<DailyCardiovascularAge> {
-        return this.getDocumentById<DailyCardiovascularAge>("daily_cardiovascular_age", documentId, accessToken);
+    getDailyCardiovascularAge(documentId: string, accessToken?: string): Promise<DailyCardiovascularAgeModel> {
+        return this.getDocumentById<DailyCardiovascularAgeModel>("daily_cardiovascular_age", documentId, accessToken);
     }
 
     /**
@@ -277,14 +307,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyReadiness[]>} A array of DailyReadiness objects.
+     * @returns {Promise<DailyReadinessModel[]>} A array of DailyReadinessModel objects.
      */
     getDailyReadinessDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailyReadiness[]> {
-        return this.getDocuments<DailyReadiness>("daily_readiness", startDate, endDate, accessToken);
+    ): Promise<DailyReadinessModel[]> {
+        return this.getDocuments<DailyReadinessModel>("daily_readiness", startDate, endDate, accessToken);
     }
 
     /**
@@ -292,10 +322,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyReadiness>} A DailyReadiness typed object.
+     * @returns {Promise<DailyReadinessModel>} A DailyReadinessModel typed object.
      */
-    getDailyReadiness(documentId: string, accessToken?: string): Promise<DailyReadiness> {
-        return this.getDocumentById<DailyReadiness>("daily_readiness", documentId, accessToken);
+    getDailyReadiness(documentId: string, accessToken?: string): Promise<DailyReadinessModel> {
+        return this.getDocumentById<DailyReadinessModel>("daily_readiness", documentId, accessToken);
     }
 
     /**
@@ -304,14 +334,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyResilience[]>} A array of DailyResilience objects.
+     * @returns {Promise<DailyResilienceModel[]>} A array of DailyResilienceModel objects.
      */
     getDailyResilienceDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailyResilience[]> {
-        return this.getDocuments<DailyResilience>("daily_resilience", startDate, endDate, accessToken);
+    ): Promise<DailyResilienceModel[]> {
+        return this.getDocuments<DailyResilienceModel>("daily_resilience", startDate, endDate, accessToken);
     }
 
     /**
@@ -319,10 +349,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyResilience>} A DailyResilience typed object.
+     * @returns {Promise<DailyResilienceModel>} A DailyResilienceModel typed object.
      */
-    getDailyResilience(documentId: string, accessToken?: string): Promise<DailyResilience> {
-        return this.getDocumentById<DailyResilience>("daily_resilience", documentId, accessToken);
+    getDailyResilience(documentId: string, accessToken?: string): Promise<DailyResilienceModel> {
+        return this.getDocumentById<DailyResilienceModel>("daily_resilience", documentId, accessToken);
     }
 
     /**
@@ -331,14 +361,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySleep[]>} A array of DailySleep objects.
+     * @returns {Promise<DailySleepModel[]>} A array of DailySleepModel objects.
      */
     getDailySleepDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailySleep[]> {
-        return this.getDocuments<DailySleep>("daily_sleep", startDate, endDate, accessToken);
+    ): Promise<DailySleepModel[]> {
+        return this.getDocuments<DailySleepModel>("daily_sleep", startDate, endDate, accessToken);
     }
 
     /**
@@ -346,10 +376,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySleep>} A DailySleep typed object.
+     * @returns {Promise<DailySleepModel>} A DailySleepModel typed object.
      */
-    getDailySleep(documentId: string, accessToken?: string): Promise<DailySleep> {
-        return this.getDocumentById<DailySleep>("daily_sleep", documentId, accessToken);
+    getDailySleep(documentId: string, accessToken?: string): Promise<DailySleepModel> {
+        return this.getDocumentById<DailySleepModel>("daily_sleep", documentId, accessToken);
     }
 
     /**
@@ -359,14 +389,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySpo2[]>} A array of DailySpo2 objects.
+     * @returns {Promise<DailySpO2Model[]>} A array of DailySpO2Model objects.
      */
     getDailySpo2Documents(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailySpo2[]> {
-        return this.getDocuments<DailySpo2>("daily_spo2", startDate, endDate, accessToken);
+    ): Promise<DailySpO2Model[]> {
+        return this.getDocuments<DailySpO2Model>("daily_spo2", startDate, endDate, accessToken);
     }
 
     /**
@@ -375,10 +405,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySpo2>} A DailySpo2 typed object.
+     * @returns {Promise<DailySpO2Model>} A DailySpO2Model typed object.
      */
-    getDailySpo2(documentId: string, accessToken?: string): Promise<DailySpo2> {
-        return this.getDocumentById<DailySpo2>("daily_spo2", documentId, accessToken);
+    getDailySpo2(documentId: string, accessToken?: string): Promise<DailySpO2Model> {
+        return this.getDocumentById<DailySpO2Model>("daily_spo2", documentId, accessToken);
     }
 
     /**
@@ -387,14 +417,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyStress[]>} A array of DailyStress objects.
+     * @returns {Promise<DailyStressModel[]>} A array of DailyStressModel objects.
      */
     getDailyStressDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailyStress[]> {
-        return this.getDocuments<DailyStress>("daily_stress", startDate, endDate, accessToken);
+    ): Promise<DailyStressModel[]> {
+        return this.getDocuments<DailyStressModel>("daily_stress", startDate, endDate, accessToken);
     }
 
     /**
@@ -402,10 +432,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailyStress>} A DailyStress typed object.
+     * @returns {Promise<DailyStressModel>} A DailyStressModel typed object.
      */
-    getDailyStress(documentId: string, accessToken?: string): Promise<DailyStress> {
-        return this.getDocumentById<DailyStress>("daily_stress", documentId, accessToken);
+    getDailyStress(documentId: string, accessToken?: string): Promise<DailyStressModel> {
+        return this.getDocumentById<DailyStressModel>("daily_stress", documentId, accessToken);
     }
 
     /**
@@ -414,25 +444,25 @@ class OuraBase {
      * @param {string} startDateTime - Start date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
      * @param {string} endDateTime - End date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Heartrate[]>} A array of Heartrate objects.
+     * @returns {Promise<HeartRateModel[]>} A array of HeartRateModel objects.
      */
     getHeartrate(
         startDateTime: string,
         endDateTime: string,
         accessToken?: string,
-    ): Promise<Heartrate[]> {
+    ): Promise<HeartRateModel[]> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
-        return this.fetchData("heartrate", params, accessToken) as unknown as Promise<Heartrate[]>;
+        return this.fetchData("heartrate", params, accessToken) as unknown as Promise<HeartRateModel[]>;
     }
 
     /**
      * Retrieves personal information about the user.
      *
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<PersonalInfo>} A PersonalInfo typed object.
+     * @returns {Promise<PersonalInfoResponse>} A PersonalInfoResponse typed object.
      */
-    getPersonalInfo(accessToken?: string): Promise<PersonalInfo> {
-        return this.fetchData("personal_info", undefined, accessToken) as unknown as Promise<PersonalInfo>;
+    getPersonalInfo(accessToken?: string): Promise<PersonalInfoResponse> {
+        return this.fetchData("personal_info", undefined, accessToken) as unknown as Promise<PersonalInfoResponse>;
     }
 
     /**
@@ -441,14 +471,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<RestModePeriod[]>} A array of RestModePeriod objects.
+     * @returns {Promise<RestModePeriodModel[]>} A array of RestModePeriodModel objects.
      */
     getRestModePeriodDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<RestModePeriod[]> {
-        return this.getDocuments<RestModePeriod>("rest_mode_period", startDate, endDate, accessToken);
+    ): Promise<RestModePeriodModel[]> {
+        return this.getDocuments<RestModePeriodModel>("rest_mode_period", startDate, endDate, accessToken);
     }
 
     /**
@@ -456,10 +486,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<RestModePeriod>} A RestModePeriod typed object.
+     * @returns {Promise<RestModePeriodModel>} A RestModePeriodModel typed object.
      */
-    getRestModePeriod(documentId: string, accessToken?: string): Promise<RestModePeriod> {
-        return this.getDocumentById<RestModePeriod>("rest_mode_period", documentId, accessToken);
+    getRestModePeriod(documentId: string, accessToken?: string): Promise<RestModePeriodModel> {
+        return this.getDocumentById<RestModePeriodModel>("rest_mode_period", documentId, accessToken);
     }
 
     /**
@@ -468,14 +498,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<RingConfiguration[]>} A array of RingConfiguration objects.
+     * @returns {Promise<RingConfigurationModel[]>} A array of RingConfigurationModel objects.
      */
     getRingConfigurationDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<RingConfiguration[]> {
-        return this.getDocuments<RingConfiguration>("ring_configuration", startDate, endDate, accessToken);
+    ): Promise<RingConfigurationModel[]> {
+        return this.getDocuments<RingConfigurationModel>("ring_configuration", startDate, endDate, accessToken);
     }
 
     /**
@@ -483,10 +513,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<RingConfiguration>} A RingConfiguration typed object.
+     * @returns {Promise<RingConfigurationModel>} A RingConfigurationModel typed object.
      */
-    getRingConfiguration(documentId: string, accessToken?: string): Promise<RingConfiguration> {
-        return this.getDocumentById<RingConfiguration>("ring_configuration", documentId, accessToken);
+    getRingConfiguration(documentId: string, accessToken?: string): Promise<RingConfigurationModel> {
+        return this.getDocumentById<RingConfigurationModel>("ring_configuration", documentId, accessToken);
     }
 
     /**
@@ -495,14 +525,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySession[]>} A array of DailySession objects.
+     * @returns {Promise<SessionModel[]>} A array of SessionModel objects.
      */
     getDailySessionDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<DailySession[]> {
-        return this.getDocuments<DailySession>("session", startDate, endDate, accessToken);
+    ): Promise<SessionModel[]> {
+        return this.getDocuments<SessionModel>("session", startDate, endDate, accessToken);
     }
 
     /**
@@ -510,10 +540,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<DailySession>} A DailySession typed object.
+     * @returns {Promise<SessionModel>} A SessionModel typed object.
      */
-    getDailySession(documentId: string, accessToken?: string): Promise<DailySession> {
-        return this.getDocumentById<DailySession>("session", documentId, accessToken);
+    getDailySession(documentId: string, accessToken?: string): Promise<SessionModel> {
+        return this.getDocumentById<SessionModel>("session", documentId, accessToken);
     }
 
     /**
@@ -522,14 +552,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Sleep[]>} A array of SleepDocuments objects.
+     * @returns {Promise<SleepModel[]>} A array of SleepModel objects.
      */
     getSleepDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<Sleep[]> {
-        return this.getDocuments<Sleep>("sleep", startDate, endDate, accessToken);
+    ): Promise<SleepModel[]> {
+        return this.getDocuments<SleepModel>("sleep", startDate, endDate, accessToken);
     }
 
     /**
@@ -537,10 +567,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Sleep>} A Sleep typed object.
+     * @returns {Promise<SleepModel>} A Sleep typed object.
      */
-    getSleep(documentId: string, accessToken?: string): Promise<Sleep> {
-        return this.getDocumentById<Sleep>("sleep", documentId, accessToken);
+    getSleep(documentId: string, accessToken?: string): Promise<SleepModel> {
+        return this.getDocumentById<SleepModel>("sleep", documentId, accessToken);
     }
 
     /**
@@ -549,14 +579,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<SleepTime[]>} A array of SleepTime objects.
+     * @returns {Promise<SleepTimeModel[]>} A array of SleepTimeModel objects.
      */
     getSleepTimeDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<SleepTime[]> {
-        return this.getDocuments<SleepTime>("sleep_time", startDate, endDate, accessToken);
+    ): Promise<SleepTimeModel[]> {
+        return this.getDocuments<SleepTimeModel>("sleep_time", startDate, endDate, accessToken);
     }
 
     /**
@@ -564,10 +594,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<SleepTime>} A SleepTime typed object.
+     * @returns {Promise<SleepTimeModel>} A SleepTimeModel typed object.
      */
-    getSleepTime(documentId: string, accessToken?: string): Promise<SleepTime> {
-        return this.getDocumentById<SleepTime>("sleep_time", documentId, accessToken);
+    getSleepTime(documentId: string, accessToken?: string): Promise<SleepTimeModel> {
+        return this.getDocumentById<SleepTimeModel>("sleep_time", documentId, accessToken);
     }
 
     /**
@@ -578,13 +608,13 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Tag[]>} A array of Tag objects.
+     * @returns {Promise<TagModel[]>} A array of TagModel objects.
      */
-    getTagDocuments(startDate: DateFormat, endDate: DateFormat, accessToken?: string): Promise<Tag[]> {
+    getTagDocuments(startDate: DateFormat, endDate: DateFormat, accessToken?: string): Promise<TagModel[]> {
         console.log(
             "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
         );
-        return this.getDocuments<Tag>("tag", startDate, endDate, accessToken);
+        return this.getDocuments<TagModel>("tag", startDate, endDate, accessToken);
     }
 
     /**
@@ -594,40 +624,40 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Tag>} A Tag typed object.
+     * @returns {Promise<TagModel>} A Tag typed object.
      */
-    getTag(documentId: string, accessToken?: string): Promise<Tag> {
+    getTag(documentId: string, accessToken?: string): Promise<TagModel> {
         console.log(
             "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
         );
-        return this.getDocumentById<Tag>("tag", documentId, accessToken);
+        return this.getDocumentById<TagModel>("tag", documentId, accessToken);
     }
 
     /**
-     * Retrieves VO2Max documents for a specified date range.
+     * Retrieves VO2MaxModel documents for a specified date range.
      *
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<VO2Max[]>} A array of VO2Max objects.
+     * @returns {Promise<VO2MaxModel[]>} A array of VO2MaxModel objects.
      */
-    getVO2MaxDocuments(
+    getVO2MaxModelDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<VO2Max[]> {
-        return this.getDocuments<VO2Max>("vO2_max", startDate, endDate, accessToken);
+    ): Promise<VO2MaxModel[]> {
+        return this.getDocuments<VO2MaxModel>("vO2_max", startDate, endDate, accessToken);
     }
 
     /**
-     * Retrieves a single VO2Max document by its ID.
+     * Retrieves a single VO2MaxModel document by its ID.
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<VO2Max>} A VO2Max typed object.
+     * @returns {Promise<VO2MaxModel>} A VO2MaxModel typed object.
      */
-    getVO2Max(documentId: string, accessToken?: string): Promise<VO2Max> {
-        return this.getDocumentById<VO2Max>("vO2_max", documentId, accessToken);
+    getVO2MaxModel(documentId: string, accessToken?: string): Promise<VO2MaxModel> {
+        return this.getDocumentById<VO2MaxModel>("vO2_max", documentId, accessToken);
     }
 
     /**
@@ -636,14 +666,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Workout[]>} A array of Workout objects.
+     * @returns {Promise<PublicWorkout[]>} A array of PublicWorkout objects.
      */
     getWorkoutDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<Workout[]> {
-        return this.getDocuments<Workout>("workout", startDate, endDate, accessToken);
+    ): Promise<PublicWorkout[]> {
+        return this.getDocuments<PublicWorkout>("workout", startDate, endDate, accessToken);
     }
 
     /**
@@ -651,10 +681,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<Workout>} A Workout typed object.
+     * @returns {Promise<PublicWorkout>} A PublicWorkout typed object.
      */
-    getWorkout(documentId: string, accessToken?: string): Promise<Workout> {
-        return this.getDocumentById<Workout>("workout", documentId, accessToken);
+    getWorkout(documentId: string, accessToken?: string): Promise<PublicWorkout> {
+        return this.getDocumentById<PublicWorkout>("workout", documentId, accessToken);
     }
 
     /**
@@ -667,14 +697,14 @@ class OuraBase {
      * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<EnhancedTag[]>} A array of EnhancedTag objects.
+     * @returns {Promise<EnhancedTagModel[]>} A array of EnhancedTagModel objects.
      */
     getEnhancedTagDocuments(
         startDate: DateFormat,
         endDate: DateFormat,
         accessToken?: string,
-    ): Promise<EnhancedTag[]> {
-        return this.getDocuments<EnhancedTag>("enhanced_tag", startDate, endDate, accessToken);
+    ): Promise<EnhancedTagModel[]> {
+        return this.getDocuments<EnhancedTagModel>("enhanced_tag", startDate, endDate, accessToken);
     }
 
     /**
@@ -682,10 +712,10 @@ class OuraBase {
      *
      * @param {string} documentId - The document ID in string format.
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
-     * @returns {Promise<EnhancedTag>} A EnhancedTag typed object.
+     * @returns {Promise<EnhancedTagModel>} A EnhancedTagModel typed object.
      */
-    getEnhancedTag(documentId: string, accessToken?: string): Promise<EnhancedTag> {
-        return this.getDocumentById<EnhancedTag>("enhanced_tag", documentId, accessToken);
+    getEnhancedTag(documentId: string, accessToken?: string): Promise<EnhancedTagModel> {
+        return this.getDocumentById<EnhancedTagModel>("enhanced_tag", documentId, accessToken);
     }
 }
 
