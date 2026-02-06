@@ -8,7 +8,7 @@
 
     "tasks": {
         "build_npm": "deno run -A scripts/build_npm.ts",
-        "publish-dry": "deno publish --dry-run"
+        "generate_types": "deno run -A scripts/generate_types.ts"
     },
     "lint": {
         "include": ["src"]
