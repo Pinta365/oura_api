@@ -1,7 +1,6 @@
 # OURA_API
 
-Interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs) using Personal Access Tokens, OAuth2, or the
-Sandbox environment.
+Interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs) using OAuth2 or the Sandbox environment.
 
 Available as:
 
@@ -10,20 +9,16 @@ Available as:
 
 ---
 
-## ⚠️ Oura API platform Deprecation Warning - Personal Access Tokens
+## ⚠️ Personal Access Tokens (PATs) no longer supported
 
-**The Oura API platform will deprecate Personal Access Tokens by the end of 2025.** This is part of an upcoming API
-platform update and claims to have no impact on production applications. The Oura API will remain fully available for
-integration.
+**The Oura API platform has deprecated direct Personal Access Tokens.** Authentication is now done via **OAuth2** only.
 
-**For more information about this deprecation, see the [Oura API documentation](https://cloud.ouraring.com/v2/docs).**
+**For development and testing:**
 
-**For development and testing, we recommend:**
-
-- **Development server:** Run `deno run --allow-net examples/client-oauth.ts` for easy OAuth2 access token generation
+- **Development server:** Run `deno run --allow-net examples/client-oauth.ts` to obtain OAuth2 access tokens
 - **Sandbox mode:** Use the sandbox environment for testing without real data (see Sandbox Environment section below)
 
-**For production applications, please use OAuth2 as outlined in our authentication instructions below.**
+**For production,** use OAuth2 as described in the authentication section below.
 
 ---
 
@@ -50,7 +45,7 @@ npm install oura_api --save
 ```javascript
 import { Oura } from "@pinta365/oura-api";
 
-const accessToken = "YOUR_PERSONAL_ACCESS_TOKEN";
+const accessToken = "YOUR_ACCESS_TOKEN";
 const oura = new Oura(accessToken);
 
 const personalInfo = await oura.getPersonalInfo();
