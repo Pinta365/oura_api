@@ -1,6 +1,7 @@
 # OURA_API
 
-Interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs) using OAuth2 or the Sandbox environment.
+Interact with v2 of the [Oura API](https://cloud.ouraring.com/v2/docs) using Access Token, OAuth2 or the Sandbox
+environment.
 
 Available as:
 

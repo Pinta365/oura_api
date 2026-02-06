@@ -1,25 +1,26 @@
-// ex. scripts/build_npm.ts
-import { build, emptyDir } from "jsr:@deno/dnt";
+// scripts/build_npm.ts
+// deno-lint-ignore no-import-prefix
+import { build, emptyDir } from "jsr:@deno/dnt@0.42.3";
 
-await emptyDir("./npm");
+import pkg from "../deno.json" with { type: "json" };
+
+const outputDir = "./npm";
+
+await emptyDir(outputDir);
 
 await build({
+    importMap: "deno.json",
     entryPoints: ["./mod.ts"],
-    outDir: "./npm",
-    //scriptModule: false,
-    test: false,
+    outDir: outputDir,
     shims: {
-        deno: "dev",
+        deno: false,
     },
     package: {
-        // package.json properties
-        name: "oura_api",
-        version: Deno.args[0],
+        name: pkg.name,
+        version: pkg.version,
         description:
-            "ŌURA Cloud API. Interact with v2 of the Oura API using Personal Access Tokens, OAuth2, or the Sandbox environment. Includes support for the Webhook subscriptions.",
+            "ŌURA Cloud API. Interact with v2 of the Oura API using access tokens, OAuth2 or the Sandbox environment. Includes support for the Webhook subscriptions.",
         license: "MIT",
-        author: "Pinta <https://github.com/Pinta365>",
-        keywords: ["oura", "health data", "sleep", "activity", "readiness", "resilience", "api", "oauth", "oauth2"],
         repository: {
             type: "git",
             url: "git+https://github.com/Pinta365/oura_api.git",
@@ -27,10 +28,41 @@ await build({
         bugs: {
             url: "https://github.com/Pinta365/oura_api/issues",
         },
+        homepage: "https://github.com/Pinta365/oura_api",
+        keywords: [
+            "oura",
+            "health data",
+            "sleep",
+            "activity",
+            "readiness",
+            "resilience",
+            "api",
+            "oauth",
+            "oauth2",
+        ],
     },
-    postBuild() {
-        // steps to run after building and before running the tests
+    async postBuild() {
         Deno.copyFileSync("LICENSE", "npm/LICENSE");
         Deno.copyFileSync("README.md", "npm/README.md");
+        const npmIgnore = "npm/.npmignore";
+        const npmIgnoreContent = [
+            "*.map",
+            "scripts/",
+            ".github/",
+        ].join("\n");
+        try {
+            const content = await Deno.readTextFile(npmIgnore);
+            await Deno.writeTextFile(npmIgnore, content + "\n" + npmIgnoreContent);
+        } catch {
+            await Deno.writeTextFile(npmIgnore, npmIgnoreContent);
+        }
+    },
+    typeCheck: false,
+    test: false,
+    compilerOptions: {
+        lib: ["ESNext", "DOM", "DOM.Iterable"],
+        sourceMap: false,
+        inlineSources: false,
+        skipLibCheck: true,
     },
 });
