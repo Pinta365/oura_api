@@ -299,7 +299,7 @@ export function registerTools(server: McpServer, client: OuraOAuth, options: Reg
             inputSchema: DATE_RANGE,
         },
         withToken(async ({ start_date, end_date }: DateRange, accessToken) => {
-            return await client.getVO2MaxModelDocuments(start_date, end_date, accessToken);
+            return await client.getVO2MaxDocuments(start_date, end_date, accessToken);
         }),
     );
 
