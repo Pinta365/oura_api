@@ -119,7 +119,7 @@ function createMainPage(): string {
                     <button onclick="setScopes()">Set Scopes</button>
                 </div>
                 <p style="margin-top: 10px; font-size: 14px; color: #666;">
-                    You can find your Client ID in your <a href="https://cloud.ouraring.com/oauth/applications" target="_blank">Oura OAuth Applications</a> page.
+                    You can find your Client ID at the <a href="https://developer.ouraring.com/" target="_blank">Oura developer portal</a>.
                 </p>
             </div>
             <div class="info" id="clientIdReady">
