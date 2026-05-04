@@ -493,19 +493,31 @@ class OuraBase {
     }
 
     /**
-     * Retrieves ring configuration information for a specified date range.
+     * Retrieves ring configuration information.
      *
-     * @param {string} startDate - Start date of the period in string format (e.g., 'YYYY-MM-DD').
-     * @param {string} endDate - End date of the period in string format (e.g., 'YYYY-MM-DD').
+     * This endpoint does not support start/end date filtering.
+     *
      * @param {string} [accessToken] - Optional access token for OAuth driven calls.
      * @returns {Promise<RingConfigurationModel[]>} A array of RingConfigurationModel objects.
      */
+    getRingConfigurationDocuments(accessToken?: string): Promise<RingConfigurationModel[]>;
+
+    /**
+     * @deprecated Date-range arguments are ignored for this endpoint and are kept for backward compatibility.
+     */
     getRingConfigurationDocuments(
-        startDate: DateFormat,
-        endDate: DateFormat,
+        _startDate: DateFormat,
+        _endDate: DateFormat,
+        accessToken?: string,
+    ): Promise<RingConfigurationModel[]>;
+
+    getRingConfigurationDocuments(
+        startDateOrAccessToken?: DateFormat,
+        _endDate?: DateFormat,
         accessToken?: string,
     ): Promise<RingConfigurationModel[]> {
-        return this.getDocuments<RingConfigurationModel>("ring_configuration", startDate, endDate, accessToken);
+        const token = accessToken ?? (startDateOrAccessToken && !_endDate ? startDateOrAccessToken : undefined);
+        return this.fetchData("ring_configuration", undefined, token) as unknown as Promise<RingConfigurationModel[]>;
     }
 
     /**

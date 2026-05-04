@@ -283,12 +283,12 @@ export function registerTools(server: McpServer, client: OuraOAuth, options: Reg
         "get_ring_configuration",
         {
             title: "Get ring hardware configuration",
-            description: "Ring hardware metadata for a date range: generation, color, size, hardware type, " +
-                "and firmware version. Useful for capability checks (e.g. SpO2 requires Gen 3+).",
-            inputSchema: DATE_RANGE,
+            description: "Ring hardware metadata: generation, color, size, hardware type, and firmware " +
+                "version. Useful for capability checks (e.g. SpO2 requires Gen 3+).",
+            inputSchema: {},
         },
-        withToken(async ({ start_date, end_date }: DateRange, accessToken) => {
-            return await client.getRingConfigurationDocuments(start_date, end_date, accessToken);
+        withToken(async (_args: Record<string, never>, accessToken) => {
+            return await client.getRingConfigurationDocuments(accessToken);
         }),
     );
 }
