@@ -13,7 +13,9 @@ import type { TokenManager } from "./token_manager.ts";
 const DATE = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).describe("Date in YYYY-MM-DD format");
 const DATETIME = z.string().describe("Date-time in YYYY-MM-DDTHH:mm:ss format");
 const DATE_RANGE = { start_date: DATE, end_date: DATE } as const;
+const DATETIME_RANGE = { start_datetime: DATETIME, end_datetime: DATETIME } as const;
 type DateRange = { start_date: string; end_date: string };
+type DateTimeRange = { start_datetime: string; end_datetime: string };
 
 function ok(data: unknown) {
     return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
@@ -169,14 +171,50 @@ export function registerTools(server: McpServer, client: OuraOAuth, options: Reg
             description: "Heart rate measurements for a datetime range. Each entry has bpm, source " +
                 "(awake, sleep, workout, rest, etc.), and timestamp. Datetimes are ISO 8601 — pass either " +
                 "naive `YYYY-MM-DDTHH:mm:ss` or with timezone, e.g. `2026-05-04T00:00:00+02:00`.",
-            inputSchema: { start_datetime: DATETIME, end_datetime: DATETIME },
+            inputSchema: DATETIME_RANGE,
         },
         withToken(
             async (
-                { start_datetime, end_datetime }: { start_datetime: string; end_datetime: string },
+                { start_datetime, end_datetime }: DateTimeRange,
                 accessToken,
             ) => {
                 return await client.getHeartrate(start_datetime, end_datetime, accessToken);
+            },
+        ),
+    );
+
+    server.registerTool(
+        "get_ring_battery_level",
+        {
+            title: "Get ring battery level data",
+            description: "Ring battery level samples for a datetime range. Datetimes are ISO 8601 — pass either " +
+                "naive `YYYY-MM-DDTHH:mm:ss` or with timezone, e.g. `2026-05-04T00:00:00+02:00`.",
+            inputSchema: DATETIME_RANGE,
+        },
+        withToken(
+            async (
+                { start_datetime, end_datetime }: DateTimeRange,
+                accessToken,
+            ) => {
+                return await client.getRingBatteryLevel(start_datetime, end_datetime, accessToken);
+            },
+        ),
+    );
+
+    server.registerTool(
+        "get_interbeat_interval",
+        {
+            title: "Get interbeat interval data",
+            description: "Interbeat interval samples for a datetime range. Datetimes are ISO 8601 — pass either " +
+                "naive `YYYY-MM-DDTHH:mm:ss` or with timezone, e.g. `2026-05-04T00:00:00+02:00`.",
+            inputSchema: DATETIME_RANGE,
+        },
+        withToken(
+            async (
+                { start_datetime, end_datetime }: DateTimeRange,
+                accessToken,
+            ) => {
+                return await client.getInterbeatInterval(start_datetime, end_datetime, accessToken);
             },
         ),
     );
