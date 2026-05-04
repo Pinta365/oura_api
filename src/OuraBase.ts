@@ -19,9 +19,11 @@ import type {
     DailyStressModel,
     EnhancedTagModel,
     HeartRateModel,
+    InterbeatIntervalModel,
     PersonalInfoResponse,
     PublicWorkout,
     RestModePeriodModel,
+    RingBatteryLevelModel,
     RingConfigurationModel,
     SessionModel,
     SleepModel,
@@ -40,9 +42,11 @@ export type {
     EnhancedTagModel,
     ExtApiV2DataType,
     HeartRateModel,
+    InterbeatIntervalModel,
     PersonalInfoResponse,
     PublicWorkout,
     RestModePeriodModel,
+    RingBatteryLevelModel,
     RingConfigurationModel,
     SessionModel,
     SleepModel,
@@ -453,6 +457,40 @@ class OuraBase {
     ): Promise<HeartRateModel[]> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
         return this.fetchData("heartrate", params, accessToken) as unknown as Promise<HeartRateModel[]>;
+    }
+
+    /**
+     * Retrieves ring battery level data for a specified date and time period.
+     *
+     * @param {string} startDateTime - Start date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @param {string} endDateTime - End date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<RingBatteryLevelModel[]>} A array of RingBatteryLevelModel objects.
+     */
+    getRingBatteryLevel(
+        startDateTime: string,
+        endDateTime: string,
+        accessToken?: string,
+    ): Promise<RingBatteryLevelModel[]> {
+        const params = { start_datetime: startDateTime, end_datetime: endDateTime };
+        return this.fetchData("ring_battery_level", params, accessToken) as unknown as Promise<RingBatteryLevelModel[]>;
+    }
+
+    /**
+     * Retrieves interbeat interval data for a specified date and time period.
+     *
+     * @param {string} startDateTime - Start date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @param {string} endDateTime - End date and time of the period in string format (e.g., 'YYYY-MM-DDTHH:mm:ss').
+     * @param {string} [accessToken] - Optional access token for OAuth driven calls.
+     * @returns {Promise<InterbeatIntervalModel[]>} A array of InterbeatIntervalModel objects.
+     */
+    getInterbeatInterval(
+        startDateTime: string,
+        endDateTime: string,
+        accessToken?: string,
+    ): Promise<InterbeatIntervalModel[]> {
+        const params = { start_datetime: startDateTime, end_datetime: endDateTime };
+        return this.fetchData("interbeat_interval", params, accessToken) as unknown as Promise<InterbeatIntervalModel[]>;
     }
 
     /**

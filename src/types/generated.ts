@@ -457,6 +457,34 @@ export interface HeartRateModel {
 }
 
 /**
+ * RingBatteryLevelModel
+ *
+ * Used by:
+ *  - GET /v2/usercollection/ring_battery_level
+ *  - GET /v2/sandbox/usercollection/ring_battery_level
+ */
+export interface RingBatteryLevelModel {
+    /** LocalDateTime */
+    timestamp: LocalDateTime;
+    /** Additional endpoint-specific fields returned by Oura. */
+    [key: string]: unknown;
+}
+
+/**
+ * InterbeatIntervalModel
+ *
+ * Used by:
+ *  - GET /v2/usercollection/interbeat_interval
+ *  - GET /v2/sandbox/usercollection/interbeat_interval
+ */
+export interface InterbeatIntervalModel {
+    /** LocalDateTime */
+    timestamp: LocalDateTime;
+    /** Additional endpoint-specific fields returned by Oura. */
+    [key: string]: unknown;
+}
+
+/**
  * HeartRateSource
  *
  * Used by:
@@ -1404,6 +1432,34 @@ export interface TagModel {
 export interface TimeSeriesResponseHeartRateModel_ {
     /** Data */
     data: HeartRateModel[];
+    /** Next Token */
+    next_token?: string | null;
+}
+
+/**
+ * TimeSeriesResponse[RingBatteryLevelModel]
+ *
+ * Used by:
+ *  - GET /v2/usercollection/ring_battery_level
+ *  - GET /v2/sandbox/usercollection/ring_battery_level
+ */
+export interface TimeSeriesResponseRingBatteryLevelModel_ {
+    /** Data */
+    data: RingBatteryLevelModel[];
+    /** Next Token */
+    next_token?: string | null;
+}
+
+/**
+ * TimeSeriesResponse[InterbeatIntervalModel]
+ *
+ * Used by:
+ *  - GET /v2/usercollection/interbeat_interval
+ *  - GET /v2/sandbox/usercollection/interbeat_interval
+ */
+export interface TimeSeriesResponseInterbeatIntervalModel_ {
+    /** Data */
+    data: InterbeatIntervalModel[];
     /** Next Token */
     next_token?: string | null;
 }
