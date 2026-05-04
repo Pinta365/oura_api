@@ -7,6 +7,7 @@ Available as:
 
 - ESM module: [JSR](https://jsr.io/@pinta365/oura-api)
 - CommonJS module: [NPM](https://www.npmjs.com/package/oura_api)
+- MCP server for AI assistants (Claude Desktop, Cursor, Windsurf, and more): [MCP.md](MCP.md)
 
 ---
 
