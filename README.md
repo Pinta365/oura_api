@@ -136,6 +136,8 @@ Then open `http://localhost:3000` in your browser and click "Start OAuth Flow" t
 ## 📑 Documentation
 
 - Full API reference: [JSR Documentation](https://jsr.io/@pinta365/oura-api/doc)
+- Migrating from v1? See the [v2.0.0 release notes](https://github.com/Pinta365/oura_api/releases/tag/2.0.0) for
+  breaking changes and migration details.
 
 ### Included data scopes for v2 of the API.
 
