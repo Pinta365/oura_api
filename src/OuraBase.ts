@@ -490,7 +490,9 @@ class OuraBase {
         accessToken?: string,
     ): Promise<InterbeatIntervalModel[]> {
         const params = { start_datetime: startDateTime, end_datetime: endDateTime };
-        return this.fetchData("interbeat_interval", params, accessToken) as unknown as Promise<InterbeatIntervalModel[]>;
+        return this.fetchData("interbeat_interval", params, accessToken) as unknown as Promise<
+            InterbeatIntervalModel[]
+        >;
     }
 
     /**
