@@ -20,8 +20,11 @@ export const API_URLS = {
  * @extends {Error}
  */
 export class APIError extends Error {
+    /** The HTTP status code. */
     statusCode: number;
+    /** The raw response body text. */
     responseBody: string;
+    /** The `detail` field of a JSON error body, or the raw body text if there is none. */
     detail: string;
     url: string;
     method: string;
@@ -73,7 +76,7 @@ export class ValidationError extends APIError {
      * Creates a new ValidationError instance.
      * @param {string} message - The error message.
      * @param {number} statusCode - The HTTP status code.
-     * @param {string} statusText - The HTTP status text.
+     * @param {string} responseBody - The raw response body text.
      * @param {string} detail - Detailed error message.
      * @param {string} url - The API endpoint URL.
      * @param {string} method - The HTTP method.
@@ -81,14 +84,49 @@ export class ValidationError extends APIError {
     constructor(
         message: string,
         statusCode: number,
-        statusText: string,
+        responseBody: string,
         detail: string,
         url: string,
         method: string,
     ) {
-        super(message, statusCode, statusText, detail, url, method);
+        super(message, statusCode, responseBody, detail, url, method);
         this.name = "ValidationError";
     }
+}
+
+/**
+ * Builds an APIError (or subclass) from a failed response, reading the body once.
+ * `detail` is taken from a JSON `{ "detail": ... }` body when present, otherwise the raw body text.
+ *
+ * @param {typeof APIError} ErrorClass - APIError or one of its subclasses.
+ * @param {string} message - The error message.
+ * @param {Response} response - The failed fetch response.
+ * @param {string} url - The request URL to report (must not contain secrets).
+ * @param {string} method - The HTTP method.
+ * @returns {Promise<APIError>} The constructed error.
+ */
+export async function createAPIError(
+    ErrorClass: typeof APIError,
+    message: string,
+    response: Response,
+    url: string,
+    method: string,
+): Promise<APIError> {
+    let body = "";
+    try {
+        body = await response.text();
+    } catch {
+        // Body unreadable (e.g. connection dropped); fall through with an empty body.
+    }
+    let detail = body || response.statusText || "No details";
+    try {
+        const parsed = JSON.parse(body) as { detail?: unknown };
+        if (typeof parsed?.detail === "string") detail = parsed.detail;
+        else if (parsed?.detail !== undefined) detail = JSON.stringify(parsed.detail);
+    } catch {
+        // Not JSON; keep the raw body as the detail.
+    }
+    return new ErrorClass(message, response.status, body, detail, url, method);
 }
 
 /**

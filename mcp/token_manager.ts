@@ -29,6 +29,7 @@ export class TokenManager {
     #tokens: StoredTokens | null = null;
     #pending: PendingFlow | null = null;
     #lastError: string | null = null;
+    #refreshing: Promise<StoredTokens> | null = null;
 
     async load(): Promise<void> {
         this.#tokens = await readTokens();
@@ -52,21 +53,30 @@ export class TokenManager {
         if (!this.#tokens) return null;
 
         if (Date.now() >= this.#tokens.expiresAt - 60_000) {
-            const refreshed = await refreshToken(
-                this.#tokens.clientId,
-                this.#tokens.clientSecret,
-                this.#tokens.refreshToken,
-            );
-            this.#tokens = {
-                ...this.#tokens,
-                accessToken: refreshed.access_token,
-                refreshToken: refreshed.refresh_token,
-                expiresAt: Date.now() + refreshed.expires_in * 1000,
-            };
-            await writeTokens(this.#tokens);
+            // Oura refresh tokens are single-use, so concurrent callers must share one refresh.
+            this.#refreshing ??= this.#refresh(this.#tokens).finally(() => {
+                this.#refreshing = null;
+            });
+            return (await this.#refreshing).accessToken;
         }
 
         return this.#tokens.accessToken;
+    }
+
+    async #refresh(current: StoredTokens): Promise<StoredTokens> {
+        const refreshed = await refreshToken(current.clientId, current.clientSecret, current.refreshToken);
+        const next: StoredTokens = {
+            ...current,
+            accessToken: refreshed.access_token,
+            refreshToken: refreshed.refresh_token,
+            expiresAt: Date.now() + refreshed.expires_in * 1000,
+        };
+        // Don't clobber tokens from a re-authorization that completed while this refresh was in flight.
+        if (this.#tokens === current) {
+            this.#tokens = next;
+            await writeTokens(next);
+        }
+        return this.#tokens ?? next;
     }
 
     getCredentials(): { clientId: string; clientSecret: string; redirectUri: string } | null {

@@ -6,7 +6,7 @@
  * @license MIT
  */
 import type { ExtApiV2DataType, WebhookOperation, WebhookSubscriptionModel } from "./types/generated.ts";
-import { APIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
+import { APIError, createAPIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
 
 /**
  * Base class for the Oura Webhook Subscription API
@@ -77,34 +77,15 @@ class Webhook {
             };
         }
 
-        const response = await fetch(this.#baseUrlv2 + encodeURI(url), options);
+        const response = await fetch(this.#baseUrlv2 + url, options);
 
-        if (response.ok) {
-            if (method === "DELETE") {
-                return await response.text();
-            } else {
-                return await response.json();
-            }
-        } else {
-            let detail = "";
-            interface errorData {
-                detail?: string;
-            }
-            try {
-                const errorData: errorData = await response.json() as errorData;
-                detail = errorData.detail || "";
-            } catch (_err) {
-                detail = "No details";
-            }
-            throw new APIError(
-                "Problem with request.",
-                response.status,
-                response.statusText,
-                detail,
-                this.#baseUrlv2 + encodeURI(url),
-                method,
-            );
+        if (!response.ok) {
+            throw await createAPIError(APIError, "Problem with request.", response, this.#baseUrlv2 + url, method);
         }
+        if (method === "DELETE") {
+            return await response.text();
+        }
+        return await response.json();
     };
 
     /**
@@ -123,7 +104,7 @@ class Webhook {
      * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object.
      */
     getSubscription(id: string): Promise<WebhookSubscriptionModel> {
-        return this.#request("GET", "subscription/" + id) as Promise<WebhookSubscriptionModel>;
+        return this.#request("GET", "subscription/" + encodeURIComponent(id)) as Promise<WebhookSubscriptionModel>;
     }
 
     /**
@@ -185,7 +166,7 @@ class Webhook {
             delete data.data_type;
         }
 
-        return this.#request("PUT", "subscription/" + id, data) as Promise<
+        return this.#request("PUT", "subscription/" + encodeURIComponent(id), data) as Promise<
             WebhookSubscriptionModel
         >;
     }
@@ -197,7 +178,7 @@ class Webhook {
      * @returns {Promise<string>} The response body (empty string on success).
      */
     deleteSubscription(id: string): Promise<string> {
-        return this.#request("DELETE", "subscription/" + id) as Promise<string>;
+        return this.#request("DELETE", "subscription/" + encodeURIComponent(id)) as Promise<string>;
     }
 
     /**
@@ -207,7 +188,7 @@ class Webhook {
      * @returns {Promise<WebhookSubscriptionModel>} A WebhookSubscriptionModel typed object of the renewed subscription.
      */
     renewSubscription(id: string): Promise<WebhookSubscriptionModel> {
-        return this.#request("PUT", "subscription/renew/" + id) as Promise<
+        return this.#request("PUT", "subscription/renew/" + encodeURIComponent(id)) as Promise<
             WebhookSubscriptionModel
         >;
     }

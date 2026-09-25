@@ -56,7 +56,15 @@ export type {
     WebhookOperation,
     WebhookSubscriptionModel,
 } from "./types/generated.ts";
-import { API_URLS, APIError, RateLimitExceeded, ValidationError } from "./utils.ts";
+import { API_URLS, APIError, createAPIError, RateLimitExceeded, ValidationError } from "./utils.ts";
+
+let tagDeprecationWarned = false;
+/** Warns once per process, on stderr, so stdout-based consumers (e.g. MCP stdio) aren't polluted. */
+function warnTagDeprecated(): void {
+    if (tagDeprecationWarned) return;
+    tagDeprecationWarned = true;
+    console.warn("Tag is deprecated. We recommend transitioning to Enhanced Tag.");
+}
 
 /**
  * Options for configuring the Oura API client.
@@ -103,73 +111,38 @@ class OuraBase {
      * @throws {APIError} Throws if the response status is not OK for other reasons.
      */
     #get = async (accessToken: string | undefined, url: string, qs?: Record<string, string>) => {
-        const params = new URLSearchParams(qs);
         const baseUrl = this.#useSandbox ? API_URLS.basev2Sandbox : API_URLS.baseV2;
+        const headers: Record<string, string> = {};
+        if (accessToken) {
+            headers["Authorization"] = "Bearer " + accessToken;
+        }
         const response = await fetch(
-            baseUrl + encodeURI(url) + (qs ? "?" + params.toString() : ""),
-            {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + accessToken,
-                },
-            },
+            baseUrl + url + (qs ? "?" + new URLSearchParams(qs).toString() : ""),
+            { method: "GET", headers },
         );
 
-        interface ErrorData {
-            detail?: string;
-        }
-
-        if (response.status === 400) {
-            let detail = "";
-            try {
-                const errorData: ErrorData = await response.json() as ErrorData;
-                detail = errorData.detail || "";
-            } catch (_err) {
-                detail = "No details";
-            }
-            throw new ValidationError(
-                "Query Parameter Validation Error",
-                response.status,
-                response.statusText,
-                detail,
-                baseUrl + encodeURI(url),
-                "GET",
-            );
-        } else if (response.status === 429) {
-            let detail = "";
-            try {
-                const errorData: ErrorData = await response.json() as ErrorData;
-                detail = errorData.detail || "";
-            } catch (_err) {
-                detail = "No details";
-            }
-            throw new RateLimitExceeded(
-                "Request Rate Limit Exceeded",
-                response.status,
-                response.statusText,
-                detail,
-                baseUrl + encodeURI(url),
-                "GET",
-            );
-        } else if (response.ok) {
+        if (response.ok) {
             return await response.json();
-        } else {
-            let detail = "";
-            try {
-                const errorData: ErrorData = await response.json() as ErrorData;
-                detail = errorData.detail || "";
-            } catch (_err) {
-                detail = "No details";
-            }
-            throw new APIError(
-                "Problem fetching data.",
-                response.status,
-                response.statusText,
-                detail,
-                baseUrl + encodeURI(url),
+        }
+        if (response.status === 400) {
+            throw await createAPIError(
+                ValidationError,
+                "Query Parameter Validation Error",
+                response,
+                baseUrl + url,
                 "GET",
             );
         }
+        if (response.status === 429) {
+            throw await createAPIError(
+                RateLimitExceeded,
+                "Request Rate Limit Exceeded",
+                response,
+                baseUrl + url,
+                "GET",
+            );
+        }
+        throw await createAPIError(APIError, "Problem fetching data.", response, baseUrl + url, "GET");
     };
 
     /**
@@ -197,7 +170,8 @@ class OuraBase {
                 // If there's no data array, it's a single document
                 return response; // Return the single object directly
             }
-            params = nextToken ? { next_token: nextToken } : undefined;
+            // Keep the original date range alongside the token so every page is scoped to the same query.
+            params = nextToken ? { ...initialParams, next_token: nextToken } : undefined;
         } while (nextToken);
 
         return allData; // Return the array of objects for paginated results
@@ -243,7 +217,11 @@ class OuraBase {
         documentId: string,
         accessToken?: string,
     ): Promise<T> {
-        return this.fetchData(`${endpoint}/${documentId}`, undefined, accessToken) as unknown as Promise<T>;
+        return this.fetchData(
+            `${endpoint}/${encodeURIComponent(documentId)}`,
+            undefined,
+            accessToken,
+        ) as unknown as Promise<T>;
     }
 
     /**
@@ -665,9 +643,7 @@ class OuraBase {
      * @returns {Promise<TagModel[]>} A array of TagModel objects.
      */
     getTagDocuments(startDate: DateFormat, endDate: DateFormat, accessToken?: string): Promise<TagModel[]> {
-        console.log(
-            "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
-        );
+        warnTagDeprecated();
         return this.getDocuments<TagModel>("tag", startDate, endDate, accessToken);
     }
 
@@ -681,9 +657,7 @@ class OuraBase {
      * @returns {Promise<TagModel>} A Tag typed object.
      */
     getTag(documentId: string, accessToken?: string): Promise<TagModel> {
-        console.log(
-            "Tag is deprecated. We recommend transitioning to Enhanced Tag.",
-        );
+        warnTagDeprecated();
         return this.getDocumentById<TagModel>("tag", documentId, accessToken);
     }
 

@@ -1,4 +1,4 @@
-import { API_URLS, APIError } from "./utils.ts";
+import { API_URLS, APIError, createAPIError } from "./utils.ts";
 
 /**
  * Represents the response from an OAuth2 token exchange or refresh request.
@@ -80,11 +80,10 @@ export async function getTokens(
     });
 
     if (!response.ok) {
-        throw new APIError(
+        throw await createAPIError(
+            APIError,
             "Failed to exchange code for token.",
-            response.status,
-            response.statusText,
-            await response.text(),
+            response,
             API_URLS.oauth.token,
             "POST",
         );
@@ -122,14 +121,7 @@ export async function refreshToken(
     });
 
     if (!response.ok) {
-        throw new APIError(
-            "Failed to refresh token.",
-            response.status,
-            response.statusText,
-            await response.text(),
-            API_URLS.oauth.token,
-            "POST",
-        );
+        throw await createAPIError(APIError, "Failed to refresh token.", response, API_URLS.oauth.token, "POST");
     }
 
     return response.json() as unknown as OAuth2TokenResponse;
@@ -149,15 +141,8 @@ export async function revokeToken(accessToken: string): Promise<boolean> {
     });
 
     if (!response.ok) {
-        throw new APIError(
-            "Failed to revoke token.",
-            response.status,
-            response.statusText,
-            await response.text(),
-            // Deliberately omit the query string so the token doesn't end up in error logs.
-            API_URLS.oauth.revokeToken,
-            "POST",
-        );
+        // Deliberately omit the query string so the token doesn't end up in error logs.
+        throw await createAPIError(APIError, "Failed to revoke token.", response, API_URLS.oauth.revokeToken, "POST");
     }
 
     return true;
