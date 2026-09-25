@@ -89,6 +89,8 @@ export class TokenManager {
         this.#lastError = null;
 
         const redirectUri = `http://localhost:${opts.callbackPort}/callback`;
+        // Ties the callback to this flow so a third-party page can't inject its own code (login CSRF).
+        const state = crypto.randomUUID();
 
         const pending: PendingFlow = {
             server: null as unknown as { shutdown: () => Promise<void> },
@@ -98,6 +100,12 @@ export class TokenManager {
             const url = new URL(req.url);
             if (url.pathname !== "/callback") {
                 return new Response("Not found", { status: 404 });
+            }
+            if (url.searchParams.get("state") !== state) {
+                return new Response("Invalid state parameter.", {
+                    status: 400,
+                    headers: { "content-type": "text/plain" },
+                });
             }
             const error = url.searchParams.get("error");
             if (error) {
@@ -156,7 +164,7 @@ export class TokenManager {
 
         this.#pending = pending;
 
-        const authUrl = generateAuthUrl(opts.clientId, [...SCOPES], redirectUri);
+        const authUrl = generateAuthUrl(opts.clientId, [...SCOPES], redirectUri, state);
 
         console.error("[oura-mcp] Authorization started.");
         console.error(`[oura-mcp] Visit: ${authUrl}`);

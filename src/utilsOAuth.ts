@@ -143,12 +143,10 @@ export async function refreshToken(
  * @throws {APIError} If there's an error revoking the token.
  */
 export async function revokeToken(accessToken: string): Promise<boolean> {
-    const response = await fetch(
-        `${API_URLS.oauth.revokeToken}?access_token=${accessToken}`,
-        {
-            method: "POST",
-        },
-    );
+    const params = new URLSearchParams({ access_token: accessToken });
+    const response = await fetch(`${API_URLS.oauth.revokeToken}?${params.toString()}`, {
+        method: "POST",
+    });
 
     if (!response.ok) {
         throw new APIError(
@@ -156,7 +154,8 @@ export async function revokeToken(accessToken: string): Promise<boolean> {
             response.status,
             response.statusText,
             await response.text(),
-            `${API_URLS.oauth.revokeToken}?access_token=${accessToken}`,
+            // Deliberately omit the query string so the token doesn't end up in error logs.
+            API_URLS.oauth.revokeToken,
             "POST",
         );
     }

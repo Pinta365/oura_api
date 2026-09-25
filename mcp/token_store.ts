@@ -47,8 +47,13 @@ export async function writeTokens(tokens: StoredTokens): Promise<void> {
     const filePath = getTokenFilePath();
     const sep = Deno.build.os === "windows" ? "\\" : "/";
     const dir = filePath.split(sep).slice(0, -1).join(sep);
-    await Deno.mkdir(dir, { recursive: true });
-    await Deno.writeTextFile(filePath, JSON.stringify(tokens, null, 2));
+    // Holds the client secret and tokens: keep it private to the current user.
+    await Deno.mkdir(dir, { recursive: true, mode: 0o700 });
+    await Deno.writeTextFile(filePath, JSON.stringify(tokens, null, 2), { mode: 0o600 });
+    // `mode` only applies on creation; tighten files written by earlier versions too.
+    if (Deno.build.os !== "windows") {
+        await Deno.chmod(filePath, 0o600);
+    }
 }
 
 export function tokenFilePath(): string {
