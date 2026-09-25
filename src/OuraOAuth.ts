@@ -87,7 +87,8 @@ class OuraOAuth extends OuraBase {
         accessToken?: string,
     ): Promise<unknown> {
         if (!accessToken) {
-            throw new MissingTokenError();
+            // Reject rather than throw so callers using `.catch()` see the error too.
+            return Promise.reject(new MissingTokenError());
         }
         return this.getAll(accessToken, endpoint, params);
     }
