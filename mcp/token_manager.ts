@@ -22,7 +22,7 @@ export interface BeginAuthorizeResult {
 
 interface PendingFlow {
     server: { shutdown: () => Promise<void> };
-    timeoutId: number;
+    timeoutId?: ReturnType<typeof setTimeout>;
     lastError: string | null;
 }
 
@@ -91,7 +91,6 @@ export class TokenManager {
 
         const pending: PendingFlow = {
             server: null as unknown as { shutdown: () => Promise<void> },
-            timeoutId: 0,
             lastError: null,
         };
 
