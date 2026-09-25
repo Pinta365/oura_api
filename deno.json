@@ -13,18 +13,22 @@
     "publish": {
         "exclude": [
             "scripts",
-            "examples"
+            "examples",
+            "tests"
         ]
     },
     "tasks": {
         "build_npm": "deno run -A scripts/build_npm.ts",
         "generate_types": "deno run -A scripts/generate_types.ts",
-        "mcp:stdio": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run mcp/stdio.ts"
+        "mcp:stdio": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run mcp/stdio.ts",
+        "test": "deno test --allow-net --allow-env --allow-read --allow-write tests/",
+        "test:sandbox": "deno test --allow-net src/oura_sandbox_test.ts"
     },
     "lint": {
         "include": [
             "src",
-            "mcp"
+            "mcp",
+            "tests"
         ]
     },
     "fmt": {
