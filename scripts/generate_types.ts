@@ -34,21 +34,15 @@ function fixTimestampTypes(filePath: string): void {
 }
 
 const getOpenApiSpecUrl = async (): Promise<string> => {
-    try {
-        const response = await fetch("https://cloud.ouraring.com/v2/docs");
-        const htmlContent = await response.text();
+    const response = await fetch("https://cloud.ouraring.com/v2/docs");
+    const htmlContent = await response.text();
 
-        const redocRegex = /<redoc\s+spec-url="([^"]+)"\s*>/;
-        const match = redocRegex.exec(htmlContent);
-        if (match && match[1]) {
-            const specUrl = match[1];
-            return `https://cloud.ouraring.com${specUrl}`;
-        } else {
-            throw new Error("<redoc> element or spec-url attribute not found.");
-        }
-    } catch (error) {
-        throw error;
+    const redocRegex = /<redoc\s+spec-url="([^"]+)"\s*>/;
+    const match = redocRegex.exec(htmlContent);
+    if (!match || !match[1]) {
+        throw new Error("<redoc> element or spec-url attribute not found.");
     }
+    return `https://cloud.ouraring.com${match[1]}`;
 };
 
 async function main(): Promise<void> {
