@@ -1,4 +1,4 @@
-import { assert } from "jsr:@std/assert";
+import { assert } from "@std/assert";
 import { Oura } from "../mod.ts";
 
 const oura = new Oura({ useSandbox: true });

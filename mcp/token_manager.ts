@@ -30,6 +30,12 @@ export class TokenManager {
     #pending: PendingFlow | null = null;
     #lastError: string | null = null;
     #refreshing: Promise<StoredTokens> | null = null;
+    #openBrowser: (url: string) => Promise<void>;
+
+    /** @param options.openBrowser - Override how the auth URL is opened (defaults to the OS browser). */
+    constructor(options: { openBrowser?: (url: string) => Promise<void> } = {}) {
+        this.#openBrowser = options.openBrowser ?? openBrowser;
+    }
 
     async load(): Promise<void> {
         this.#tokens = await readTokens();
@@ -39,9 +45,10 @@ export class TokenManager {
         return this.#tokens !== null;
     }
 
+    /** A flow in progress takes precedence, so re-authorizing reports "pending" until it completes. */
     status(): AuthStatus {
-        if (this.#tokens) return "authorized";
         if (this.#pending) return "pending";
+        if (this.#tokens) return "authorized";
         return "idle";
     }
 
@@ -179,7 +186,7 @@ export class TokenManager {
         console.error("[oura-mcp] Authorization started.");
         console.error(`[oura-mcp] Visit: ${authUrl}`);
 
-        void openBrowser(authUrl);
+        void this.#openBrowser(authUrl);
 
         return {
             authUrl,

@@ -5,17 +5,27 @@
         ".": "./mod.ts",
         "./mcp/stdio": "./mcp/stdio.ts"
     },
-    "publish": {
-        "exclude": ["scripts", "examples"]
+    "imports": {
+        "@modelcontextprotocol/sdk/": "npm:/@modelcontextprotocol/sdk@^1.18.0/",
+        "zod": "npm:zod@^3.23.8",
+        "@std/assert": "jsr:@std/assert@^1.0.0"
     },
-
+    "publish": {
+        "exclude": [
+            "scripts",
+            "examples"
+        ]
+    },
     "tasks": {
         "build_npm": "deno run -A scripts/build_npm.ts",
         "generate_types": "deno run -A scripts/generate_types.ts",
         "mcp:stdio": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run mcp/stdio.ts"
     },
     "lint": {
-        "include": ["src"]
+        "include": [
+            "src",
+            "mcp"
+        ]
     },
     "fmt": {
         "lineWidth": 120,

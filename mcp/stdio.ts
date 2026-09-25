@@ -7,11 +7,12 @@
  * See MCP.md for setup and env vars.
  */
 
-import { McpServer } from "npm:@modelcontextprotocol/sdk@^1.18.0/server/mcp.js";
-import { StdioServerTransport } from "npm:@modelcontextprotocol/sdk@^1.18.0/server/stdio.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import OuraOAuth from "../src/OuraOAuth.ts";
 import { TokenManager } from "./token_manager.ts";
 import { registerTools } from "./tools.ts";
+import denoConfig from "../deno.json" with { type: "json" };
 
 const CALLBACK_PORT = parseInt(Deno.env.get("OURA_CALLBACK_PORT") || "3456");
 
@@ -50,7 +51,7 @@ const ouraClient = new OuraOAuth({
     redirectUri: seedCreds.redirectUri,
 });
 
-const server = new McpServer({ name: "oura-mcp", version: "0.1.0" });
+const server = new McpServer({ name: "oura-mcp", version: denoConfig.version });
 registerTools(server, ouraClient, {
     tokens,
     bootstrapCredentials,

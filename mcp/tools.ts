@@ -5,13 +5,16 @@
  * authorized yet.
  */
 
-import { McpServer } from "npm:@modelcontextprotocol/sdk@^1.18.0/server/mcp.js";
-import { z } from "npm:zod@^3.23.8";
-import OuraOAuth from "../src/OuraOAuth.ts";
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { z } from "zod";
+import type OuraOAuth from "../src/OuraOAuth.ts";
 import type { TokenManager } from "./token_manager.ts";
 
 const DATE = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).describe("Date in YYYY-MM-DD format");
-const DATETIME = z.string().describe("Date-time in YYYY-MM-DDTHH:mm:ss format");
+const DATETIME = z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?$/)
+    .describe("ISO 8601 date-time, e.g. YYYY-MM-DDTHH:mm:ss, optionally with Z or a +HH:MM offset");
 const DATE_RANGE = { start_date: DATE, end_date: DATE } as const;
 const DATETIME_RANGE = { start_datetime: DATETIME, end_datetime: DATETIME } as const;
 type DateRange = { start_date: string; end_date: string };
