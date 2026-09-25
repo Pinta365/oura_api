@@ -14,6 +14,27 @@ export const API_URLS = {
     },
 };
 
+/** Default per-request timeout in milliseconds. */
+export const DEFAULT_TIMEOUT_MS = 30_000;
+
+/**
+ * Delay before retrying a rate-limited request: the `Retry-After` header (seconds or HTTP date) capped at 60s,
+ * otherwise exponential backoff starting at 1s.
+ *
+ * @param {Response} response - The 429 response.
+ * @param {number} attempt - Zero-based retry attempt.
+ * @returns {number} Delay in milliseconds.
+ */
+export function retryDelayMs(response: Response, attempt: number): number {
+    const header = response.headers.get("retry-after");
+    if (header) {
+        const seconds = Number(header);
+        const ms = Number.isFinite(seconds) ? seconds * 1000 : Date.parse(header) - Date.now();
+        if (Number.isFinite(ms)) return Math.min(Math.max(ms, 0), 60_000);
+    }
+    return 1000 * 2 ** attempt;
+}
+
 /**
  * Custom error class representing an API error.
  * @class

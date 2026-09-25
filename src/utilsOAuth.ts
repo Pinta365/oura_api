@@ -1,4 +1,4 @@
-import { API_URLS, APIError, createAPIError } from "./utils.ts";
+import { API_URLS, APIError, createAPIError, DEFAULT_TIMEOUT_MS } from "./utils.ts";
 
 /**
  * Represents the response from an OAuth2 token exchange or refresh request.
@@ -73,6 +73,7 @@ export async function getTokens(
 
     const response = await fetch(API_URLS.oauth.token, {
         method: "POST",
+        signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -114,6 +115,7 @@ export async function refreshToken(
 
     const response = await fetch(API_URLS.oauth.token, {
         method: "POST",
+        signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -138,6 +140,7 @@ export async function revokeToken(accessToken: string): Promise<boolean> {
     const params = new URLSearchParams({ access_token: accessToken });
     const response = await fetch(`${API_URLS.oauth.revokeToken}?${params.toString()}`, {
         method: "POST",
+        signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
     });
 
     if (!response.ok) {

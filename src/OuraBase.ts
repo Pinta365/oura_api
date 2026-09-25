@@ -56,7 +56,15 @@ export type {
     WebhookOperation,
     WebhookSubscriptionModel,
 } from "./types/generated.ts";
-import { API_URLS, APIError, createAPIError, RateLimitExceeded, ValidationError } from "./utils.ts";
+import {
+    API_URLS,
+    APIError,
+    createAPIError,
+    DEFAULT_TIMEOUT_MS,
+    RateLimitExceeded,
+    retryDelayMs,
+    ValidationError,
+} from "./utils.ts";
 
 let tagDeprecationWarned = false;
 /** Warns once per process, on stderr, so stdout-based consumers (e.g. MCP stdio) aren't polluted. */
@@ -75,6 +83,13 @@ export interface ApiOptionsBase {
      * The sandbox provides a simulated environment for testing your API integration.
      */
     useSandbox?: boolean;
+    /** Per-request timeout in milliseconds. Defaults to 30000. */
+    timeoutMs?: number;
+    /**
+     * How many times to retry a request that was rate limited (HTTP 429) before throwing `RateLimitExceeded`.
+     * Honors the `Retry-After` header (capped at 60s), otherwise backs off 1s, 2s, 4s, ... Defaults to 2.
+     */
+    maxRetries?: number;
 }
 interface OuraPaginatedResponse {
     data: unknown[];
@@ -86,6 +101,8 @@ interface OuraPaginatedResponse {
  */
 class OuraBase {
     #useSandbox: boolean = false;
+    #timeoutMs: number = DEFAULT_TIMEOUT_MS;
+    #maxRetries: number = 2;
 
     /**
      * Creates a new Oura API client.
@@ -97,6 +114,12 @@ class OuraBase {
         if (options.useSandbox) {
             this.#useSandbox = true;
         }
+        if (options.timeoutMs !== undefined) {
+            this.#timeoutMs = options.timeoutMs;
+        }
+        if (options.maxRetries !== undefined) {
+            this.#maxRetries = options.maxRetries;
+        }
     }
 
     /**
@@ -106,8 +129,8 @@ class OuraBase {
      * @param {string} url - The API endpoint URL.
      * @param {Record<string, string>} [qs] - Optional querystring parameters.
      * @returns {Promise<object>} A JSON parsed fetch response.
-     * @throws {ValidationError} Throws if querystring validation fails.
-     * @throws {RateLimitExceeded} Throws if the request rate limit is exceeded.
+     * @throws {ValidationError} Throws if querystring validation fails (HTTP 400 or 422).
+     * @throws {RateLimitExceeded} Throws if the request is still rate limited after `maxRetries` retries.
      * @throws {APIError} Throws if the response status is not OK for other reasons.
      */
     #get = async (accessToken: string | undefined, url: string, qs?: Record<string, string>) => {
@@ -115,16 +138,29 @@ class OuraBase {
         const headers: Record<string, string> = {};
         if (accessToken) {
             headers["Authorization"] = "Bearer " + accessToken;
+        } else if (this.#useSandbox) {
+            // The sandbox ignores the token's value but rejects requests without an Authorization header.
+            headers["Authorization"] = "Bearer sandbox";
         }
-        const response = await fetch(
-            baseUrl + url + (qs ? "?" + new URLSearchParams(qs).toString() : ""),
-            { method: "GET", headers },
-        );
+        const fullUrl = baseUrl + url + (qs ? "?" + new URLSearchParams(qs).toString() : "");
+
+        let response: Response;
+        for (let attempt = 0;; attempt++) {
+            response = await fetch(fullUrl, {
+                method: "GET",
+                headers,
+                signal: AbortSignal.timeout(this.#timeoutMs),
+            });
+            if (response.status !== 429 || attempt >= this.#maxRetries) break;
+            await response.body?.cancel();
+            await new Promise((resolve) => setTimeout(resolve, retryDelayMs(response, attempt)));
+        }
 
         if (response.ok) {
             return await response.json();
         }
-        if (response.status === 400) {
+        // Oura reports malformed query params as 422 (e.g. an invalid date) and some other bad requests as 400.
+        if (response.status === 400 || response.status === 422) {
             throw await createAPIError(
                 ValidationError,
                 "Query Parameter Validation Error",

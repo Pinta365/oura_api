@@ -6,7 +6,13 @@
  * @license MIT
  */
 import type { ExtApiV2DataType, WebhookOperation, WebhookSubscriptionModel } from "./types/generated.ts";
-import { APIError, createAPIError, MissingClientIdError, MissingClientSecretError } from "./utils.ts";
+import {
+    APIError,
+    createAPIError,
+    DEFAULT_TIMEOUT_MS,
+    MissingClientIdError,
+    MissingClientSecretError,
+} from "./utils.ts";
 
 /**
  * Base class for the Oura Webhook Subscription API
@@ -77,7 +83,10 @@ class Webhook {
             };
         }
 
-        const response = await fetch(this.#baseUrlv2 + url, options);
+        const response = await fetch(this.#baseUrlv2 + url, {
+            ...options,
+            signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
+        });
 
         if (!response.ok) {
             throw await createAPIError(APIError, "Problem with request.", response, this.#baseUrlv2 + url, method);
