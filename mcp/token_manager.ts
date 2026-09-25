@@ -9,7 +9,7 @@
 import { generateAuthUrl, getTokens, refreshToken } from "../src/utilsOAuth.ts";
 import { readTokens, type StoredTokens, tokenFilePath, writeTokens } from "./token_store.ts";
 
-const SCOPES = ["personal", "daily", "heartrate", "workout", "session", "spo2Daily"] as const;
+const SCOPES = ["personal", "daily", "heartrate", "workout", "tag", "session", "spo2Daily"] as const;
 const AUTHORIZE_TIMEOUT_MS = 5 * 60 * 1000;
 
 export type AuthStatus = "idle" | "pending" | "authorized";
@@ -23,12 +23,12 @@ export interface BeginAuthorizeResult {
 interface PendingFlow {
     server: { shutdown: () => Promise<void> };
     timeoutId?: ReturnType<typeof setTimeout>;
-    lastError: string | null;
 }
 
 export class TokenManager {
     #tokens: StoredTokens | null = null;
     #pending: PendingFlow | null = null;
+    #lastError: string | null = null;
 
     async load(): Promise<void> {
         this.#tokens = await readTokens();
@@ -45,7 +45,7 @@ export class TokenManager {
     }
 
     lastAuthError(): string | null {
-        return this.#pending?.lastError ?? null;
+        return this.#lastError;
     }
 
     async getAccessToken(): Promise<string | null> {
@@ -86,12 +86,12 @@ export class TokenManager {
         if (this.#pending) {
             await this.#cancelPending();
         }
+        this.#lastError = null;
 
         const redirectUri = `http://localhost:${opts.callbackPort}/callback`;
 
         const pending: PendingFlow = {
             server: null as unknown as { shutdown: () => Promise<void> },
-            lastError: null,
         };
 
         const server = Deno.serve({ port: opts.callbackPort, onListen: () => {} }, async (req) => {
@@ -101,17 +101,17 @@ export class TokenManager {
             }
             const error = url.searchParams.get("error");
             if (error) {
-                pending.lastError = `Oura authorization denied: ${error} — ${
+                this.#lastError = `Oura authorization denied: ${error} — ${
                     url.searchParams.get("error_description") || ""
                 }`;
-                console.error(`[oura-mcp] ${pending.lastError}`);
+                console.error(`[oura-mcp] ${this.#lastError}`);
                 return new Response("Authorization denied. You can close this window.", {
                     headers: { "content-type": "text/plain" },
                 });
             }
             const code = url.searchParams.get("code");
             if (!code) {
-                pending.lastError = "No authorization code received in callback";
+                this.#lastError = "No authorization code received in callback";
                 return new Response("Missing code. You can close this window.", {
                     headers: { "content-type": "text/plain" },
                 });
@@ -129,10 +129,11 @@ export class TokenManager {
                 };
                 await writeTokens(stored);
                 this.#tokens = stored;
+                this.#lastError = null;
                 console.error(`[oura-mcp] Tokens saved to: ${tokenFilePath()}`);
             } catch (err) {
-                pending.lastError = err instanceof Error ? err.message : String(err);
-                console.error(`[oura-mcp] Token exchange failed: ${pending.lastError}`);
+                this.#lastError = err instanceof Error ? err.message : String(err);
+                console.error(`[oura-mcp] Token exchange failed: ${this.#lastError}`);
                 return new Response("Token exchange failed. You can close this window.", {
                     headers: { "content-type": "text/plain" },
                 });
@@ -148,8 +149,8 @@ export class TokenManager {
 
         pending.server = server;
         pending.timeoutId = setTimeout(() => {
-            pending.lastError = "Authorization timed out — no callback received within 5 minutes.";
-            console.error(`[oura-mcp] ${pending.lastError}`);
+            this.#lastError = "Authorization timed out — no callback received within 5 minutes.";
+            console.error(`[oura-mcp] ${this.#lastError}`);
             void this.#cancelPending();
         }, AUTHORIZE_TIMEOUT_MS);
 

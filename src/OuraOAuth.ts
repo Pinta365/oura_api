@@ -19,7 +19,7 @@ export type OAuthScope =
     | "daily"
     | "heartrate"
     | "workout"
-    | "tag User"
+    | "tag"
     | "session"
     | "spo2Daily";
 
